@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS guard.refunds (
 CREATE TABLE IF NOT EXISTS guard.comments (
     id                   BIGSERIAL PRIMARY KEY,
     task_id              BIGINT                   NOT NULL REFERENCES guard.tasks (id),
-    comment              TEXT,
+    comment              TEXT                     NOT NULL,
     created_by_id        BIGINT                   NOT NULL,
     created_by_name      TEXT                     NOT NULL,
     created_at           TIMESTAMPTZ              NOT NULL DEFAULT NOW()

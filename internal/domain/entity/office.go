@@ -2,11 +2,12 @@ package entity
 
 import "time"
 
-type Comment struct {
+type Office struct {
 	ID            int64
-	TaskID        int64
-	Comment       string
+	Name          string
+	Address       string
 	CreatedByID   int64
 	CreatedByName string
 	CreatedAt     time.Time
+	DeletedAt     *time.Time
 }
