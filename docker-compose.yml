@@ -1,0 +1,35 @@
+services:
+  pg_db:
+    container_name: guard_pg
+    image: postgres:16
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - guard-network
+    
+  app:
+    container_name: quard-panel-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+      - "${GRPC_PORT}:${GRPC_PORT}"
+    env_file:
+      - .env
+    networks:
+      - guard-network
+
+volumes:
+  postgres_data:
+
+networks:
+  guard-network:
+    driver: bridge

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Run the linter
+echo "Running linter..."
+if ! make lint; then
+    echo "Linter failed. Aborting push."
+    exit 1
+fi
+
+# Run the tests
+echo "Running unit tests..."
+if ! make test; then
+    echo "Tests failed. Aborting push."
+    exit 1
+fi
+
+# Run go mod tidy to clean up dependencies
+echo "Running go mod tidy..."
+if ! go mod tidy; then
+    echo "go mod tidy failed. Aborting push."
+    exit 1
+fi
+
+# Run go mod vendor to sync vendor directory
+echo "Running go mod vendor..."
+if ! go mod vendor; then
+    echo "go mod vendor failed. Aborting push."
+    exit 1
+fi
+
+# If all steps pass, allow the push
+echo "Linter, tests, and module checks passed. Proceeding with push."
+exit 0

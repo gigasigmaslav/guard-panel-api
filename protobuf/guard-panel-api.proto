@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/api/v1;api";
+package api.v1.guardpanelservice;
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    consumes: ["application/json"];
+    produces: ["application/json"];
+    info: {
+      title: "Guard panel API service";
+      version: "1.0.0";
+      description: "Security service taskbar API";
+    };
+};
+
+service GuardPanelService {
+    rpc Stub(StubRequest) returns (StubResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/stub"
+        };
+    }
+}
+
+message StubRequest {}
+
+message StubResponse {
+    string message = 1;
+}
