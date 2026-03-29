@@ -24,7 +24,7 @@ func main() {
 		log.Fatal().Err(err).Msg("get new app")
 	}
 
-	if runErr := runner.Run(app); runErr != nil { //nolint:govet // Допускаем shadowing err для краткости
+	if runErr := runner.Run(app); runErr != nil {
 		log.Fatal().Err(runErr).Msg("run app")
 	}
 }

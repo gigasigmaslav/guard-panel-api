@@ -1,7 +1,6 @@
 package server
 
-
-type Dependencies struct {}
+type Dependencies struct{}
 
 func NewDependencies() *Dependencies {
 	return &Dependencies{}

@@ -103,7 +103,7 @@ func getPostgresDB(ctx context.Context, cfg config.PostgresDB) (*postgres.DB, er
 	return db, err
 }
 
-//nolint:govet // Будет использовано в будущем для инициализации юзкейсов
+//nolint:unparam
 func getGRPCServerDependencies(_ config.Config, _ *postgres.DB) (*server.Dependencies, error) {
 	return server.NewDependencies(), nil
 }
