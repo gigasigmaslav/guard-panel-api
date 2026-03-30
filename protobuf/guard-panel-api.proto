@@ -1,12 +1,17 @@
 syntax = "proto3";
+option go_package = "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1";
+package guard.v1;
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-import "validate/validate.proto";
-import "google/protobuf/timestamp.proto";
-
-option go_package = "pkg/api/v1;api";
-package api.v1.guardpanelservice;
+import "google/protobuf/empty.proto";
+import "message/common.proto";
+import "message/task.proto";
+import "message/comment.proto";
+import "message/refund.proto";
+import "message/vud-decision.proto";
+import "message/employee.proto";
+import "message/office.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     consumes: ["application/json"];
@@ -19,15 +24,83 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service GuardPanelService {
-    rpc Stub(StubRequest) returns (StubResponse) {
-        option (google.api.http) = {
-            get: "/api/v1/stub"
-        };
+    // Tasks
+    rpc CreateTask(CreateTaskRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/tasks" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "create task" };
     }
-}
+    rpc GetTask(GetByIDRequest) returns (GetTaskResponse) {
+        option (google.api.http) = { get: "/api/v1/tasks/{id}" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "get task by ID" };
+    }
+    rpc UpdateTask(UpdateTaskRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { patch: "/api/v1/tasks/{id}" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "update task" };
+    }
+    rpc SearchTasks(SearchTasksRequest) returns (SearchTasksResponse) {
+        option (google.api.http) = { get: "/api/v1/tasks/search" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "search tasks" };
+    }
 
-message StubRequest {}
+    // Comments
+    rpc CreateComment(CreateCommentRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/comments" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["comment"] summary: "create comment" };
+    }
+    rpc DeleteComment(DeleteByIDRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { delete: "/api/v1/comments/{id}" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["comment"] summary: "delete comment" };
+    }
 
-message StubResponse {
-    string message = 1;
+    // Refunds
+    rpc CreateRefund(CreateRefundRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/refunds" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["refund"] summary: "create refund" };
+    }
+
+    // VUD Decisions
+    rpc CreateVudDecision(CreateVudDecisionRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/vud-decisions" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["vud_decision"] summary: "create VUD decision" };
+    }
+    rpc UpdateVudDecision(UpdateVudDecisionRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { patch: "/api/v1/vud-decisions/{id}" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["vud_decision"] summary: "update VUD decision" };
+    }
+
+    // Employees
+    rpc CreateEmployee(CreateEmployeeRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/employees" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["employee"] summary: "create employee" };
+    }
+    rpc UpdateEmployee(UpdateEmployeeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { patch: "/api/v1/employees/{id}" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["employee"] summary: "update employee" };
+    }
+    rpc DeleteEmployee(DeleteByIDRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { delete: "/api/v1/employees/{id}" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["employee"] summary: "delete employee" };
+    }
+    rpc SearchEmployees(google.protobuf.Empty) returns (SearchEmployeesResponse) {
+        option (google.api.http) = { get: "/api/v1/employees/search" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["employee"] summary: "search employees" };
+    }
+
+    // Offices
+    rpc CreateOffice(CreateOfficeRequest) returns (CreatedResponse) {
+        option (google.api.http) = { post: "/api/v1/offices" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["office"] summary: "create office" };
+    }
+    rpc UpdateOffice(UpdateOfficeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { patch: "/api/v1/offices/{id}" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["office"] summary: "update office" };
+    }
+    rpc DeleteOffice(DeleteByIDRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { delete: "/api/v1/offices/{id}" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["office"] summary: "delete office" };
+    }
+    rpc SearchOffices(google.protobuf.Empty) returns (SearchOfficesResponse) {
+        option (google.api.http) = { get: "/api/v1/offices/search" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["office"] summary: "search offices" };
+    }
 }

@@ -1,0 +1,22 @@
+syntax = "proto3";
+package guard.v1;
+option go_package = "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message";
+
+import "google/api/field_behavior.proto";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "message/common.proto";
+
+message Comment {
+  int64 id = 1;
+  int64 task_id = 2;
+  string comment = 3;
+  Lookup created_by = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message CreateCommentRequest {
+  int64 task_id = 1 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+  string comment = 2 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
+  int64 created_by_id = 3 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+}

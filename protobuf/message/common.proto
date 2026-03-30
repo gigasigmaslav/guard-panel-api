@@ -1,0 +1,78 @@
+syntax = "proto3";
+package guard.v1;
+option go_package = "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message";
+
+import "google/protobuf/descriptor.proto";
+import "google/api/field_behavior.proto";
+import "validate/validate.proto";
+
+// Messages
+message GetByIDRequest {
+    int64 id = 1;
+}
+
+message DeleteByIDRequest {
+    int64 id = 1;
+}
+
+message CreatedResponse {
+    int64 id = 1;
+}
+
+// Lookups
+message Lookup {
+  int64 id = 1;
+  string name = 2;
+}
+
+// Enums
+enum TaskStatus {
+    CASE_STATUS_UNSPECIFIED = 0;
+    NEW = 1;
+    DOCUMENT_GATHERING = 2;
+    WAITING_FOR_VUD = 3;
+    JUDICIAL_PROCEEDINGS = 4;
+    COMPLETED = 5;
+}
+
+enum EmployeePosition {
+    EMPLOYEE_POSITION_UNSPECIFIED = 0;
+    SEC = 1;
+    SEC_HEAD = 2;
+}
+
+enum TaskPriority {
+    TASK_PRIORITY_UNSPECIFIED = 0;
+    LOW = 1;
+    HIGH = 2;
+}
+
+enum ViolatorType {
+    VIOLATOR_TYPE_UNSPECIFIED = 0;
+    EMPLOYEE = 1;
+    CLIENT = 2;
+}
+
+// Sorting
+message Sorting {
+    OrderDirection order_direction = 1 [
+      (validate.rules).enum.defined_only = true,
+      (google.api.field_behavior) = REQUIRED
+    ];
+    OrderBy order_by = 2 [
+      (validate.rules).enum.defined_only = true,
+      (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+enum OrderDirection {
+  ORDER_DIRECTION_UNSPECIFIED = 0;
+  ASC = 1;
+  DESC = 2;
+}
+
+enum OrderBy {
+  ORDER_BY_UNSPECIFIED = 0;
+  BARCODES_DAMAGE_AMOUNT = 1;
+  CREATED_AT = 2;
+}

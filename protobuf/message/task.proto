@@ -1,0 +1,117 @@
+syntax = "proto3";
+package guard.v1;
+option go_package = "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message";
+
+import "google/api/field_behavior.proto";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "message/common.proto";
+
+message CreateTaskRequest {
+  int64 damage_amount = 1 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+  TaskPriority priority = 2 [(validate.rules).enum = {defined_only: true, not_in: [0]}, (google.api.field_behavior) = REQUIRED];
+  int64 executor_id = 3 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+  int64 created_by_id = 4 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+}
+
+message Task {
+  int64 id = 1;
+  int64 damage_amount = 2;
+  TaskPriority priority = 3;
+  TaskStatus status = 4;
+  Lookup executor = 5;
+  Lookup violator = 6;
+  Lookup office = 7;
+  Lookup created_by = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp start_date = 10;
+  optional google.protobuf.Timestamp end_date = 11;
+
+  // aggregate parts
+  TaskRefund refunds = 12;
+  TaskVudDecision vud_decisions = 13;
+  repeated TaskComment comments = 14;
+  repeated TaskHistoryChange history_changes = 15;
+
+  message TaskRefund {
+    int64 id = 1;
+    int64 amount = 2;
+    optional string comment = 3;
+  }
+
+  message TaskVudDecision {
+    int64 id = 1;
+    string kusp = 2;
+    optional string ud = 3;
+    optional bool criminal_case_opened = 4;
+    optional string comment = 5;
+  }
+
+  message TaskComment {
+    int64 id = 1;
+    string comment = 2;
+    Lookup created_by = 3;
+    google.protobuf.Timestamp created_at = 4;
+  }
+
+  message TaskHistoryChange {
+    TaskHistoryChangeEvent event = 1;
+    Lookup created_by = 2;
+    google.protobuf.Timestamp created_at = 3;
+
+    enum TaskHistoryChangeEvent {
+      TASK_HISTORY_CHANGE_EVENT_UNSPECIFIED = 0;
+      TASK_HISTORY_CHANGE_EVENT_COMMENT_ADDED = 1;
+      TASK_HISTORY_CHANGE_EVENT_REFUND_ADDED = 2;
+      TASK_HISTORY_CHANGE_EVENT_VUD_DECISION_ADDED = 3;
+    }
+  }
+}
+
+message GetTaskResponse {
+  Task task = 1;
+}
+
+message UpdateTaskRequest {
+  int64 id = 1 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+  optional int64 damage_amount = 2;
+  optional TaskPriority priority = 3 [(validate.rules).enum.defined_only = true];
+  optional TaskStatus status = 4 [(validate.rules).enum.defined_only = true];
+  optional google.protobuf.Timestamp end_date = 5;
+  optional int64 executor_id = 6;
+}
+
+message SearchTasksRequest {
+  int32 page = 1 [(validate.rules).int32.gte = 1, (google.api.field_behavior) = REQUIRED];
+  int32 per_page = 2 [(validate.rules).int32.gte = 1, (google.api.field_behavior) = REQUIRED];
+  Sorting sorting = 3 [(google.api.field_behavior) = REQUIRED];
+  TaskStatus status = 4 [(validate.rules).enum.defined_only = true, (google.api.field_behavior) = REQUIRED];
+  optional Filter filter = 5;
+
+  message Filter {
+    TaskPriority priority = 1 [(validate.rules).enum.defined_only = true];
+    int64 office_id = 2;
+    int64 executor_id = 3;
+    ViolatorType violator_type = 4 [(validate.rules).enum.defined_only = true];
+    string kusp = 5;
+    string ud = 6;
+  }
+}
+
+message SearchTasksResponse {
+  repeated TaskLookup items = 1;
+  int64 total = 2;
+
+  message TaskLookup {
+    int64 id = 1;
+    int64 damage_amount = 2;
+    TaskPriority priority = 3;
+    Lookup executor = 4;
+    Lookup violator = 5;
+    Lookup office = 6;
+    Lookup created_by = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp start_date = 9;
+    optional google.protobuf.Timestamp end_date = 10;
+  }
+}
