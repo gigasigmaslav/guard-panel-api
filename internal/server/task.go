@@ -144,7 +144,7 @@ func (s *Server) UpdateTask(
 	}
 
 	var endDate *time.Time
-	if req.EndDate != nil {
+	if req.GetEndDate() != nil {
 		t := req.GetEndDate().AsTime()
 		endDate = &t
 	}
@@ -267,6 +267,8 @@ func mapTaskPriorityToProto(priority entity.TaskPriority) message.TaskPriority {
 
 func mapTaskPriorityFromProto(priority message.TaskPriority) entity.TaskPriority {
 	switch priority {
+	case message.TaskPriority_TASK_PRIORITY_UNSPECIFIED:
+		return entity.TaskPriorityLow
 	case message.TaskPriority_LOW:
 		return entity.TaskPriorityLow
 	case message.TaskPriority_HIGH:

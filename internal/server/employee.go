@@ -89,6 +89,8 @@ func (s *Server) SearchEmployees(
 
 func mapEmployeePositionToEntity(p message.EmployeePosition) entity.EmployeePosition {
 	switch p {
+	case message.EmployeePosition_EMPLOYEE_POSITION_UNSPECIFIED:
+		return entity.EmployeePositionSec
 	case message.EmployeePosition_SEC:
 		return entity.EmployeePositionSec
 	case message.EmployeePosition_SEC_HEAD:
