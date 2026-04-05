@@ -243,7 +243,16 @@ func (m *CreateRefundRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Comment
+	if utf8.RuneCountInString(m.GetComment()) < 1 {
+		err := CreateRefundRequestValidationError{
+			field:  "Comment",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if m.GetCreatedById() <= 0 {
 		err := CreateRefundRequestValidationError{

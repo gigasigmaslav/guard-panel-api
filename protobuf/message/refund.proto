@@ -19,6 +19,6 @@ message Refund {
 message CreateRefundRequest {
   int64 task_id = 1 [(validate.rules).int64.gt = 0,(google.api.field_behavior) = REQUIRED];
   int64 amount = 2 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
-  string comment = 3;
+  string comment = 3 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
   int64 created_by_id = 4 [(validate.rules).int64.gt = 0,(google.api.field_behavior) = REQUIRED];
 }

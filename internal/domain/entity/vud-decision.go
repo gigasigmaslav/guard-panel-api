@@ -1,6 +1,11 @@
 package entity
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var ErrVUDDecisionNotFound = errors.New("vud decision not found")
 
 type VUDDecision struct {
 	ID                 int64

@@ -189,13 +189,14 @@ const file_message_refund_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\x05 \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xa8\x01\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xb4\x01\n" +
 	"\x13CreateRefundRequest\x12#\n" +
 	"\atask_id\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06taskId\x12\"\n" +
 	"\x06amount\x18\x02 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06amount\x12\x18\n" +
-	"\acomment\x18\x03 \x01(\tR\acomment\x12.\n" +
+	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06amount\x12$\n" +
+	"\acomment\x18\x03 \x01(\tB\n" +
+	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\acomment\x12.\n" +
 	"\rcreated_by_id\x18\x04 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedByIdB=Z;github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/messageb\x06proto3"
 

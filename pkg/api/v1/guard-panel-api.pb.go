@@ -28,12 +28,12 @@ var File_guard_panel_api_proto protoreflect.FileDescriptor
 
 const file_guard_panel_api_proto_rawDesc = "" +
 	"\n" +
-	"\x15guard-panel-api.proto\x12\bguard.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14message/common.proto\x1a\x12message/task.proto\x1a\x15message/comment.proto\x1a\x14message/refund.proto\x1a\x1amessage/vud-decision.proto\x1a\x16message/employee.proto\x1a\x14message/office.proto2\xee\x11\n" +
+	"\x15guard-panel-api.proto\x12\bguard.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14message/common.proto\x1a\x12message/task.proto\x1a\x15message/comment.proto\x1a\x14message/refund.proto\x1a\x1amessage/vud-decision.proto\x1a\x16message/employee.proto\x1a\x14message/office.proto2\xff\x11\n" +
 	"\x11GuardPanelService\x12t\n" +
 	"\n" +
 	"CreateTask\x12\x1b.guard.v1.CreateTaskRequest\x1a\x19.guard.v1.CreatedResponse\".\x92A\x13\n" +
-	"\x04task\x12\vcreate task\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/tasks\x12s\n" +
-	"\aGetTask\x12\x18.guard.v1.GetByIDRequest\x1a\x19.guard.v1.GetTaskResponse\"3\x92A\x16\n" +
+	"\x04task\x12\vcreate task\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/tasks\x12\x81\x01\n" +
+	"\x0eGetTaskDetails\x12\x18.guard.v1.GetByIDRequest\x1a .guard.v1.GetTaskDetailsResponse\"3\x92A\x16\n" +
 	"\x04task\x12\x0eget task by ID\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/tasks/{id}\x12v\n" +
 	"\n" +
 	"UpdateTask\x12\x1b.guard.v1.UpdateTaskRequest\x1a\x16.google.protobuf.Empty\"3\x92A\x13\n" +
@@ -41,9 +41,9 @@ const file_guard_panel_api_proto_rawDesc = "" +
 	"\vSearchTasks\x12\x1c.guard.v1.SearchTasksRequest\x1a\x1d.guard.v1.SearchTasksResponse\"3\x92A\x14\n" +
 	"\x04task\x12\fsearch tasks\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/tasks/search\x12\x83\x01\n" +
 	"\rCreateComment\x12\x1e.guard.v1.CreateCommentRequest\x1a\x19.guard.v1.CreatedResponse\"7\x92A\x19\n" +
-	"\acomment\x12\x0ecreate comment\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/comments\x12\x7f\n" +
-	"\rDeleteComment\x12\x1b.guard.v1.DeleteByIDRequest\x1a\x16.google.protobuf.Empty\"9\x92A\x19\n" +
-	"\acomment\x12\x0edelete comment\x82\xd3\xe4\x93\x02\x17*\x15/api/v1/comments/{id}\x12~\n" +
+	"\acomment\x12\x0ecreate comment\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/comments\x12\x80\x01\n" +
+	"\rDeleteComment\x12\x1b.guard.v1.DeleteByIDRequest\x1a\x16.google.protobuf.Empty\":\x92A\x1a\n" +
+	"\bcomment \x12\x0edelete comment\x82\xd3\xe4\x93\x02\x17*\x15/api/v1/comments/{id}\x12~\n" +
 	"\fCreateRefund\x12\x1d.guard.v1.CreateRefundRequest\x1a\x19.guard.v1.CreatedResponse\"4\x92A\x17\n" +
 	"\x06refund\x12\rcreate refund\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/refunds\x12\x9a\x01\n" +
 	"\x11CreateVudDecision\x12\".guard.v1.CreateVudDecisionRequest\x1a\x19.guard.v1.CreatedResponse\"F\x92A#\n" +
@@ -84,14 +84,14 @@ var file_guard_panel_api_proto_goTypes = []any{
 	(*message.CreateOfficeRequest)(nil),      // 12: guard.v1.CreateOfficeRequest
 	(*message.UpdateOfficeRequest)(nil),      // 13: guard.v1.UpdateOfficeRequest
 	(*message.CreatedResponse)(nil),          // 14: guard.v1.CreatedResponse
-	(*message.GetTaskResponse)(nil),          // 15: guard.v1.GetTaskResponse
+	(*message.GetTaskDetailsResponse)(nil),   // 15: guard.v1.GetTaskDetailsResponse
 	(*message.SearchTasksResponse)(nil),      // 16: guard.v1.SearchTasksResponse
 	(*message.SearchEmployeesResponse)(nil),  // 17: guard.v1.SearchEmployeesResponse
 	(*message.SearchOfficesResponse)(nil),    // 18: guard.v1.SearchOfficesResponse
 }
 var file_guard_panel_api_proto_depIdxs = []int32{
 	0,  // 0: guard.v1.GuardPanelService.CreateTask:input_type -> guard.v1.CreateTaskRequest
-	1,  // 1: guard.v1.GuardPanelService.GetTask:input_type -> guard.v1.GetByIDRequest
+	1,  // 1: guard.v1.GuardPanelService.GetTaskDetails:input_type -> guard.v1.GetByIDRequest
 	2,  // 2: guard.v1.GuardPanelService.UpdateTask:input_type -> guard.v1.UpdateTaskRequest
 	3,  // 3: guard.v1.GuardPanelService.SearchTasks:input_type -> guard.v1.SearchTasksRequest
 	4,  // 4: guard.v1.GuardPanelService.CreateComment:input_type -> guard.v1.CreateCommentRequest
@@ -108,7 +108,7 @@ var file_guard_panel_api_proto_depIdxs = []int32{
 	5,  // 15: guard.v1.GuardPanelService.DeleteOffice:input_type -> guard.v1.DeleteByIDRequest
 	11, // 16: guard.v1.GuardPanelService.SearchOffices:input_type -> google.protobuf.Empty
 	14, // 17: guard.v1.GuardPanelService.CreateTask:output_type -> guard.v1.CreatedResponse
-	15, // 18: guard.v1.GuardPanelService.GetTask:output_type -> guard.v1.GetTaskResponse
+	15, // 18: guard.v1.GuardPanelService.GetTaskDetails:output_type -> guard.v1.GetTaskDetailsResponse
 	11, // 19: guard.v1.GuardPanelService.UpdateTask:output_type -> google.protobuf.Empty
 	16, // 20: guard.v1.GuardPanelService.SearchTasks:output_type -> guard.v1.SearchTasksResponse
 	14, // 21: guard.v1.GuardPanelService.CreateComment:output_type -> guard.v1.CreatedResponse

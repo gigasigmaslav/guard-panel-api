@@ -79,7 +79,7 @@
           }
         ],
         "tags": [
-          "comment"
+          "comment "
         ]
       }
     },
@@ -478,6 +478,13 @@
             "default": "CASE_STATUS_UNSPECIFIED"
           },
           {
+            "name": "filter.id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
             "name": "filter.priority",
             "in": "query",
             "required": false,
@@ -536,12 +543,12 @@
     "/api/v1/tasks/{id}": {
       "get": {
         "summary": "get task by ID",
-        "operationId": "GuardPanelService_GetTask",
+        "operationId": "GuardPanelService_GetTaskDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetTaskResponse"
+              "$ref": "#/definitions/v1GetTaskDetailsResponse"
             }
           },
           "default": {
@@ -745,6 +752,10 @@
     "SearchTasksRequestFilter": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
         "priority": {
           "$ref": "#/definitions/v1TaskPriority"
         },
@@ -999,6 +1010,7 @@
       "required": [
         "taskId",
         "amount",
+        "comment",
         "createdById"
       ]
     },
@@ -1098,7 +1110,7 @@
       ],
       "default": "EMPLOYEE_POSITION_UNSPECIFIED"
     },
-    "v1GetTaskResponse": {
+    "v1GetTaskDetailsResponse": {
       "type": "object",
       "properties": {
         "task": {
@@ -1194,8 +1206,8 @@
           }
         },
         "total": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -1256,12 +1268,16 @@
           "type": "string",
           "format": "date-time"
         },
-        "refunds": {
-          "$ref": "#/definitions/TaskTaskRefund",
+        "vudDecisions": {
+          "$ref": "#/definitions/TaskTaskVudDecision",
           "title": "aggregate parts"
         },
-        "vudDecisions": {
-          "$ref": "#/definitions/TaskTaskVudDecision"
+        "refunds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TaskTaskRefund"
+          }
         },
         "comments": {
           "type": "array",

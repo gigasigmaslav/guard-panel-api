@@ -158,8 +158,8 @@ type Task struct {
 	StartDate    *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate      *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=end_date,json=endDate,proto3,oneof" json:"end_date,omitempty"`
 	// aggregate parts
-	Refunds        *Task_TaskRefund          `protobuf:"bytes,12,opt,name=refunds,proto3" json:"refunds,omitempty"`
-	VudDecisions   *Task_TaskVudDecision     `protobuf:"bytes,13,opt,name=vud_decisions,json=vudDecisions,proto3" json:"vud_decisions,omitempty"`
+	VudDecisions   *Task_TaskVudDecision     `protobuf:"bytes,12,opt,name=vud_decisions,json=vudDecisions,proto3" json:"vud_decisions,omitempty"`
+	Refunds        []*Task_TaskRefund        `protobuf:"bytes,13,rep,name=refunds,proto3" json:"refunds,omitempty"`
 	Comments       []*Task_TaskComment       `protobuf:"bytes,14,rep,name=comments,proto3" json:"comments,omitempty"`
 	HistoryChanges []*Task_TaskHistoryChange `protobuf:"bytes,15,rep,name=history_changes,json=historyChanges,proto3" json:"history_changes,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -273,16 +273,16 @@ func (x *Task) GetEndDate() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Task) GetRefunds() *Task_TaskRefund {
+func (x *Task) GetVudDecisions() *Task_TaskVudDecision {
 	if x != nil {
-		return x.Refunds
+		return x.VudDecisions
 	}
 	return nil
 }
 
-func (x *Task) GetVudDecisions() *Task_TaskVudDecision {
+func (x *Task) GetRefunds() []*Task_TaskRefund {
 	if x != nil {
-		return x.VudDecisions
+		return x.Refunds
 	}
 	return nil
 }
@@ -301,27 +301,27 @@ func (x *Task) GetHistoryChanges() []*Task_TaskHistoryChange {
 	return nil
 }
 
-type GetTaskResponse struct {
+type GetTaskDetailsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Task          *Task                  `protobuf:"bytes,1,opt,name=task,proto3" json:"task,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetTaskResponse) Reset() {
-	*x = GetTaskResponse{}
+func (x *GetTaskDetailsResponse) Reset() {
+	*x = GetTaskDetailsResponse{}
 	mi := &file_message_task_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetTaskResponse) String() string {
+func (x *GetTaskDetailsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetTaskResponse) ProtoMessage() {}
+func (*GetTaskDetailsResponse) ProtoMessage() {}
 
-func (x *GetTaskResponse) ProtoReflect() protoreflect.Message {
+func (x *GetTaskDetailsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_message_task_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -333,12 +333,12 @@ func (x *GetTaskResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetTaskResponse.ProtoReflect.Descriptor instead.
-func (*GetTaskResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetTaskDetailsResponse.ProtoReflect.Descriptor instead.
+func (*GetTaskDetailsResponse) Descriptor() ([]byte, []int) {
 	return file_message_task_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetTaskResponse) GetTask() *Task {
+func (x *GetTaskDetailsResponse) GetTask() *Task {
 	if x != nil {
 		return x.Task
 	}
@@ -508,7 +508,7 @@ func (x *SearchTasksRequest) GetFilter() *SearchTasksRequest_Filter {
 type SearchTasksResponse struct {
 	state         protoimpl.MessageState            `protogen:"open.v1"`
 	Items         []*SearchTasksResponse_TaskLookup `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	Total         int64                             `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Total         int32                             `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -550,7 +550,7 @@ func (x *SearchTasksResponse) GetItems() []*SearchTasksResponse_TaskLookup {
 	return nil
 }
 
-func (x *SearchTasksResponse) GetTotal() int64 {
+func (x *SearchTasksResponse) GetTotal() int32 {
 	if x != nil {
 		return x.Total
 	}
@@ -561,7 +561,7 @@ type Task_TaskRefund struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Amount        int64                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
-	Comment       *string                `protobuf:"bytes,3,opt,name=comment,proto3,oneof" json:"comment,omitempty"`
+	Comment       string                 `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -611,8 +611,8 @@ func (x *Task_TaskRefund) GetAmount() int64 {
 }
 
 func (x *Task_TaskRefund) GetComment() string {
-	if x != nil && x.Comment != nil {
-		return *x.Comment
+	if x != nil {
+		return x.Comment
 	}
 	return ""
 }
@@ -823,12 +823,13 @@ func (x *Task_TaskHistoryChange) GetCreatedAt() *timestamppb.Timestamp {
 
 type SearchTasksRequest_Filter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Priority      TaskPriority           `protobuf:"varint,1,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
-	OfficeId      int64                  `protobuf:"varint,2,opt,name=office_id,json=officeId,proto3" json:"office_id,omitempty"`
-	ExecutorId    int64                  `protobuf:"varint,3,opt,name=executor_id,json=executorId,proto3" json:"executor_id,omitempty"`
-	ViolatorType  ViolatorType           `protobuf:"varint,4,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
-	Kusp          string                 `protobuf:"bytes,5,opt,name=kusp,proto3" json:"kusp,omitempty"`
-	Ud            string                 `protobuf:"bytes,6,opt,name=ud,proto3" json:"ud,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Priority      TaskPriority           `protobuf:"varint,2,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
+	OfficeId      int64                  `protobuf:"varint,3,opt,name=office_id,json=officeId,proto3" json:"office_id,omitempty"`
+	ExecutorId    int64                  `protobuf:"varint,4,opt,name=executor_id,json=executorId,proto3" json:"executor_id,omitempty"`
+	ViolatorType  ViolatorType           `protobuf:"varint,5,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
+	Kusp          string                 `protobuf:"bytes,6,opt,name=kusp,proto3" json:"kusp,omitempty"`
+	Ud            string                 `protobuf:"bytes,7,opt,name=ud,proto3" json:"ud,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -861,6 +862,13 @@ func (x *SearchTasksRequest_Filter) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SearchTasksRequest_Filter.ProtoReflect.Descriptor instead.
 func (*SearchTasksRequest_Filter) Descriptor() ([]byte, []int) {
 	return file_message_task_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *SearchTasksRequest_Filter) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
 }
 
 func (x *SearchTasksRequest_Filter) GetPriority() TaskPriority {
@@ -1034,7 +1042,7 @@ const file_message_task_proto_rawDesc = "" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\n" +
 	"executorId\x12.\n" +
 	"\rcreated_by_id\x18\x04 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\"\x88\r\n" +
+	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\"\xf7\f\n" +
 	"\x04Task\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12#\n" +
 	"\rdamage_amount\x18\x02 \x01(\x03R\fdamageAmount\x122\n" +
@@ -1050,18 +1058,16 @@ const file_message_task_proto_rawDesc = "" +
 	"\n" +
 	"start_date\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x12:\n" +
-	"\bend_date\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x00R\aendDate\x88\x01\x01\x123\n" +
-	"\arefunds\x18\f \x01(\v2\x19.guard.v1.Task.TaskRefundR\arefunds\x12C\n" +
-	"\rvud_decisions\x18\r \x01(\v2\x1e.guard.v1.Task.TaskVudDecisionR\fvudDecisions\x126\n" +
+	"\bend_date\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x00R\aendDate\x88\x01\x01\x12C\n" +
+	"\rvud_decisions\x18\f \x01(\v2\x1e.guard.v1.Task.TaskVudDecisionR\fvudDecisions\x123\n" +
+	"\arefunds\x18\r \x03(\v2\x19.guard.v1.Task.TaskRefundR\arefunds\x126\n" +
 	"\bcomments\x18\x0e \x03(\v2\x1a.guard.v1.Task.TaskCommentR\bcomments\x12I\n" +
-	"\x0fhistory_changes\x18\x0f \x03(\v2 .guard.v1.Task.TaskHistoryChangeR\x0ehistoryChanges\x1a_\n" +
+	"\x0fhistory_changes\x18\x0f \x03(\v2 .guard.v1.Task.TaskHistoryChangeR\x0ehistoryChanges\x1aN\n" +
 	"\n" +
 	"TaskRefund\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x03R\x06amount\x12\x1d\n" +
-	"\acomment\x18\x03 \x01(\tH\x00R\acomment\x88\x01\x01B\n" +
-	"\n" +
-	"\b_comment\x1a\xcc\x01\n" +
+	"\x06amount\x18\x02 \x01(\x03R\x06amount\x12\x18\n" +
+	"\acomment\x18\x03 \x01(\tR\acomment\x1a\xcc\x01\n" +
 	"\x0fTaskVudDecision\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04kusp\x18\x02 \x01(\tR\x04kusp\x12\x13\n" +
@@ -1090,8 +1096,8 @@ const file_message_task_proto_rawDesc = "" +
 	"'TASK_HISTORY_CHANGE_EVENT_COMMENT_ADDED\x10\x01\x12*\n" +
 	"&TASK_HISTORY_CHANGE_EVENT_REFUND_ADDED\x10\x02\x120\n" +
 	",TASK_HISTORY_CHANGE_EVENT_VUD_DECISION_ADDED\x10\x03B\v\n" +
-	"\t_end_date\"5\n" +
-	"\x0fGetTaskResponse\x12\"\n" +
+	"\t_end_date\"<\n" +
+	"\x16GetTaskDetailsResponse\x12\"\n" +
 	"\x04task\x18\x01 \x01(\v2\x0e.guard.v1.TaskR\x04task\"\x82\x03\n" +
 	"\x11UpdateTaskRequest\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\x03B\n" +
@@ -1106,7 +1112,7 @@ const file_message_task_proto_rawDesc = "" +
 	"\t_priorityB\t\n" +
 	"\a_statusB\v\n" +
 	"\t_end_dateB\x0e\n" +
-	"\f_executor_id\"\x87\x04\n" +
+	"\f_executor_id\"\x97\x04\n" +
 	"\x12SearchTasksRequest\x12\x1e\n" +
 	"\x04page\x18\x01 \x01(\x05B\n" +
 	"\xe0A\x02\xfaB\x04\x1a\x02(\x01R\x04page\x12%\n" +
@@ -1114,19 +1120,20 @@ const file_message_task_proto_rawDesc = "" +
 	"\xe0A\x02\xfaB\x04\x1a\x02(\x01R\aperPage\x120\n" +
 	"\asorting\x18\x03 \x01(\v2\x11.guard.v1.SortingB\x03\xe0A\x02R\asorting\x129\n" +
 	"\x06status\x18\x04 \x01(\x0e2\x14.guard.v1.TaskStatusB\v\xe0A\x02\xfaB\x05\x82\x01\x02\x10\x01R\x06status\x12@\n" +
-	"\x06filter\x18\x05 \x01(\v2#.guard.v1.SearchTasksRequest.FilterH\x00R\x06filter\x88\x01\x01\x1a\xef\x01\n" +
-	"\x06Filter\x12<\n" +
-	"\bpriority\x18\x01 \x01(\x0e2\x16.guard.v1.TaskPriorityB\b\xfaB\x05\x82\x01\x02\x10\x01R\bpriority\x12\x1b\n" +
-	"\toffice_id\x18\x02 \x01(\x03R\bofficeId\x12\x1f\n" +
-	"\vexecutor_id\x18\x03 \x01(\x03R\n" +
+	"\x06filter\x18\x05 \x01(\v2#.guard.v1.SearchTasksRequest.FilterH\x00R\x06filter\x88\x01\x01\x1a\xff\x01\n" +
+	"\x06Filter\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12<\n" +
+	"\bpriority\x18\x02 \x01(\x0e2\x16.guard.v1.TaskPriorityB\b\xfaB\x05\x82\x01\x02\x10\x01R\bpriority\x12\x1b\n" +
+	"\toffice_id\x18\x03 \x01(\x03R\bofficeId\x12\x1f\n" +
+	"\vexecutor_id\x18\x04 \x01(\x03R\n" +
 	"executorId\x12E\n" +
-	"\rviolator_type\x18\x04 \x01(\x0e2\x16.guard.v1.ViolatorTypeB\b\xfaB\x05\x82\x01\x02\x10\x01R\fviolatorType\x12\x12\n" +
-	"\x04kusp\x18\x05 \x01(\tR\x04kusp\x12\x0e\n" +
-	"\x02ud\x18\x06 \x01(\tR\x02udB\t\n" +
+	"\rviolator_type\x18\x05 \x01(\x0e2\x16.guard.v1.ViolatorTypeB\b\xfaB\x05\x82\x01\x02\x10\x01R\fviolatorType\x12\x12\n" +
+	"\x04kusp\x18\x06 \x01(\tR\x04kusp\x12\x0e\n" +
+	"\x02ud\x18\a \x01(\tR\x02udB\t\n" +
 	"\a_filter\"\xd9\x04\n" +
 	"\x13SearchTasksResponse\x12>\n" +
 	"\x05items\x18\x01 \x03(\v2(.guard.v1.SearchTasksResponse.TaskLookupR\x05items\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x03R\x05total\x1a\xeb\x03\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x1a\xeb\x03\n" +
 	"\n" +
 	"TaskLookup\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12#\n" +
@@ -1163,7 +1170,7 @@ var file_message_task_proto_goTypes = []any{
 	(Task_TaskHistoryChange_TaskHistoryChangeEvent)(0), // 0: guard.v1.Task.TaskHistoryChange.TaskHistoryChangeEvent
 	(*CreateTaskRequest)(nil),                          // 1: guard.v1.CreateTaskRequest
 	(*Task)(nil),                                       // 2: guard.v1.Task
-	(*GetTaskResponse)(nil),                            // 3: guard.v1.GetTaskResponse
+	(*GetTaskDetailsResponse)(nil),                     // 3: guard.v1.GetTaskDetailsResponse
 	(*UpdateTaskRequest)(nil),                          // 4: guard.v1.UpdateTaskRequest
 	(*SearchTasksRequest)(nil),                         // 5: guard.v1.SearchTasksRequest
 	(*SearchTasksResponse)(nil),                        // 6: guard.v1.SearchTasksResponse
@@ -1191,11 +1198,11 @@ var file_message_task_proto_depIdxs = []int32{
 	16, // 7: guard.v1.Task.created_at:type_name -> google.protobuf.Timestamp
 	16, // 8: guard.v1.Task.start_date:type_name -> google.protobuf.Timestamp
 	16, // 9: guard.v1.Task.end_date:type_name -> google.protobuf.Timestamp
-	7,  // 10: guard.v1.Task.refunds:type_name -> guard.v1.Task.TaskRefund
-	8,  // 11: guard.v1.Task.vud_decisions:type_name -> guard.v1.Task.TaskVudDecision
+	8,  // 10: guard.v1.Task.vud_decisions:type_name -> guard.v1.Task.TaskVudDecision
+	7,  // 11: guard.v1.Task.refunds:type_name -> guard.v1.Task.TaskRefund
 	9,  // 12: guard.v1.Task.comments:type_name -> guard.v1.Task.TaskComment
 	10, // 13: guard.v1.Task.history_changes:type_name -> guard.v1.Task.TaskHistoryChange
-	2,  // 14: guard.v1.GetTaskResponse.task:type_name -> guard.v1.Task
+	2,  // 14: guard.v1.GetTaskDetailsResponse.task:type_name -> guard.v1.Task
 	13, // 15: guard.v1.UpdateTaskRequest.priority:type_name -> guard.v1.TaskPriority
 	14, // 16: guard.v1.UpdateTaskRequest.status:type_name -> guard.v1.TaskStatus
 	16, // 17: guard.v1.UpdateTaskRequest.end_date:type_name -> google.protobuf.Timestamp
@@ -1234,7 +1241,6 @@ func file_message_task_proto_init() {
 	file_message_task_proto_msgTypes[1].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[3].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[4].OneofWrappers = []any{}
-	file_message_task_proto_msgTypes[6].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[7].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[11].OneofWrappers = []any{}
 	type x struct{}

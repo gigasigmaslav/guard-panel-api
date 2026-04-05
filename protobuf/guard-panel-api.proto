@@ -29,7 +29,7 @@ service GuardPanelService {
         option (google.api.http) = { post: "/api/v1/tasks" body: "*" };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "create task" };
     }
-    rpc GetTask(GetByIDRequest) returns (GetTaskResponse) {
+    rpc GetTaskDetails(GetByIDRequest) returns (GetTaskDetailsResponse) {
         option (google.api.http) = { get: "/api/v1/tasks/{id}" };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["task"] summary: "get task by ID" };
     }
@@ -49,7 +49,7 @@ service GuardPanelService {
     }
     rpc DeleteComment(DeleteByIDRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = { delete: "/api/v1/comments/{id}" };
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["comment"] summary: "delete comment" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["comment "] summary: "delete comment" };
     }
 
     // Refunds

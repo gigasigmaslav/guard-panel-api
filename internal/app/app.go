@@ -15,8 +15,16 @@ import (
 	"github.com/gigasigmaslav/guard-panel-api/internal/pkg/postgres"
 	"github.com/gigasigmaslav/guard-panel-api/migrations"
 
+	"github.com/gigasigmaslav/guard-panel-api/internal/adapters/repo"
 	"github.com/gigasigmaslav/guard-panel-api/internal/config"
 	"github.com/gigasigmaslav/guard-panel-api/internal/server"
+
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/comment"
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/employee"
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/office"
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/refund"
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/task"
+	vuddecision "github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/vud-decision"
 )
 
 type App struct {
@@ -30,15 +38,12 @@ type App struct {
 }
 
 func New(ctx context.Context, cfg config.Config) (*App, error) {
-	postgresDB, err := getPostgresDB(ctx, cfg.PostgresDB)
+	repoStorage, err := getPostgresStorage(ctx, cfg.PostgresDB)
 	if err != nil {
 		return nil, err
 	}
 
-	serverDependencies, err := getGRPCServerDependencies(cfg, postgresDB)
-	if err != nil {
-		return nil, err
-	}
+	serverDependencies := getGRPCServerDependencies(repoStorage)
 
 	server := server.New(cfg, serverDependencies)
 
@@ -83,7 +88,7 @@ func (a *App) RegisterHandlersFromEndpoint(
 	return a.server.RegisterHandlersFromEndPoint(ctx, mux, endpoint, opts)
 }
 
-func getPostgresDB(ctx context.Context, cfg config.PostgresDB) (*postgres.DB, error) {
+func getPostgresStorage(ctx context.Context, cfg config.PostgresDB) (*repo.Storage, error) {
 	db, err := postgres.New(ctx, postgres.Config{
 		DBName:   cfg.DBName,
 		HostPort: cfg.HostPort,
@@ -100,10 +105,55 @@ func getPostgresDB(ctx context.Context, cfg config.PostgresDB) (*postgres.DB, er
 		return nil, fmt.Errorf("sheme migrations err: %w", err)
 	}
 
-	return db, err
+	return repo.NewStorage(db), err
 }
 
-//nolint:unparam // will be used in future
-func getGRPCServerDependencies(_ config.Config, _ *postgres.DB) (*server.Dependencies, error) {
-	return server.NewDependencies(), nil
+func getGRPCServerDependencies(repoStorage *repo.Storage) *server.Dependencies {
+	createCommentUC := comment.NewCreateCommentUseCase(repoStorage)
+	deleteCommentUC := comment.NewDeleteCommentUseCase(repoStorage)
+	createRefundUC := refund.NewCreateRefundUseCase(repoStorage)
+	createVUDDecisionUC := vuddecision.NewCreateVUDDecisionUseCase(repoStorage)
+	updateVUDDecisionUC := vuddecision.NewUpdateVUDDecisionUseCase(repoStorage)
+	createEmployeeUC := employee.NewCreateEmployeeUseCase(repoStorage)
+	updateEmployeeUC := employee.NewUpdateEmployeeUseCase(repoStorage)
+	deleteEmployeeUC := employee.NewDeleteEmployeeUseCase(repoStorage)
+	searchEmployeeUC := employee.NewSearchEmployeeUseCase(repoStorage)
+	createOfficeUC := office.NewCreateOfficeUseCase(repoStorage)
+	updateOfficeUC := office.NewUpdateOfficeUseCase(repoStorage)
+	deleteOfficeUC := office.NewDeleteOfficeUseCase(repoStorage)
+	searchOfficeUC := office.NewSearchOfficeUseCase(repoStorage)
+	createTaskUC := task.NewCreateTaskUseCase(repoStorage)
+	updateTaskUC := task.NewUpdateTaskUseCase(repoStorage)
+	getTaskByIDUC := task.NewGetTaskByIDUseCase(
+		repoStorage,
+		repoStorage,
+		repoStorage,
+		repoStorage,
+		repoStorage,
+		repoStorage,
+	)
+	searchTasksUC := task.NewSearchTasksUseCase(
+		repoStorage,
+		repoStorage,
+	)
+
+	return server.NewDependencies(
+		createCommentUC,
+		deleteCommentUC,
+		createRefundUC,
+		createVUDDecisionUC,
+		updateVUDDecisionUC,
+		createEmployeeUC,
+		updateEmployeeUC,
+		deleteEmployeeUC,
+		searchEmployeeUC,
+		createOfficeUC,
+		updateOfficeUC,
+		deleteOfficeUC,
+		searchOfficeUC,
+		createTaskUC,
+		updateTaskUC,
+		getTaskByIDUC,
+		searchTasksUC,
+	)
 }

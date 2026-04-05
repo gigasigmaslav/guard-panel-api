@@ -1,6 +1,11 @@
 package entity
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var ErrEmployeeNotFound = errors.New("employee not found")
 
 type EmployeePosition int32
 

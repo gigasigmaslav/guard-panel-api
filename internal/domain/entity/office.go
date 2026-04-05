@@ -1,6 +1,11 @@
 package entity
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var ErrOfficeNotFound = errors.New("office not found")
 
 type Office struct {
 	ID            int64

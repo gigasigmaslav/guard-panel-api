@@ -28,15 +28,15 @@ message Task {
   optional google.protobuf.Timestamp end_date = 11;
 
   // aggregate parts
-  TaskRefund refunds = 12;
-  TaskVudDecision vud_decisions = 13;
+  TaskVudDecision vud_decisions = 12;
+  repeated TaskRefund refunds = 13;
   repeated TaskComment comments = 14;
   repeated TaskHistoryChange history_changes = 15;
 
   message TaskRefund {
     int64 id = 1;
     int64 amount = 2;
-    optional string comment = 3;
+    string comment = 3;
   }
 
   message TaskVudDecision {
@@ -68,7 +68,7 @@ message Task {
   }
 }
 
-message GetTaskResponse {
+message GetTaskDetailsResponse {
   Task task = 1;
 }
 
@@ -89,18 +89,19 @@ message SearchTasksRequest {
   optional Filter filter = 5;
 
   message Filter {
-    TaskPriority priority = 1 [(validate.rules).enum.defined_only = true];
-    int64 office_id = 2;
-    int64 executor_id = 3;
-    ViolatorType violator_type = 4 [(validate.rules).enum.defined_only = true];
-    string kusp = 5;
-    string ud = 6;
+    int64 id = 1;
+    TaskPriority priority = 2 [(validate.rules).enum.defined_only = true];
+    int64 office_id = 3;
+    int64 executor_id = 4;
+    ViolatorType violator_type = 5 [(validate.rules).enum.defined_only = true];
+    string kusp = 6;
+    string ud = 7;
   }
 }
 
 message SearchTasksResponse {
   repeated TaskLookup items = 1;
-  int64 total = 2;
+  int32 total = 2;
 
   message TaskLookup {
     int64 id = 1;

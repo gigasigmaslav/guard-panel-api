@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	GuardPanelService_CreateTask_FullMethodName        = "/guard.v1.GuardPanelService/CreateTask"
-	GuardPanelService_GetTask_FullMethodName           = "/guard.v1.GuardPanelService/GetTask"
+	GuardPanelService_GetTaskDetails_FullMethodName    = "/guard.v1.GuardPanelService/GetTaskDetails"
 	GuardPanelService_UpdateTask_FullMethodName        = "/guard.v1.GuardPanelService/UpdateTask"
 	GuardPanelService_SearchTasks_FullMethodName       = "/guard.v1.GuardPanelService/SearchTasks"
 	GuardPanelService_CreateComment_FullMethodName     = "/guard.v1.GuardPanelService/CreateComment"
@@ -46,7 +46,7 @@ const (
 type GuardPanelServiceClient interface {
 	// Tasks
 	CreateTask(ctx context.Context, in *message.CreateTaskRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
-	GetTask(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskResponse, error)
+	GetTaskDetails(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskDetailsResponse, error)
 	UpdateTask(ctx context.Context, in *message.UpdateTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	SearchTasks(ctx context.Context, in *message.SearchTasksRequest, opts ...grpc.CallOption) (*message.SearchTasksResponse, error)
 	// Comments
@@ -87,10 +87,10 @@ func (c *guardPanelServiceClient) CreateTask(ctx context.Context, in *message.Cr
 	return out, nil
 }
 
-func (c *guardPanelServiceClient) GetTask(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskResponse, error) {
+func (c *guardPanelServiceClient) GetTaskDetails(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskDetailsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(message.GetTaskResponse)
-	err := c.cc.Invoke(ctx, GuardPanelService_GetTask_FullMethodName, in, out, cOpts...)
+	out := new(message.GetTaskDetailsResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_GetTaskDetails_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +253,7 @@ func (c *guardPanelServiceClient) SearchOffices(ctx context.Context, in *emptypb
 type GuardPanelServiceServer interface {
 	// Tasks
 	CreateTask(context.Context, *message.CreateTaskRequest) (*message.CreatedResponse, error)
-	GetTask(context.Context, *message.GetByIDRequest) (*message.GetTaskResponse, error)
+	GetTaskDetails(context.Context, *message.GetByIDRequest) (*message.GetTaskDetailsResponse, error)
 	UpdateTask(context.Context, *message.UpdateTaskRequest) (*emptypb.Empty, error)
 	SearchTasks(context.Context, *message.SearchTasksRequest) (*message.SearchTasksResponse, error)
 	// Comments
@@ -287,8 +287,8 @@ type UnimplementedGuardPanelServiceServer struct{}
 func (UnimplementedGuardPanelServiceServer) CreateTask(context.Context, *message.CreateTaskRequest) (*message.CreatedResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateTask not implemented")
 }
-func (UnimplementedGuardPanelServiceServer) GetTask(context.Context, *message.GetByIDRequest) (*message.GetTaskResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetTask not implemented")
+func (UnimplementedGuardPanelServiceServer) GetTaskDetails(context.Context, *message.GetByIDRequest) (*message.GetTaskDetailsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskDetails not implemented")
 }
 func (UnimplementedGuardPanelServiceServer) UpdateTask(context.Context, *message.UpdateTaskRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateTask not implemented")
@@ -374,20 +374,20 @@ func _GuardPanelService_CreateTask_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GuardPanelService_GetTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GuardPanelService_GetTaskDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(message.GetByIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GuardPanelServiceServer).GetTask(ctx, in)
+		return srv.(GuardPanelServiceServer).GetTaskDetails(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GuardPanelService_GetTask_FullMethodName,
+		FullMethod: GuardPanelService_GetTaskDetails_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GuardPanelServiceServer).GetTask(ctx, req.(*message.GetByIDRequest))
+		return srv.(GuardPanelServiceServer).GetTaskDetails(ctx, req.(*message.GetByIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -674,8 +674,8 @@ var GuardPanelService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _GuardPanelService_CreateTask_Handler,
 		},
 		{
-			MethodName: "GetTask",
-			Handler:    _GuardPanelService_GetTask_Handler,
+			MethodName: "GetTaskDetails",
+			Handler:    _GuardPanelService_GetTaskDetails_Handler,
 		},
 		{
 			MethodName: "UpdateTask",

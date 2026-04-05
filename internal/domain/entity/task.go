@@ -58,6 +58,8 @@ type Task struct {
 	EndDate       *time.Time
 	ExecutorID    int64
 	ExecutorName  string
+	OfficeID      int64
+	OfficeName    string
 	CreatedByID   int64
 	CreatedByName string
 	CreatedAt     time.Time
