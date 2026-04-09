@@ -30,9 +30,9 @@ type TaskStatus int32
 const (
 	TaskStatus_CASE_STATUS_UNSPECIFIED TaskStatus = 0
 	TaskStatus_NEW                     TaskStatus = 1
-	TaskStatus_DOCUMENT_GATHERING      TaskStatus = 2
-	TaskStatus_WAITING_FOR_VUD         TaskStatus = 3
-	TaskStatus_JUDICIAL_PROCEEDINGS    TaskStatus = 4
+	TaskStatus_IN_PROGRESS             TaskStatus = 2
+	TaskStatus_PENDING_VUD             TaskStatus = 3
+	TaskStatus_IN_COURT                TaskStatus = 4
 	TaskStatus_COMPLETED               TaskStatus = 5
 )
 
@@ -41,17 +41,17 @@ var (
 	TaskStatus_name = map[int32]string{
 		0: "CASE_STATUS_UNSPECIFIED",
 		1: "NEW",
-		2: "DOCUMENT_GATHERING",
-		3: "WAITING_FOR_VUD",
-		4: "JUDICIAL_PROCEEDINGS",
+		2: "IN_PROGRESS",
+		3: "PENDING_VUD",
+		4: "IN_COURT",
 		5: "COMPLETED",
 	}
 	TaskStatus_value = map[string]int32{
 		"CASE_STATUS_UNSPECIFIED": 0,
 		"NEW":                     1,
-		"DOCUMENT_GATHERING":      2,
-		"WAITING_FOR_VUD":         3,
-		"JUDICIAL_PROCEEDINGS":    4,
+		"IN_PROGRESS":             2,
+		"PENDING_VUD":             3,
+		"IN_COURT":                4,
 		"COMPLETED":               5,
 	}
 )
@@ -583,14 +583,14 @@ const file_message_common_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"\x94\x01\n" +
 	"\aSorting\x12N\n" +
 	"\x0forder_direction\x18\x01 \x01(\x0e2\x18.guard.v1.OrderDirectionB\v\xe0A\x02\xfaB\x05\x82\x01\x02\x10\x01R\x0eorderDirection\x129\n" +
-	"\border_by\x18\x02 \x01(\x0e2\x11.guard.v1.OrderByB\v\xe0A\x02\xfaB\x05\x82\x01\x02\x10\x01R\aorderBy*\x88\x01\n" +
+	"\border_by\x18\x02 \x01(\x0e2\x11.guard.v1.OrderByB\v\xe0A\x02\xfaB\x05\x82\x01\x02\x10\x01R\aorderBy*q\n" +
 	"\n" +
 	"TaskStatus\x12\x1b\n" +
 	"\x17CASE_STATUS_UNSPECIFIED\x10\x00\x12\a\n" +
-	"\x03NEW\x10\x01\x12\x16\n" +
-	"\x12DOCUMENT_GATHERING\x10\x02\x12\x13\n" +
-	"\x0fWAITING_FOR_VUD\x10\x03\x12\x18\n" +
-	"\x14JUDICIAL_PROCEEDINGS\x10\x04\x12\r\n" +
+	"\x03NEW\x10\x01\x12\x0f\n" +
+	"\vIN_PROGRESS\x10\x02\x12\x0f\n" +
+	"\vPENDING_VUD\x10\x03\x12\f\n" +
+	"\bIN_COURT\x10\x04\x12\r\n" +
 	"\tCOMPLETED\x10\x05*L\n" +
 	"\x10EmployeePosition\x12!\n" +
 	"\x1dEMPLOYEE_POSITION_UNSPECIFIED\x10\x00\x12\a\n" +

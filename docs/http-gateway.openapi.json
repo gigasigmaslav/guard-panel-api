@@ -470,9 +470,9 @@
             "enum": [
               "CASE_STATUS_UNSPECIFIED",
               "NEW",
-              "DOCUMENT_GATHERING",
-              "WAITING_FOR_VUD",
-              "JUDICIAL_PROCEEDINGS",
+              "IN_PROGRESS",
+              "PENDING_VUD",
+              "IN_COURT",
               "COMPLETED"
             ],
             "default": "CASE_STATUS_UNSPECIFIED"
@@ -899,6 +899,24 @@
         }
       }
     },
+    "TaskViolatorLookup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "violatorType": {
+          "$ref": "#/definitions/v1ViolatorType"
+        },
+        "violatorPhoneNumber": {
+          "type": "string"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -1028,16 +1046,33 @@
           "type": "string",
           "format": "int64"
         },
+        "officeId": {
+          "type": "string",
+          "format": "int64"
+        },
         "createdById": {
           "type": "string",
           "format": "int64"
+        },
+        "violatorType": {
+          "$ref": "#/definitions/v1ViolatorType"
+        },
+        "violatorFullName": {
+          "type": "string"
+        },
+        "violatorPhoneNumber": {
+          "type": "string"
         }
       },
       "required": [
         "damageAmount",
         "priority",
         "executorId",
-        "createdById"
+        "officeId",
+        "createdById",
+        "violatorType",
+        "violatorFullName",
+        "violatorPhoneNumber"
       ]
     },
     "v1CreateVudDecisionRequest": {
@@ -1248,7 +1283,7 @@
           "$ref": "#/definitions/v1Lookup"
         },
         "violator": {
-          "$ref": "#/definitions/v1Lookup"
+          "$ref": "#/definitions/TaskViolatorLookup"
         },
         "office": {
           "$ref": "#/definitions/v1Lookup"
@@ -1309,9 +1344,9 @@
       "enum": [
         "CASE_STATUS_UNSPECIFIED",
         "NEW",
-        "DOCUMENT_GATHERING",
-        "WAITING_FOR_VUD",
-        "JUDICIAL_PROCEEDINGS",
+        "IN_PROGRESS",
+        "PENDING_VUD",
+        "IN_COURT",
         "COMPLETED"
       ],
       "default": "CASE_STATUS_UNSPECIFIED",

@@ -55,6 +55,8 @@ type TaskLookupItem struct {
 	ExecutorName  string
 	ViolatorID    int64
 	ViolatorName  string
+	ViolatorType  entity.ViolatorType
+	ViolatorPhone *string
 	OfficeID      int64
 	OfficeName    string
 	CreatedByID   int64
@@ -78,6 +80,10 @@ func MapToSearchTasksFilter(filter *message.SearchTasksRequest_Filter) *SearchTa
 	}
 
 	result := &SearchTasksFilter{}
+
+	if id := filter.GetId(); id > 0 {
+		result.ID = &id
+	}
 
 	if priority := mapTaskPriorityToContractPtr(filter.GetPriority()); priority != nil {
 		result.Priority = priority
@@ -112,12 +118,12 @@ func MapTaskStatusToContract(status message.TaskStatus) entity.TaskStatus {
 		return entity.TaskStatusUnspecified
 	case message.TaskStatus_NEW:
 		return entity.TaskStatusNew
-	case message.TaskStatus_DOCUMENT_GATHERING:
-		return entity.TaskStatusDocumentGathering
-	case message.TaskStatus_WAITING_FOR_VUD:
-		return entity.TaskStatusWaitingForVUD
-	case message.TaskStatus_JUDICIAL_PROCEEDINGS:
-		return entity.TaskStatusJudicialProceedings
+	case message.TaskStatus_IN_PROGRESS:
+		return entity.TaskStatusInProgress
+	case message.TaskStatus_PENDING_VUD:
+		return entity.TaskStatusPendingVUD
+	case message.TaskStatus_IN_COURT:
+		return entity.TaskStatusInCourt
 	case message.TaskStatus_COMPLETED:
 		return entity.TaskStatusCompleted
 	default:

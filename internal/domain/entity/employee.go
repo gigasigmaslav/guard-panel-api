@@ -10,7 +10,8 @@ var ErrEmployeeNotFound = errors.New("employee not found")
 type EmployeePosition int32
 
 const (
-	EmployeePositionSec EmployeePosition = iota
+	EmployeePositionUnspecified EmployeePosition = iota
+	EmployeePositionSec
 	EmployeePositionSecHead
 )
 

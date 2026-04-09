@@ -100,6 +100,8 @@ func (gt *GetTaskByIDUseCase) GetDetails(ctx context.Context, id int64) (contrac
 		ExecutorName:  task.ExecutorName,
 		ViolatorID:    violator.ID,
 		ViolatorName:  violator.FullName,
+		ViolatorType:  violator.Type,
+		ViolatorPhone: violator.PhoneNumber,
 		OfficeID:      task.OfficeID,
 		OfficeName:    task.OfficeName,
 		CreatedByID:   task.CreatedByID,

@@ -22,8 +22,12 @@ type TxRepo interface {
 	DeleteOfficeByID(ctx context.Context, id int64) error
 
 	// task
+	CreateTask(ctx context.Context, task entity.Task) (int64, error)
 	GetTaskByID(ctx context.Context, id int64) (entity.Task, error)
 	UpdateTaskByID(ctx context.Context, task entity.Task) error
+
+	// violator
+	CreateViolator(ctx context.Context, violator entity.Violator) (int64, error)
 
 	// vud decision
 	GetVUDDecisionByID(ctx context.Context, id int64) (entity.VUDDecision, error)

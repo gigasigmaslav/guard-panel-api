@@ -101,10 +101,65 @@ func (m *CreateTaskRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetOfficeId() <= 0 {
+		err := CreateTaskRequestValidationError{
+			field:  "OfficeId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetCreatedById() <= 0 {
 		err := CreateTaskRequestValidationError{
 			field:  "CreatedById",
 			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := _CreateTaskRequest_ViolatorType_NotInLookup[m.GetViolatorType()]; ok {
+		err := CreateTaskRequestValidationError{
+			field:  "ViolatorType",
+			reason: "value must not be in list [VIOLATOR_TYPE_UNSPECIFIED]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := ViolatorType_name[int32(m.GetViolatorType())]; !ok {
+		err := CreateTaskRequestValidationError{
+			field:  "ViolatorType",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetViolatorFullName()) < 1 {
+		err := CreateTaskRequestValidationError{
+			field:  "ViolatorFullName",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetViolatorPhoneNumber()) < 1 {
+		err := CreateTaskRequestValidationError{
+			field:  "ViolatorPhoneNumber",
+			reason: "value length must be at least 1 runes",
 		}
 		if !all {
 			return err
@@ -193,6 +248,10 @@ var _ interface {
 } = CreateTaskRequestValidationError{}
 
 var _CreateTaskRequest_Priority_NotInLookup = map[TaskPriority]struct{}{
+	0: {},
+}
+
+var _CreateTaskRequest_ViolatorType_NotInLookup = map[ViolatorType]struct{}{
 	0: {},
 }
 
@@ -1675,6 +1734,118 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = Task_TaskCommentValidationError{}
+
+// Validate checks the field values on Task_ViolatorLookup with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *Task_ViolatorLookup) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Task_ViolatorLookup with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// Task_ViolatorLookupMultiError, or nil if none found.
+func (m *Task_ViolatorLookup) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Task_ViolatorLookup) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for ViolatorType
+
+	if m.ViolatorPhoneNumber != nil {
+		// no validation rules for ViolatorPhoneNumber
+	}
+
+	if len(errors) > 0 {
+		return Task_ViolatorLookupMultiError(errors)
+	}
+
+	return nil
+}
+
+// Task_ViolatorLookupMultiError is an error wrapping multiple validation
+// errors returned by Task_ViolatorLookup.ValidateAll() if the designated
+// constraints aren't met.
+type Task_ViolatorLookupMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m Task_ViolatorLookupMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m Task_ViolatorLookupMultiError) AllErrors() []error { return m }
+
+// Task_ViolatorLookupValidationError is the validation error returned by
+// Task_ViolatorLookup.Validate if the designated constraints aren't met.
+type Task_ViolatorLookupValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e Task_ViolatorLookupValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e Task_ViolatorLookupValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e Task_ViolatorLookupValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e Task_ViolatorLookupValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e Task_ViolatorLookupValidationError) ErrorName() string {
+	return "Task_ViolatorLookupValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e Task_ViolatorLookupValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTask_ViolatorLookup.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = Task_ViolatorLookupValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = Task_ViolatorLookupValidationError{}
 
 // Validate checks the field values on Task_TaskHistoryChange with the rules
 // defined in the proto definition for this message. If any rules are

@@ -122,7 +122,11 @@ func getGRPCServerDependencies(repoStorage *repo.Storage) *server.Dependencies {
 	updateOfficeUC := office.NewUpdateOfficeUseCase(repoStorage)
 	deleteOfficeUC := office.NewDeleteOfficeUseCase(repoStorage)
 	searchOfficeUC := office.NewSearchOfficeUseCase(repoStorage)
-	createTaskUC := task.NewCreateTaskUseCase(repoStorage)
+	createTaskUC := task.NewCreateTaskUseCase(
+		repoStorage,
+		repoStorage,
+		repoStorage,
+	)
 	updateTaskUC := task.NewUpdateTaskUseCase(repoStorage)
 	getTaskByIDUC := task.NewGetTaskByIDUseCase(
 		repoStorage,

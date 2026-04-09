@@ -73,17 +73,21 @@ func (x Task_TaskHistoryChange_TaskHistoryChangeEvent) Number() protoreflect.Enu
 
 // Deprecated: Use Task_TaskHistoryChange_TaskHistoryChangeEvent.Descriptor instead.
 func (Task_TaskHistoryChange_TaskHistoryChangeEvent) EnumDescriptor() ([]byte, []int) {
-	return file_message_task_proto_rawDescGZIP(), []int{1, 3, 0}
+	return file_message_task_proto_rawDescGZIP(), []int{1, 4, 0}
 }
 
 type CreateTaskRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DamageAmount  int64                  `protobuf:"varint,1,opt,name=damage_amount,json=damageAmount,proto3" json:"damage_amount,omitempty"`
-	Priority      TaskPriority           `protobuf:"varint,2,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
-	ExecutorId    int64                  `protobuf:"varint,3,opt,name=executor_id,json=executorId,proto3" json:"executor_id,omitempty"`
-	CreatedById   int64                  `protobuf:"varint,4,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	DamageAmount        int64                  `protobuf:"varint,1,opt,name=damage_amount,json=damageAmount,proto3" json:"damage_amount,omitempty"`
+	Priority            TaskPriority           `protobuf:"varint,2,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
+	ExecutorId          int64                  `protobuf:"varint,3,opt,name=executor_id,json=executorId,proto3" json:"executor_id,omitempty"`
+	OfficeId            int64                  `protobuf:"varint,4,opt,name=office_id,json=officeId,proto3" json:"office_id,omitempty"`
+	CreatedById         int64                  `protobuf:"varint,5,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
+	ViolatorType        ViolatorType           `protobuf:"varint,6,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
+	ViolatorFullName    string                 `protobuf:"bytes,7,opt,name=violator_full_name,json=violatorFullName,proto3" json:"violator_full_name,omitempty"`
+	ViolatorPhoneNumber string                 `protobuf:"bytes,8,opt,name=violator_phone_number,json=violatorPhoneNumber,proto3" json:"violator_phone_number,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *CreateTaskRequest) Reset() {
@@ -137,11 +141,39 @@ func (x *CreateTaskRequest) GetExecutorId() int64 {
 	return 0
 }
 
+func (x *CreateTaskRequest) GetOfficeId() int64 {
+	if x != nil {
+		return x.OfficeId
+	}
+	return 0
+}
+
 func (x *CreateTaskRequest) GetCreatedById() int64 {
 	if x != nil {
 		return x.CreatedById
 	}
 	return 0
+}
+
+func (x *CreateTaskRequest) GetViolatorType() ViolatorType {
+	if x != nil {
+		return x.ViolatorType
+	}
+	return ViolatorType_VIOLATOR_TYPE_UNSPECIFIED
+}
+
+func (x *CreateTaskRequest) GetViolatorFullName() string {
+	if x != nil {
+		return x.ViolatorFullName
+	}
+	return ""
+}
+
+func (x *CreateTaskRequest) GetViolatorPhoneNumber() string {
+	if x != nil {
+		return x.ViolatorPhoneNumber
+	}
+	return ""
 }
 
 type Task struct {
@@ -151,7 +183,7 @@ type Task struct {
 	Priority     TaskPriority           `protobuf:"varint,3,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
 	Status       TaskStatus             `protobuf:"varint,4,opt,name=status,proto3,enum=guard.v1.TaskStatus" json:"status,omitempty"`
 	Executor     *Lookup                `protobuf:"bytes,5,opt,name=executor,proto3" json:"executor,omitempty"`
-	Violator     *Lookup                `protobuf:"bytes,6,opt,name=violator,proto3" json:"violator,omitempty"`
+	Violator     *Task_ViolatorLookup   `protobuf:"bytes,6,opt,name=violator,proto3" json:"violator,omitempty"`
 	Office       *Lookup                `protobuf:"bytes,7,opt,name=office,proto3" json:"office,omitempty"`
 	CreatedBy    *Lookup                `protobuf:"bytes,8,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
 	CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -231,7 +263,7 @@ func (x *Task) GetExecutor() *Lookup {
 	return nil
 }
 
-func (x *Task) GetViolator() *Lookup {
+func (x *Task) GetViolator() *Task_ViolatorLookup {
 	if x != nil {
 		return x.Violator
 	}
@@ -761,6 +793,74 @@ func (x *Task_TaskComment) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+type Task_ViolatorLookup struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Id                  int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ViolatorType        ViolatorType           `protobuf:"varint,3,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
+	ViolatorPhoneNumber *string                `protobuf:"bytes,4,opt,name=violator_phone_number,json=violatorPhoneNumber,proto3,oneof" json:"violator_phone_number,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *Task_ViolatorLookup) Reset() {
+	*x = Task_ViolatorLookup{}
+	mi := &file_message_task_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Task_ViolatorLookup) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Task_ViolatorLookup) ProtoMessage() {}
+
+func (x *Task_ViolatorLookup) ProtoReflect() protoreflect.Message {
+	mi := &file_message_task_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Task_ViolatorLookup.ProtoReflect.Descriptor instead.
+func (*Task_ViolatorLookup) Descriptor() ([]byte, []int) {
+	return file_message_task_proto_rawDescGZIP(), []int{1, 3}
+}
+
+func (x *Task_ViolatorLookup) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Task_ViolatorLookup) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Task_ViolatorLookup) GetViolatorType() ViolatorType {
+	if x != nil {
+		return x.ViolatorType
+	}
+	return ViolatorType_VIOLATOR_TYPE_UNSPECIFIED
+}
+
+func (x *Task_ViolatorLookup) GetViolatorPhoneNumber() string {
+	if x != nil && x.ViolatorPhoneNumber != nil {
+		return *x.ViolatorPhoneNumber
+	}
+	return ""
+}
+
 type Task_TaskHistoryChange struct {
 	state         protoimpl.MessageState                        `protogen:"open.v1"`
 	Event         Task_TaskHistoryChange_TaskHistoryChangeEvent `protobuf:"varint,1,opt,name=event,proto3,enum=guard.v1.Task_TaskHistoryChange_TaskHistoryChangeEvent" json:"event,omitempty"`
@@ -772,7 +872,7 @@ type Task_TaskHistoryChange struct {
 
 func (x *Task_TaskHistoryChange) Reset() {
 	*x = Task_TaskHistoryChange{}
-	mi := &file_message_task_proto_msgTypes[9]
+	mi := &file_message_task_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -784,7 +884,7 @@ func (x *Task_TaskHistoryChange) String() string {
 func (*Task_TaskHistoryChange) ProtoMessage() {}
 
 func (x *Task_TaskHistoryChange) ProtoReflect() protoreflect.Message {
-	mi := &file_message_task_proto_msgTypes[9]
+	mi := &file_message_task_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -797,7 +897,7 @@ func (x *Task_TaskHistoryChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Task_TaskHistoryChange.ProtoReflect.Descriptor instead.
 func (*Task_TaskHistoryChange) Descriptor() ([]byte, []int) {
-	return file_message_task_proto_rawDescGZIP(), []int{1, 3}
+	return file_message_task_proto_rawDescGZIP(), []int{1, 4}
 }
 
 func (x *Task_TaskHistoryChange) GetEvent() Task_TaskHistoryChange_TaskHistoryChangeEvent {
@@ -836,7 +936,7 @@ type SearchTasksRequest_Filter struct {
 
 func (x *SearchTasksRequest_Filter) Reset() {
 	*x = SearchTasksRequest_Filter{}
-	mi := &file_message_task_proto_msgTypes[10]
+	mi := &file_message_task_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -848,7 +948,7 @@ func (x *SearchTasksRequest_Filter) String() string {
 func (*SearchTasksRequest_Filter) ProtoMessage() {}
 
 func (x *SearchTasksRequest_Filter) ProtoReflect() protoreflect.Message {
-	mi := &file_message_task_proto_msgTypes[10]
+	mi := &file_message_task_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -931,7 +1031,7 @@ type SearchTasksResponse_TaskLookup struct {
 
 func (x *SearchTasksResponse_TaskLookup) Reset() {
 	*x = SearchTasksResponse_TaskLookup{}
-	mi := &file_message_task_proto_msgTypes[11]
+	mi := &file_message_task_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -943,7 +1043,7 @@ func (x *SearchTasksResponse_TaskLookup) String() string {
 func (*SearchTasksResponse_TaskLookup) ProtoMessage() {}
 
 func (x *SearchTasksResponse_TaskLookup) ProtoReflect() protoreflect.Message {
-	mi := &file_message_task_proto_msgTypes[11]
+	mi := &file_message_task_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1033,23 +1133,30 @@ var File_message_task_proto protoreflect.FileDescriptor
 
 const file_message_task_proto_rawDesc = "" +
 	"\n" +
-	"\x12message/task.proto\x12\bguard.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14message/common.proto\"\xe4\x01\n" +
+	"\x12message/task.proto\x12\bguard.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14message/common.proto\"\xd3\x03\n" +
 	"\x11CreateTaskRequest\x12/\n" +
 	"\rdamage_amount\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\fdamageAmount\x12A\n" +
 	"\bpriority\x18\x02 \x01(\x0e2\x16.guard.v1.TaskPriorityB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\bpriority\x12+\n" +
 	"\vexecutor_id\x18\x03 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\n" +
-	"executorId\x12.\n" +
-	"\rcreated_by_id\x18\x04 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\"\xf7\f\n" +
+	"executorId\x12'\n" +
+	"\toffice_id\x18\x04 \x01(\x03B\n" +
+	"\xe0A\x02\xfaB\x04\"\x02 \x00R\bofficeId\x12.\n" +
+	"\rcreated_by_id\x18\x05 \x01(\x03B\n" +
+	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\x12J\n" +
+	"\rviolator_type\x18\x06 \x01(\x0e2\x16.guard.v1.ViolatorTypeB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\fviolatorType\x128\n" +
+	"\x12violator_full_name\x18\a \x01(\tB\n" +
+	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\x10violatorFullName\x12>\n" +
+	"\x15violator_phone_number\x18\b \x01(\tB\n" +
+	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\x13violatorPhoneNumber\"\xcb\x0e\n" +
 	"\x04Task\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12#\n" +
 	"\rdamage_amount\x18\x02 \x01(\x03R\fdamageAmount\x122\n" +
 	"\bpriority\x18\x03 \x01(\x0e2\x16.guard.v1.TaskPriorityR\bpriority\x12,\n" +
 	"\x06status\x18\x04 \x01(\x0e2\x14.guard.v1.TaskStatusR\x06status\x12,\n" +
-	"\bexecutor\x18\x05 \x01(\v2\x10.guard.v1.LookupR\bexecutor\x12,\n" +
-	"\bviolator\x18\x06 \x01(\v2\x10.guard.v1.LookupR\bviolator\x12(\n" +
+	"\bexecutor\x18\x05 \x01(\v2\x10.guard.v1.LookupR\bexecutor\x129\n" +
+	"\bviolator\x18\x06 \x01(\v2\x1d.guard.v1.Task.ViolatorLookupR\bviolator\x12(\n" +
 	"\x06office\x18\a \x01(\v2\x10.guard.v1.LookupR\x06office\x12/\n" +
 	"\n" +
 	"created_by\x18\b \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
@@ -1084,7 +1191,13 @@ const file_message_task_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\x03 \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x1a\x9f\x03\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x1a\xc4\x01\n" +
+	"\x0eViolatorLookup\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12;\n" +
+	"\rviolator_type\x18\x03 \x01(\x0e2\x16.guard.v1.ViolatorTypeR\fviolatorType\x127\n" +
+	"\x15violator_phone_number\x18\x04 \x01(\tH\x00R\x13violatorPhoneNumber\x88\x01\x01B\x18\n" +
+	"\x16_violator_phone_number\x1a\x9f\x03\n" +
 	"\x11TaskHistoryChange\x12M\n" +
 	"\x05event\x18\x01 \x01(\x0e27.guard.v1.Task.TaskHistoryChange.TaskHistoryChangeEventR\x05event\x12/\n" +
 	"\n" +
@@ -1165,7 +1278,7 @@ func file_message_task_proto_rawDescGZIP() []byte {
 }
 
 var file_message_task_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_message_task_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_message_task_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_message_task_proto_goTypes = []any{
 	(Task_TaskHistoryChange_TaskHistoryChangeEvent)(0), // 0: guard.v1.Task.TaskHistoryChange.TaskHistoryChangeEvent
 	(*CreateTaskRequest)(nil),                          // 1: guard.v1.CreateTaskRequest
@@ -1177,59 +1290,62 @@ var file_message_task_proto_goTypes = []any{
 	(*Task_TaskRefund)(nil),                            // 7: guard.v1.Task.TaskRefund
 	(*Task_TaskVudDecision)(nil),                       // 8: guard.v1.Task.TaskVudDecision
 	(*Task_TaskComment)(nil),                           // 9: guard.v1.Task.TaskComment
-	(*Task_TaskHistoryChange)(nil),                     // 10: guard.v1.Task.TaskHistoryChange
-	(*SearchTasksRequest_Filter)(nil),                  // 11: guard.v1.SearchTasksRequest.Filter
-	(*SearchTasksResponse_TaskLookup)(nil),             // 12: guard.v1.SearchTasksResponse.TaskLookup
-	(TaskPriority)(0),                                  // 13: guard.v1.TaskPriority
-	(TaskStatus)(0),                                    // 14: guard.v1.TaskStatus
-	(*Lookup)(nil),                                     // 15: guard.v1.Lookup
-	(*timestamppb.Timestamp)(nil),                      // 16: google.protobuf.Timestamp
-	(*Sorting)(nil),                                    // 17: guard.v1.Sorting
-	(ViolatorType)(0),                                  // 18: guard.v1.ViolatorType
+	(*Task_ViolatorLookup)(nil),                        // 10: guard.v1.Task.ViolatorLookup
+	(*Task_TaskHistoryChange)(nil),                     // 11: guard.v1.Task.TaskHistoryChange
+	(*SearchTasksRequest_Filter)(nil),                  // 12: guard.v1.SearchTasksRequest.Filter
+	(*SearchTasksResponse_TaskLookup)(nil),             // 13: guard.v1.SearchTasksResponse.TaskLookup
+	(TaskPriority)(0),                                  // 14: guard.v1.TaskPriority
+	(ViolatorType)(0),                                  // 15: guard.v1.ViolatorType
+	(TaskStatus)(0),                                    // 16: guard.v1.TaskStatus
+	(*Lookup)(nil),                                     // 17: guard.v1.Lookup
+	(*timestamppb.Timestamp)(nil),                      // 18: google.protobuf.Timestamp
+	(*Sorting)(nil),                                    // 19: guard.v1.Sorting
 }
 var file_message_task_proto_depIdxs = []int32{
-	13, // 0: guard.v1.CreateTaskRequest.priority:type_name -> guard.v1.TaskPriority
-	13, // 1: guard.v1.Task.priority:type_name -> guard.v1.TaskPriority
-	14, // 2: guard.v1.Task.status:type_name -> guard.v1.TaskStatus
-	15, // 3: guard.v1.Task.executor:type_name -> guard.v1.Lookup
-	15, // 4: guard.v1.Task.violator:type_name -> guard.v1.Lookup
-	15, // 5: guard.v1.Task.office:type_name -> guard.v1.Lookup
-	15, // 6: guard.v1.Task.created_by:type_name -> guard.v1.Lookup
-	16, // 7: guard.v1.Task.created_at:type_name -> google.protobuf.Timestamp
-	16, // 8: guard.v1.Task.start_date:type_name -> google.protobuf.Timestamp
-	16, // 9: guard.v1.Task.end_date:type_name -> google.protobuf.Timestamp
-	8,  // 10: guard.v1.Task.vud_decisions:type_name -> guard.v1.Task.TaskVudDecision
-	7,  // 11: guard.v1.Task.refunds:type_name -> guard.v1.Task.TaskRefund
-	9,  // 12: guard.v1.Task.comments:type_name -> guard.v1.Task.TaskComment
-	10, // 13: guard.v1.Task.history_changes:type_name -> guard.v1.Task.TaskHistoryChange
-	2,  // 14: guard.v1.GetTaskDetailsResponse.task:type_name -> guard.v1.Task
-	13, // 15: guard.v1.UpdateTaskRequest.priority:type_name -> guard.v1.TaskPriority
-	14, // 16: guard.v1.UpdateTaskRequest.status:type_name -> guard.v1.TaskStatus
-	16, // 17: guard.v1.UpdateTaskRequest.end_date:type_name -> google.protobuf.Timestamp
-	17, // 18: guard.v1.SearchTasksRequest.sorting:type_name -> guard.v1.Sorting
-	14, // 19: guard.v1.SearchTasksRequest.status:type_name -> guard.v1.TaskStatus
-	11, // 20: guard.v1.SearchTasksRequest.filter:type_name -> guard.v1.SearchTasksRequest.Filter
-	12, // 21: guard.v1.SearchTasksResponse.items:type_name -> guard.v1.SearchTasksResponse.TaskLookup
-	15, // 22: guard.v1.Task.TaskComment.created_by:type_name -> guard.v1.Lookup
-	16, // 23: guard.v1.Task.TaskComment.created_at:type_name -> google.protobuf.Timestamp
-	0,  // 24: guard.v1.Task.TaskHistoryChange.event:type_name -> guard.v1.Task.TaskHistoryChange.TaskHistoryChangeEvent
-	15, // 25: guard.v1.Task.TaskHistoryChange.created_by:type_name -> guard.v1.Lookup
-	16, // 26: guard.v1.Task.TaskHistoryChange.created_at:type_name -> google.protobuf.Timestamp
-	13, // 27: guard.v1.SearchTasksRequest.Filter.priority:type_name -> guard.v1.TaskPriority
-	18, // 28: guard.v1.SearchTasksRequest.Filter.violator_type:type_name -> guard.v1.ViolatorType
-	13, // 29: guard.v1.SearchTasksResponse.TaskLookup.priority:type_name -> guard.v1.TaskPriority
-	15, // 30: guard.v1.SearchTasksResponse.TaskLookup.executor:type_name -> guard.v1.Lookup
-	15, // 31: guard.v1.SearchTasksResponse.TaskLookup.violator:type_name -> guard.v1.Lookup
-	15, // 32: guard.v1.SearchTasksResponse.TaskLookup.office:type_name -> guard.v1.Lookup
-	15, // 33: guard.v1.SearchTasksResponse.TaskLookup.created_by:type_name -> guard.v1.Lookup
-	16, // 34: guard.v1.SearchTasksResponse.TaskLookup.created_at:type_name -> google.protobuf.Timestamp
-	16, // 35: guard.v1.SearchTasksResponse.TaskLookup.start_date:type_name -> google.protobuf.Timestamp
-	16, // 36: guard.v1.SearchTasksResponse.TaskLookup.end_date:type_name -> google.protobuf.Timestamp
-	37, // [37:37] is the sub-list for method output_type
-	37, // [37:37] is the sub-list for method input_type
-	37, // [37:37] is the sub-list for extension type_name
-	37, // [37:37] is the sub-list for extension extendee
-	0,  // [0:37] is the sub-list for field type_name
+	14, // 0: guard.v1.CreateTaskRequest.priority:type_name -> guard.v1.TaskPriority
+	15, // 1: guard.v1.CreateTaskRequest.violator_type:type_name -> guard.v1.ViolatorType
+	14, // 2: guard.v1.Task.priority:type_name -> guard.v1.TaskPriority
+	16, // 3: guard.v1.Task.status:type_name -> guard.v1.TaskStatus
+	17, // 4: guard.v1.Task.executor:type_name -> guard.v1.Lookup
+	10, // 5: guard.v1.Task.violator:type_name -> guard.v1.Task.ViolatorLookup
+	17, // 6: guard.v1.Task.office:type_name -> guard.v1.Lookup
+	17, // 7: guard.v1.Task.created_by:type_name -> guard.v1.Lookup
+	18, // 8: guard.v1.Task.created_at:type_name -> google.protobuf.Timestamp
+	18, // 9: guard.v1.Task.start_date:type_name -> google.protobuf.Timestamp
+	18, // 10: guard.v1.Task.end_date:type_name -> google.protobuf.Timestamp
+	8,  // 11: guard.v1.Task.vud_decisions:type_name -> guard.v1.Task.TaskVudDecision
+	7,  // 12: guard.v1.Task.refunds:type_name -> guard.v1.Task.TaskRefund
+	9,  // 13: guard.v1.Task.comments:type_name -> guard.v1.Task.TaskComment
+	11, // 14: guard.v1.Task.history_changes:type_name -> guard.v1.Task.TaskHistoryChange
+	2,  // 15: guard.v1.GetTaskDetailsResponse.task:type_name -> guard.v1.Task
+	14, // 16: guard.v1.UpdateTaskRequest.priority:type_name -> guard.v1.TaskPriority
+	16, // 17: guard.v1.UpdateTaskRequest.status:type_name -> guard.v1.TaskStatus
+	18, // 18: guard.v1.UpdateTaskRequest.end_date:type_name -> google.protobuf.Timestamp
+	19, // 19: guard.v1.SearchTasksRequest.sorting:type_name -> guard.v1.Sorting
+	16, // 20: guard.v1.SearchTasksRequest.status:type_name -> guard.v1.TaskStatus
+	12, // 21: guard.v1.SearchTasksRequest.filter:type_name -> guard.v1.SearchTasksRequest.Filter
+	13, // 22: guard.v1.SearchTasksResponse.items:type_name -> guard.v1.SearchTasksResponse.TaskLookup
+	17, // 23: guard.v1.Task.TaskComment.created_by:type_name -> guard.v1.Lookup
+	18, // 24: guard.v1.Task.TaskComment.created_at:type_name -> google.protobuf.Timestamp
+	15, // 25: guard.v1.Task.ViolatorLookup.violator_type:type_name -> guard.v1.ViolatorType
+	0,  // 26: guard.v1.Task.TaskHistoryChange.event:type_name -> guard.v1.Task.TaskHistoryChange.TaskHistoryChangeEvent
+	17, // 27: guard.v1.Task.TaskHistoryChange.created_by:type_name -> guard.v1.Lookup
+	18, // 28: guard.v1.Task.TaskHistoryChange.created_at:type_name -> google.protobuf.Timestamp
+	14, // 29: guard.v1.SearchTasksRequest.Filter.priority:type_name -> guard.v1.TaskPriority
+	15, // 30: guard.v1.SearchTasksRequest.Filter.violator_type:type_name -> guard.v1.ViolatorType
+	14, // 31: guard.v1.SearchTasksResponse.TaskLookup.priority:type_name -> guard.v1.TaskPriority
+	17, // 32: guard.v1.SearchTasksResponse.TaskLookup.executor:type_name -> guard.v1.Lookup
+	17, // 33: guard.v1.SearchTasksResponse.TaskLookup.violator:type_name -> guard.v1.Lookup
+	17, // 34: guard.v1.SearchTasksResponse.TaskLookup.office:type_name -> guard.v1.Lookup
+	17, // 35: guard.v1.SearchTasksResponse.TaskLookup.created_by:type_name -> guard.v1.Lookup
+	18, // 36: guard.v1.SearchTasksResponse.TaskLookup.created_at:type_name -> google.protobuf.Timestamp
+	18, // 37: guard.v1.SearchTasksResponse.TaskLookup.start_date:type_name -> google.protobuf.Timestamp
+	18, // 38: guard.v1.SearchTasksResponse.TaskLookup.end_date:type_name -> google.protobuf.Timestamp
+	39, // [39:39] is the sub-list for method output_type
+	39, // [39:39] is the sub-list for method input_type
+	39, // [39:39] is the sub-list for extension type_name
+	39, // [39:39] is the sub-list for extension extendee
+	0,  // [0:39] is the sub-list for field type_name
 }
 
 func init() { file_message_task_proto_init() }
@@ -1242,14 +1358,15 @@ func file_message_task_proto_init() {
 	file_message_task_proto_msgTypes[3].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[4].OneofWrappers = []any{}
 	file_message_task_proto_msgTypes[7].OneofWrappers = []any{}
-	file_message_task_proto_msgTypes[11].OneofWrappers = []any{}
+	file_message_task_proto_msgTypes[9].OneofWrappers = []any{}
+	file_message_task_proto_msgTypes[12].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_message_task_proto_rawDesc), len(file_message_task_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

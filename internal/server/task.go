@@ -2,13 +2,14 @@ package server
 
 import (
 	"context"
-	"time"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/contract"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	taskusecase "github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/task"
 )
 
 func (s *Server) CreateTask(
@@ -16,15 +17,21 @@ func (s *Server) CreateTask(
 	req *message.CreateTaskRequest,
 ) (*message.CreatedResponse, error) {
 	priority := mapTaskPriorityFromProto(req.GetPriority())
+	violatorType := mapViolatorTypeFromProto(req.GetViolatorType())
+	phoneNumber := req.GetViolatorPhoneNumber()
 
-	task := entity.Task{
-		DamageAmount: req.GetDamageAmount(),
-		Priority:     priority,
-		ExecutorID:   req.GetExecutorId(),
-		CreatedByID:  req.GetCreatedById(),
+	createDTO := taskusecase.CreateTaskDTO{
+		DamageAmount:        req.GetDamageAmount(),
+		Priority:            priority,
+		ExecutorID:          req.GetExecutorId(),
+		OfficeID:            req.GetOfficeId(),
+		CreatedByID:         req.GetCreatedById(),
+		ViolatorType:        violatorType,
+		ViolatorFullName:    req.GetViolatorFullName(),
+		ViolatorPhoneNumber: &phoneNumber,
 	}
 
-	id, err := s.dependencies.CreateTaskUseCase.Create(ctx, task)
+	id, err := s.dependencies.CreateTaskUseCase.Create(ctx, createDTO)
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +59,10 @@ func (s *Server) GetTaskDetails(
 				Id:   task.ExecutorID,
 				Name: task.ExecutorName,
 			},
-			Violator: &message.Lookup{
-				Id:   task.ViolatorID,
-				Name: task.ViolatorName,
+			Violator: &message.Task_ViolatorLookup{
+				Id:           task.ViolatorID,
+				Name:         task.ViolatorName,
+				ViolatorType: mapViolatorTypeToProto(task.ViolatorType),
 			},
 			Office: &message.Lookup{
 				Id:   task.OfficeID,
@@ -70,6 +78,10 @@ func (s *Server) GetTaskDetails(
 	}
 	if task.EndDate != nil {
 		resp.Task.EndDate = timestamppb.New(*task.EndDate)
+	}
+
+	if task.ViolatorPhone != nil {
+		resp.Task.Violator.ViolatorPhoneNumber = task.ViolatorPhone
 	}
 
 	if dto.VUDDecision != nil {
@@ -130,37 +142,39 @@ func (s *Server) UpdateTask(
 	ctx context.Context,
 	req *message.UpdateTaskRequest,
 ) (*emptypb.Empty, error) {
-	var (
-		priority entity.TaskPriority
-		status   entity.TaskStatus
-	)
+	dto := taskusecase.UpdateTaskDTO{
+		ID: req.GetId(),
+	}
+
+	if req.DamageAmount != nil {
+		damageAmount := req.GetDamageAmount()
+		dto.DamageAmount = &damageAmount
+	}
 
 	if req.Priority != nil {
-		priority = mapTaskPriorityFromProto(req.GetPriority())
+		priority := mapTaskPriorityFromProto(req.GetPriority())
+		dto.Priority = &priority
 	}
 
 	if req.Status != nil {
-		status = contract.MapTaskStatusToContract(req.GetStatus())
+		status := contract.MapTaskStatusToContract(req.GetStatus())
+		dto.Status = &status
 	}
 
-	var endDate *time.Time
 	if req.GetEndDate() != nil {
 		t := req.GetEndDate().AsTime()
-		endDate = &t
+		dto.EndDate = &t
 	}
 
-	task := entity.Task{
-		ID:           req.GetId(),
-		DamageAmount: req.GetDamageAmount(),
-		Priority:     priority,
-		Status:       status,
-		EndDate:      endDate,
-		ExecutorID:   req.GetExecutorId(),
+	if req.ExecutorId != nil {
+		executorID := req.GetExecutorId()
+		dto.ExecutorID = &executorID
 	}
 
-	if err := s.dependencies.UpdateTaskUseCase.Update(ctx, task); err != nil {
+	if err := s.dependencies.UpdateTaskUseCase.Update(ctx, dto); err != nil {
 		return nil, err
 	}
+
 	return &emptypb.Empty{}, nil
 }
 
@@ -228,12 +242,12 @@ func mapTaskStatusToProto(status entity.TaskStatus) message.TaskStatus {
 		return message.TaskStatus_CASE_STATUS_UNSPECIFIED
 	case entity.TaskStatusNew:
 		return message.TaskStatus_NEW
-	case entity.TaskStatusDocumentGathering:
-		return message.TaskStatus_DOCUMENT_GATHERING
-	case entity.TaskStatusWaitingForVUD:
-		return message.TaskStatus_WAITING_FOR_VUD
-	case entity.TaskStatusJudicialProceedings:
-		return message.TaskStatus_JUDICIAL_PROCEEDINGS
+	case entity.TaskStatusInProgress:
+		return message.TaskStatus_IN_PROGRESS
+	case entity.TaskStatusPendingVUD:
+		return message.TaskStatus_PENDING_VUD
+	case entity.TaskStatusInCourt:
+		return message.TaskStatus_IN_COURT
 	case entity.TaskStatusCompleted:
 		return message.TaskStatus_COMPLETED
 	default:
@@ -256,6 +270,8 @@ func mapHistoryEventToProto(e entity.TaskHistoryChangeEvent) message.Task_TaskHi
 
 func mapTaskPriorityToProto(priority entity.TaskPriority) message.TaskPriority {
 	switch priority {
+	case entity.TaskPriorityUnspecified:
+		return message.TaskPriority_TASK_PRIORITY_UNSPECIFIED
 	case entity.TaskPriorityLow:
 		return message.TaskPriority_LOW
 	case entity.TaskPriorityHigh:
@@ -275,5 +291,31 @@ func mapTaskPriorityFromProto(priority message.TaskPriority) entity.TaskPriority
 		return entity.TaskPriorityHigh
 	default:
 		return entity.TaskPriorityLow
+	}
+}
+
+func mapViolatorTypeFromProto(violatorType message.ViolatorType) entity.ViolatorType {
+	switch violatorType {
+	case message.ViolatorType_VIOLATOR_TYPE_UNSPECIFIED:
+		return entity.ViolatorTypeEmployee
+	case message.ViolatorType_EMPLOYEE:
+		return entity.ViolatorTypeEmployee
+	case message.ViolatorType_CLIENT:
+		return entity.ViolatorTypeClient
+	default:
+		return entity.ViolatorTypeEmployee
+	}
+}
+
+func mapViolatorTypeToProto(violatorType entity.ViolatorType) message.ViolatorType {
+	switch violatorType {
+	case entity.ViolatorTypeUnspecified:
+		return message.ViolatorType_VIOLATOR_TYPE_UNSPECIFIED
+	case entity.ViolatorTypeEmployee:
+		return message.ViolatorType_EMPLOYEE
+	case entity.ViolatorTypeClient:
+		return message.ViolatorType_CLIENT
+	default:
+		return message.ViolatorType_VIOLATOR_TYPE_UNSPECIFIED
 	}
 }

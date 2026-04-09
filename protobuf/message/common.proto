@@ -29,9 +29,9 @@ message Lookup {
 enum TaskStatus {
     CASE_STATUS_UNSPECIFIED = 0;
     NEW = 1;
-    DOCUMENT_GATHERING = 2;
-    WAITING_FOR_VUD = 3;
-    JUDICIAL_PROCEEDINGS = 4;
+    IN_PROGRESS = 2;
+    PENDING_VUD = 3;
+    IN_COURT = 4;
     COMPLETED = 5;
 }
 

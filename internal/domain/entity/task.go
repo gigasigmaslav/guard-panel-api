@@ -9,7 +9,8 @@ import (
 type TaskPriority int32
 
 const (
-	TaskPriorityLow TaskPriority = iota
+	TaskPriorityUnspecified TaskPriority = iota
+	TaskPriorityLow
 	TaskPriorityHigh
 )
 
@@ -19,12 +20,12 @@ const (
 	TaskStatusUnspecified TaskStatus = iota
 	// TaskStatusNew - новое задача.
 	TaskStatusNew
-	// TaskStatusDocumentGathering - сбор документов.
-	TaskStatusDocumentGathering
-	// TaskStatusWaitingForVUD - ожидание ВУД.
-	TaskStatusWaitingForVUD
-	// TaskStatusJudicialProceedings - судебное разбирательство.
-	TaskStatusJudicialProceedings
+	// TaskStatusInProgress - в работе.
+	TaskStatusInProgress
+	// TaskStatusPendingVUD - ожидание ВУД.
+	TaskStatusPendingVUD
+	// TaskStatusInCourt - судебная стадия.
+	TaskStatusInCourt
 	// TaskStatusCompleted - завершено.
 	TaskStatusCompleted
 )
@@ -35,12 +36,12 @@ func MapTaskStatus(s string) (TaskStatus, error) {
 		return TaskStatusUnspecified, nil
 	case "new":
 		return TaskStatusNew, nil
-	case "document_gathering":
-		return TaskStatusDocumentGathering, nil
-	case "waiting_for_vud":
-		return TaskStatusWaitingForVUD, nil
-	case "judicial_proceedings":
-		return TaskStatusJudicialProceedings, nil
+	case "in_progress":
+		return TaskStatusInProgress, nil
+	case "pending_vud":
+		return TaskStatusPendingVUD, nil
+	case "in_court":
+		return TaskStatusInCourt, nil
 	case "completed":
 		return TaskStatusCompleted, nil
 	default:

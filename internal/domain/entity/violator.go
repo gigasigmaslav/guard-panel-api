@@ -3,7 +3,8 @@ package entity
 type ViolatorType int32
 
 const (
-	ViolatorTypeEmployee ViolatorType = iota
+	ViolatorTypeUnspecified ViolatorType = iota
+	ViolatorTypeEmployee
 	ViolatorTypeClient
 )
 

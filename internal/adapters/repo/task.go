@@ -20,6 +20,8 @@ func (q *queries) GetTaskByID(ctx context.Context, id int64) (entity.Task, error
 			end_date,
 			executor_id,
 			executor_name,
+			office_id,
+			office_name,
 			created_by_id,
 			created_by_name,
 			created_at
@@ -39,6 +41,8 @@ func (q *queries) GetTaskByID(ctx context.Context, id int64) (entity.Task, error
 		&out.EndDate,
 		&out.ExecutorID,
 		&out.ExecutorName,
+		&out.OfficeID,
+		&out.OfficeName,
 		&out.CreatedByID,
 		&out.CreatedByName,
 		&out.CreatedAt,
@@ -59,7 +63,6 @@ func (q *queries) CreateTask(ctx context.Context, task entity.Task) (int64, erro
 			damage_amount,
 			priority,
 			status,
-			start_date,
 			end_date,
 			executor_id,
 			executor_name,
@@ -69,7 +72,7 @@ func (q *queries) CreateTask(ctx context.Context, task entity.Task) (int64, erro
 			created_by_name
 		)
 		VALUES (
-			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 		)
 		RETURNING id;
 	`
@@ -81,7 +84,6 @@ func (q *queries) CreateTask(ctx context.Context, task entity.Task) (int64, erro
 		task.DamageAmount,
 		int32(task.Priority),
 		int32(task.Status),
-		task.StartDate,
 		task.EndDate,
 		task.ExecutorID,
 		task.ExecutorName,
@@ -128,7 +130,6 @@ func (q *queries) UpdateTaskByID(ctx context.Context, task entity.Task) error {
 	return nil
 }
 
-//nolint:funlen // complex query building logic is better kept together
 func (q *queries) SearchTasks(
 	ctx context.Context,
 	req contract.SearchTasksRequest,
@@ -141,6 +142,8 @@ func (q *queries) SearchTasks(
 		"t.executor_name",
 		"COALESCE(v.id, 0) AS violator_id",
 		"COALESCE(v.full_name, '') AS violator_name",
+		"COALESCE(v.type, 0) AS violator_type",
+		"v.phone AS violator_phone",
 		"t.office_id",
 		"t.office_name",
 		"t.created_by_id",
@@ -153,41 +156,14 @@ func (q *queries) SearchTasks(
 		From("guard.tasks t").
 		LeftJoin(
 			"LATERAL (" +
-				"SELECT id, full_name FROM guard.violators v WHERE v.task_id = t.id ORDER BY v.id LIMIT 1" +
+				"SELECT id, full_name, type, phone FROM guard.violators v WHERE v.task_id = t.id ORDER BY v.id LIMIT 1" +
 				") v ON TRUE",
 		).
 		PlaceholderFormat(sq.Dollar)
 
 	builder = applyTaskSearchFilters(builder, req)
-
-	const defaultOrderBy = "t.created_at"
-	var orderBy string
-	switch req.Sorting.OrderBy {
-	case contract.OrderByUnspecified:
-		orderBy = defaultOrderBy
-	case contract.OrderByDamageAmountKopecks:
-		orderBy = "t.damage_amount"
-	case contract.OrderByCreatedAt:
-		orderBy = defaultOrderBy
-	default:
-		orderBy = defaultOrderBy
-	}
-	if req.Sorting.OrderDirection == contract.OrderDirectionAsc {
-		orderBy += " ASC"
-	} else {
-		orderBy += " DESC"
-	}
-
-	limit := req.PerPage
-	offset := (req.Page - 1) * req.PerPage
-
-	if limit > 0 {
-		builder = builder.Limit(uint64(limit))
-	}
-	if offset >= 0 {
-		builder = builder.Offset(uint64(offset))
-	}
-	builder = builder.OrderBy(orderBy)
+	orderBy := buildTaskSearchOrderBy(req.Sorting)
+	builder = applyTaskSearchPaginationAndOrder(builder, req, orderBy)
 
 	dataSQL, dataArgs, err := builder.ToSql()
 	if err != nil {
@@ -205,6 +181,7 @@ func (q *queries) SearchTasks(
 	for rows.Next() {
 		var cur contract.TaskLookupItem
 		var priority int32
+		var violatorType int32
 
 		if err = rows.Scan(
 			&cur.ID,
@@ -214,6 +191,8 @@ func (q *queries) SearchTasks(
 			&cur.ExecutorName,
 			&cur.ViolatorID,
 			&cur.ViolatorName,
+			&violatorType,
+			&cur.ViolatorPhone,
 			&cur.OfficeID,
 			&cur.OfficeName,
 			&cur.CreatedByID,
@@ -227,6 +206,7 @@ func (q *queries) SearchTasks(
 		}
 
 		cur.Priority = entity.TaskPriority(priority)
+		cur.ViolatorType = entity.ViolatorType(violatorType)
 		out = append(out, cur)
 	}
 	if err = rows.Err(); err != nil {
@@ -234,6 +214,44 @@ func (q *queries) SearchTasks(
 	}
 
 	return out, total, nil
+}
+
+func buildTaskSearchOrderBy(sorting contract.SearchTasksSorting) string {
+	const defaultOrderBy = "t.created_at"
+
+	var orderBy string
+	switch sorting.OrderBy {
+	case contract.OrderByDamageAmountKopecks:
+		orderBy = "t.damage_amount"
+	case contract.OrderByCreatedAt, contract.OrderByUnspecified:
+		orderBy = defaultOrderBy
+	default:
+		orderBy = defaultOrderBy
+	}
+
+	if sorting.OrderDirection == contract.OrderDirectionAsc {
+		return orderBy + " ASC"
+	}
+
+	return orderBy + " DESC"
+}
+
+func applyTaskSearchPaginationAndOrder(
+	builder sq.SelectBuilder,
+	req contract.SearchTasksRequest,
+	orderBy string,
+) sq.SelectBuilder {
+	limit := req.PerPage
+	offset := (req.Page - 1) * req.PerPage
+
+	if limit > 0 {
+		builder = builder.Limit(uint64(limit))
+	}
+	if offset >= 0 {
+		builder = builder.Offset(uint64(offset))
+	}
+
+	return builder.OrderBy(orderBy)
 }
 
 func applyTaskSearchFilters(

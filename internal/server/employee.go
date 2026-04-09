@@ -102,6 +102,8 @@ func mapEmployeePositionToEntity(p message.EmployeePosition) entity.EmployeePosi
 
 func mapEmployeePositionToProto(p entity.EmployeePosition) message.EmployeePosition {
 	switch p {
+	case entity.EmployeePositionUnspecified:
+		return message.EmployeePosition_EMPLOYEE_POSITION_UNSPECIFIED
 	case entity.EmployeePositionSec:
 		return message.EmployeePosition_SEC
 	case entity.EmployeePositionSecHead:

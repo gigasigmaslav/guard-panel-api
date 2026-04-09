@@ -15,7 +15,7 @@ services:
       - guard-network
     
   app:
-    container_name: quard-panel-api
+    container_name: guard-panel-api
     build:
       context: .
       dockerfile: Dockerfile
