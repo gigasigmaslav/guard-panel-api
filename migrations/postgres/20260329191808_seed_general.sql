@@ -2,7 +2,7 @@
 -- +goose StatementBegin
 
 INSERT INTO staff.employees (id, full_name, position, created_by_id, created_by_name)
-VALUES (1, 'Администратор', 1, 1, 'seed_migration')
+VALUES (1, 'Администратор', 1, 2, 'seed_migration')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO staff.offices (name, address, created_by_id, created_by_name)

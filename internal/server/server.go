@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/config"
-	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1"
+	api "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1"
 )
 
 type Server struct {

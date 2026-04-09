@@ -4,13 +4,15 @@
 // - protoc             v6.32.0
 // source: guard-panel-api.proto
 
-package api
+package v1
 
 import (
 	context "context"
+	message "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,14 +21,52 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	GuardPanelService_Stub_FullMethodName = "/api.v1.guardpanelservice.GuardPanelService/Stub"
+	GuardPanelService_CreateTask_FullMethodName        = "/guard.v1.GuardPanelService/CreateTask"
+	GuardPanelService_GetTaskDetails_FullMethodName    = "/guard.v1.GuardPanelService/GetTaskDetails"
+	GuardPanelService_UpdateTask_FullMethodName        = "/guard.v1.GuardPanelService/UpdateTask"
+	GuardPanelService_SearchTasks_FullMethodName       = "/guard.v1.GuardPanelService/SearchTasks"
+	GuardPanelService_CreateComment_FullMethodName     = "/guard.v1.GuardPanelService/CreateComment"
+	GuardPanelService_DeleteComment_FullMethodName     = "/guard.v1.GuardPanelService/DeleteComment"
+	GuardPanelService_CreateRefund_FullMethodName      = "/guard.v1.GuardPanelService/CreateRefund"
+	GuardPanelService_CreateVudDecision_FullMethodName = "/guard.v1.GuardPanelService/CreateVudDecision"
+	GuardPanelService_UpdateVudDecision_FullMethodName = "/guard.v1.GuardPanelService/UpdateVudDecision"
+	GuardPanelService_CreateEmployee_FullMethodName    = "/guard.v1.GuardPanelService/CreateEmployee"
+	GuardPanelService_UpdateEmployee_FullMethodName    = "/guard.v1.GuardPanelService/UpdateEmployee"
+	GuardPanelService_DeleteEmployee_FullMethodName    = "/guard.v1.GuardPanelService/DeleteEmployee"
+	GuardPanelService_SearchEmployees_FullMethodName   = "/guard.v1.GuardPanelService/SearchEmployees"
+	GuardPanelService_CreateOffice_FullMethodName      = "/guard.v1.GuardPanelService/CreateOffice"
+	GuardPanelService_UpdateOffice_FullMethodName      = "/guard.v1.GuardPanelService/UpdateOffice"
+	GuardPanelService_DeleteOffice_FullMethodName      = "/guard.v1.GuardPanelService/DeleteOffice"
+	GuardPanelService_SearchOffices_FullMethodName     = "/guard.v1.GuardPanelService/SearchOffices"
 )
 
 // GuardPanelServiceClient is the client API for GuardPanelService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GuardPanelServiceClient interface {
-	Stub(ctx context.Context, in *StubRequest, opts ...grpc.CallOption) (*StubResponse, error)
+	// Tasks
+	CreateTask(ctx context.Context, in *message.CreateTaskRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	GetTaskDetails(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskDetailsResponse, error)
+	UpdateTask(ctx context.Context, in *message.UpdateTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SearchTasks(ctx context.Context, in *message.SearchTasksRequest, opts ...grpc.CallOption) (*message.SearchTasksResponse, error)
+	// Comments
+	CreateComment(ctx context.Context, in *message.CreateCommentRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	DeleteComment(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Refunds
+	CreateRefund(ctx context.Context, in *message.CreateRefundRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	// VUD Decisions
+	CreateVudDecision(ctx context.Context, in *message.CreateVudDecisionRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	UpdateVudDecision(ctx context.Context, in *message.UpdateVudDecisionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Employees
+	CreateEmployee(ctx context.Context, in *message.CreateEmployeeRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	UpdateEmployee(ctx context.Context, in *message.UpdateEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteEmployee(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SearchEmployees(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.SearchEmployeesResponse, error)
+	// Offices
+	CreateOffice(ctx context.Context, in *message.CreateOfficeRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error)
+	UpdateOffice(ctx context.Context, in *message.UpdateOfficeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteOffice(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SearchOffices(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.SearchOfficesResponse, error)
 }
 
 type guardPanelServiceClient struct {
@@ -37,10 +77,170 @@ func NewGuardPanelServiceClient(cc grpc.ClientConnInterface) GuardPanelServiceCl
 	return &guardPanelServiceClient{cc}
 }
 
-func (c *guardPanelServiceClient) Stub(ctx context.Context, in *StubRequest, opts ...grpc.CallOption) (*StubResponse, error) {
+func (c *guardPanelServiceClient) CreateTask(ctx context.Context, in *message.CreateTaskRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(StubResponse)
-	err := c.cc.Invoke(ctx, GuardPanelService_Stub_FullMethodName, in, out, cOpts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) GetTaskDetails(ctx context.Context, in *message.GetByIDRequest, opts ...grpc.CallOption) (*message.GetTaskDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.GetTaskDetailsResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_GetTaskDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) UpdateTask(ctx context.Context, in *message.UpdateTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_UpdateTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) SearchTasks(ctx context.Context, in *message.SearchTasksRequest, opts ...grpc.CallOption) (*message.SearchTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.SearchTasksResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_SearchTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) CreateComment(ctx context.Context, in *message.CreateCommentRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) DeleteComment(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_DeleteComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) CreateRefund(ctx context.Context, in *message.CreateRefundRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateRefund_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) CreateVudDecision(ctx context.Context, in *message.CreateVudDecisionRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateVudDecision_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) UpdateVudDecision(ctx context.Context, in *message.UpdateVudDecisionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_UpdateVudDecision_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) CreateEmployee(ctx context.Context, in *message.CreateEmployeeRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) UpdateEmployee(ctx context.Context, in *message.UpdateEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_UpdateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) DeleteEmployee(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_DeleteEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) SearchEmployees(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.SearchEmployeesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.SearchEmployeesResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_SearchEmployees_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) CreateOffice(ctx context.Context, in *message.CreateOfficeRequest, opts ...grpc.CallOption) (*message.CreatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.CreatedResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_CreateOffice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) UpdateOffice(ctx context.Context, in *message.UpdateOfficeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_UpdateOffice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) DeleteOffice(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, GuardPanelService_DeleteOffice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) SearchOffices(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.SearchOfficesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.SearchOfficesResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_SearchOffices_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +251,29 @@ func (c *guardPanelServiceClient) Stub(ctx context.Context, in *StubRequest, opt
 // All implementations must embed UnimplementedGuardPanelServiceServer
 // for forward compatibility.
 type GuardPanelServiceServer interface {
-	Stub(context.Context, *StubRequest) (*StubResponse, error)
+	// Tasks
+	CreateTask(context.Context, *message.CreateTaskRequest) (*message.CreatedResponse, error)
+	GetTaskDetails(context.Context, *message.GetByIDRequest) (*message.GetTaskDetailsResponse, error)
+	UpdateTask(context.Context, *message.UpdateTaskRequest) (*emptypb.Empty, error)
+	SearchTasks(context.Context, *message.SearchTasksRequest) (*message.SearchTasksResponse, error)
+	// Comments
+	CreateComment(context.Context, *message.CreateCommentRequest) (*message.CreatedResponse, error)
+	DeleteComment(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error)
+	// Refunds
+	CreateRefund(context.Context, *message.CreateRefundRequest) (*message.CreatedResponse, error)
+	// VUD Decisions
+	CreateVudDecision(context.Context, *message.CreateVudDecisionRequest) (*message.CreatedResponse, error)
+	UpdateVudDecision(context.Context, *message.UpdateVudDecisionRequest) (*emptypb.Empty, error)
+	// Employees
+	CreateEmployee(context.Context, *message.CreateEmployeeRequest) (*message.CreatedResponse, error)
+	UpdateEmployee(context.Context, *message.UpdateEmployeeRequest) (*emptypb.Empty, error)
+	DeleteEmployee(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error)
+	SearchEmployees(context.Context, *emptypb.Empty) (*message.SearchEmployeesResponse, error)
+	// Offices
+	CreateOffice(context.Context, *message.CreateOfficeRequest) (*message.CreatedResponse, error)
+	UpdateOffice(context.Context, *message.UpdateOfficeRequest) (*emptypb.Empty, error)
+	DeleteOffice(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error)
+	SearchOffices(context.Context, *emptypb.Empty) (*message.SearchOfficesResponse, error)
 	mustEmbedUnimplementedGuardPanelServiceServer()
 }
 
@@ -62,8 +284,56 @@ type GuardPanelServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedGuardPanelServiceServer struct{}
 
-func (UnimplementedGuardPanelServiceServer) Stub(context.Context, *StubRequest) (*StubResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Stub not implemented")
+func (UnimplementedGuardPanelServiceServer) CreateTask(context.Context, *message.CreateTaskRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateTask not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) GetTaskDetails(context.Context, *message.GetByIDRequest) (*message.GetTaskDetailsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskDetails not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) UpdateTask(context.Context, *message.UpdateTaskRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateTask not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) SearchTasks(context.Context, *message.SearchTasksRequest) (*message.SearchTasksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchTasks not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) CreateComment(context.Context, *message.CreateCommentRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateComment not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) DeleteComment(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteComment not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) CreateRefund(context.Context, *message.CreateRefundRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateRefund not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) CreateVudDecision(context.Context, *message.CreateVudDecisionRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateVudDecision not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) UpdateVudDecision(context.Context, *message.UpdateVudDecisionRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateVudDecision not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) CreateEmployee(context.Context, *message.CreateEmployeeRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateEmployee not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) UpdateEmployee(context.Context, *message.UpdateEmployeeRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateEmployee not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) DeleteEmployee(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteEmployee not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) SearchEmployees(context.Context, *emptypb.Empty) (*message.SearchEmployeesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchEmployees not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) CreateOffice(context.Context, *message.CreateOfficeRequest) (*message.CreatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateOffice not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) UpdateOffice(context.Context, *message.UpdateOfficeRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateOffice not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) DeleteOffice(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteOffice not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) SearchOffices(context.Context, *emptypb.Empty) (*message.SearchOfficesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchOffices not implemented")
 }
 func (UnimplementedGuardPanelServiceServer) mustEmbedUnimplementedGuardPanelServiceServer() {}
 func (UnimplementedGuardPanelServiceServer) testEmbeddedByValue()                           {}
@@ -86,20 +356,308 @@ func RegisterGuardPanelServiceServer(s grpc.ServiceRegistrar, srv GuardPanelServ
 	s.RegisterService(&GuardPanelService_ServiceDesc, srv)
 }
 
-func _GuardPanelService_Stub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StubRequest)
+func _GuardPanelService_CreateTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateTaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GuardPanelServiceServer).Stub(ctx, in)
+		return srv.(GuardPanelServiceServer).CreateTask(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GuardPanelService_Stub_FullMethodName,
+		FullMethod: GuardPanelService_CreateTask_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GuardPanelServiceServer).Stub(ctx, req.(*StubRequest))
+		return srv.(GuardPanelServiceServer).CreateTask(ctx, req.(*message.CreateTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_GetTaskDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.GetByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).GetTaskDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_GetTaskDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).GetTaskDetails(ctx, req.(*message.GetByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_UpdateTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.UpdateTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).UpdateTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_UpdateTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).UpdateTask(ctx, req.(*message.UpdateTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_SearchTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.SearchTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).SearchTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_SearchTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).SearchTasks(ctx, req.(*message.SearchTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_CreateComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).CreateComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_CreateComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).CreateComment(ctx, req.(*message.CreateCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.DeleteByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).DeleteComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_DeleteComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).DeleteComment(ctx, req.(*message.DeleteByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_CreateRefund_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateRefundRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).CreateRefund(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_CreateRefund_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).CreateRefund(ctx, req.(*message.CreateRefundRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_CreateVudDecision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateVudDecisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).CreateVudDecision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_CreateVudDecision_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).CreateVudDecision(ctx, req.(*message.CreateVudDecisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_UpdateVudDecision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.UpdateVudDecisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).UpdateVudDecision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_UpdateVudDecision_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).UpdateVudDecision(ctx, req.(*message.UpdateVudDecisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_CreateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).CreateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_CreateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).CreateEmployee(ctx, req.(*message.CreateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_UpdateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.UpdateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).UpdateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_UpdateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).UpdateEmployee(ctx, req.(*message.UpdateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_DeleteEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.DeleteByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).DeleteEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_DeleteEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).DeleteEmployee(ctx, req.(*message.DeleteByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_SearchEmployees_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).SearchEmployees(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_SearchEmployees_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).SearchEmployees(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_CreateOffice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.CreateOfficeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).CreateOffice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_CreateOffice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).CreateOffice(ctx, req.(*message.CreateOfficeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_UpdateOffice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.UpdateOfficeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).UpdateOffice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_UpdateOffice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).UpdateOffice(ctx, req.(*message.UpdateOfficeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_DeleteOffice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.DeleteByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).DeleteOffice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_DeleteOffice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).DeleteOffice(ctx, req.(*message.DeleteByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_SearchOffices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).SearchOffices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_SearchOffices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).SearchOffices(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -108,12 +666,76 @@ func _GuardPanelService_Stub_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GuardPanelService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.v1.guardpanelservice.GuardPanelService",
+	ServiceName: "guard.v1.GuardPanelService",
 	HandlerType: (*GuardPanelServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Stub",
-			Handler:    _GuardPanelService_Stub_Handler,
+			MethodName: "CreateTask",
+			Handler:    _GuardPanelService_CreateTask_Handler,
+		},
+		{
+			MethodName: "GetTaskDetails",
+			Handler:    _GuardPanelService_GetTaskDetails_Handler,
+		},
+		{
+			MethodName: "UpdateTask",
+			Handler:    _GuardPanelService_UpdateTask_Handler,
+		},
+		{
+			MethodName: "SearchTasks",
+			Handler:    _GuardPanelService_SearchTasks_Handler,
+		},
+		{
+			MethodName: "CreateComment",
+			Handler:    _GuardPanelService_CreateComment_Handler,
+		},
+		{
+			MethodName: "DeleteComment",
+			Handler:    _GuardPanelService_DeleteComment_Handler,
+		},
+		{
+			MethodName: "CreateRefund",
+			Handler:    _GuardPanelService_CreateRefund_Handler,
+		},
+		{
+			MethodName: "CreateVudDecision",
+			Handler:    _GuardPanelService_CreateVudDecision_Handler,
+		},
+		{
+			MethodName: "UpdateVudDecision",
+			Handler:    _GuardPanelService_UpdateVudDecision_Handler,
+		},
+		{
+			MethodName: "CreateEmployee",
+			Handler:    _GuardPanelService_CreateEmployee_Handler,
+		},
+		{
+			MethodName: "UpdateEmployee",
+			Handler:    _GuardPanelService_UpdateEmployee_Handler,
+		},
+		{
+			MethodName: "DeleteEmployee",
+			Handler:    _GuardPanelService_DeleteEmployee_Handler,
+		},
+		{
+			MethodName: "SearchEmployees",
+			Handler:    _GuardPanelService_SearchEmployees_Handler,
+		},
+		{
+			MethodName: "CreateOffice",
+			Handler:    _GuardPanelService_CreateOffice_Handler,
+		},
+		{
+			MethodName: "UpdateOffice",
+			Handler:    _GuardPanelService_UpdateOffice_Handler,
+		},
+		{
+			MethodName: "DeleteOffice",
+			Handler:    _GuardPanelService_DeleteOffice_Handler,
+		},
+		{
+			MethodName: "SearchOffices",
+			Handler:    _GuardPanelService_SearchOffices_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

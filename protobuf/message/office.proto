@@ -1,0 +1,32 @@
+syntax = "proto3";
+package guard.v1;
+option go_package = "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message";
+
+import "google/api/field_behavior.proto";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "message/common.proto";
+
+message Office {
+  int64 id = 1;
+  string name = 2;
+  string address = 3;
+  Lookup created_by = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message CreateOfficeRequest {
+  string name = 1 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
+  string address = 2 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
+  int64 created_by_id = 3 [ (validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+}
+
+message UpdateOfficeRequest {
+  int64 id = 1 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
+  optional string name = 2;
+  optional string address = 3;
+}
+
+message SearchOfficesResponse {
+  repeated Office items = 1;
+}

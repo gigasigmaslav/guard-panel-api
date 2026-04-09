@@ -4,17 +4,16 @@
 // 	protoc        v6.32.0
 // source: guard-panel-api.proto
 
-package api
+package v1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	message "github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -25,123 +24,111 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type StubRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StubRequest) Reset() {
-	*x = StubRequest{}
-	mi := &file_guard_panel_api_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StubRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StubRequest) ProtoMessage() {}
-
-func (x *StubRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_guard_panel_api_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StubRequest.ProtoReflect.Descriptor instead.
-func (*StubRequest) Descriptor() ([]byte, []int) {
-	return file_guard_panel_api_proto_rawDescGZIP(), []int{0}
-}
-
-type StubResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StubResponse) Reset() {
-	*x = StubResponse{}
-	mi := &file_guard_panel_api_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StubResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StubResponse) ProtoMessage() {}
-
-func (x *StubResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_guard_panel_api_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StubResponse.ProtoReflect.Descriptor instead.
-func (*StubResponse) Descriptor() ([]byte, []int) {
-	return file_guard_panel_api_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *StubResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 var File_guard_panel_api_proto protoreflect.FileDescriptor
 
 const file_guard_panel_api_proto_rawDesc = "" +
 	"\n" +
-	"\x15guard-panel-api.proto\x12\x18api.v1.guardpanelservice\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\r\n" +
-	"\vStubRequest\"(\n" +
-	"\fStubResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2\x80\x01\n" +
-	"\x11GuardPanelService\x12k\n" +
-	"\x04Stub\x12%.api.v1.guardpanelservice.StubRequest\x1a&.api.v1.guardpanelservice.StubResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/v1/stubBw\x92Ad\x12>\n" +
-	"\x17Guard panel API service\x12\x1cSecurity service taskbar API2\x051.0.02\x10application/json:\x10application/jsonZ\x0epkg/api/v1;apib\x06proto3"
+	"\x15guard-panel-api.proto\x12\bguard.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14message/common.proto\x1a\x12message/task.proto\x1a\x15message/comment.proto\x1a\x14message/refund.proto\x1a\x1amessage/vud-decision.proto\x1a\x16message/employee.proto\x1a\x14message/office.proto2\xff\x11\n" +
+	"\x11GuardPanelService\x12t\n" +
+	"\n" +
+	"CreateTask\x12\x1b.guard.v1.CreateTaskRequest\x1a\x19.guard.v1.CreatedResponse\".\x92A\x13\n" +
+	"\x04task\x12\vcreate task\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/tasks\x12\x81\x01\n" +
+	"\x0eGetTaskDetails\x12\x18.guard.v1.GetByIDRequest\x1a .guard.v1.GetTaskDetailsResponse\"3\x92A\x16\n" +
+	"\x04task\x12\x0eget task by ID\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/tasks/{id}\x12v\n" +
+	"\n" +
+	"UpdateTask\x12\x1b.guard.v1.UpdateTaskRequest\x1a\x16.google.protobuf.Empty\"3\x92A\x13\n" +
+	"\x04task\x12\vupdate task\x82\xd3\xe4\x93\x02\x17:\x01*2\x12/api/v1/tasks/{id}\x12\x7f\n" +
+	"\vSearchTasks\x12\x1c.guard.v1.SearchTasksRequest\x1a\x1d.guard.v1.SearchTasksResponse\"3\x92A\x14\n" +
+	"\x04task\x12\fsearch tasks\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/tasks/search\x12\x83\x01\n" +
+	"\rCreateComment\x12\x1e.guard.v1.CreateCommentRequest\x1a\x19.guard.v1.CreatedResponse\"7\x92A\x19\n" +
+	"\acomment\x12\x0ecreate comment\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/comments\x12\x80\x01\n" +
+	"\rDeleteComment\x12\x1b.guard.v1.DeleteByIDRequest\x1a\x16.google.protobuf.Empty\":\x92A\x1a\n" +
+	"\bcomment \x12\x0edelete comment\x82\xd3\xe4\x93\x02\x17*\x15/api/v1/comments/{id}\x12~\n" +
+	"\fCreateRefund\x12\x1d.guard.v1.CreateRefundRequest\x1a\x19.guard.v1.CreatedResponse\"4\x92A\x17\n" +
+	"\x06refund\x12\rcreate refund\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/refunds\x12\x9a\x01\n" +
+	"\x11CreateVudDecision\x12\".guard.v1.CreateVudDecisionRequest\x1a\x19.guard.v1.CreatedResponse\"F\x92A#\n" +
+	"\fvud_decision\x12\x13create VUD decision\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/vud-decisions\x12\x9c\x01\n" +
+	"\x11UpdateVudDecision\x12\".guard.v1.UpdateVudDecisionRequest\x1a\x16.google.protobuf.Empty\"K\x92A#\n" +
+	"\fvud_decision\x12\x13update VUD decision\x82\xd3\xe4\x93\x02\x1f:\x01*2\x1a/api/v1/vud-decisions/{id}\x12\x88\x01\n" +
+	"\x0eCreateEmployee\x12\x1f.guard.v1.CreateEmployeeRequest\x1a\x19.guard.v1.CreatedResponse\":\x92A\x1b\n" +
+	"\bemployee\x12\x0fcreate employee\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/v1/employees\x12\x8a\x01\n" +
+	"\x0eUpdateEmployee\x12\x1f.guard.v1.UpdateEmployeeRequest\x1a\x16.google.protobuf.Empty\"?\x92A\x1b\n" +
+	"\bemployee\x12\x0fupdate employee\x82\xd3\xe4\x93\x02\x1b:\x01*2\x16/api/v1/employees/{id}\x12\x83\x01\n" +
+	"\x0eDeleteEmployee\x12\x1b.guard.v1.DeleteByIDRequest\x1a\x16.google.protobuf.Empty\"<\x92A\x1b\n" +
+	"\bemployee\x12\x0fdelete employee\x82\xd3\xe4\x93\x02\x18*\x16/api/v1/employees/{id}\x12\x8d\x01\n" +
+	"\x0fSearchEmployees\x12\x16.google.protobuf.Empty\x1a!.guard.v1.SearchEmployeesResponse\"?\x92A\x1c\n" +
+	"\bemployee\x12\x10search employees\x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/employees/search\x12~\n" +
+	"\fCreateOffice\x12\x1d.guard.v1.CreateOfficeRequest\x1a\x19.guard.v1.CreatedResponse\"4\x92A\x17\n" +
+	"\x06office\x12\rcreate office\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/offices\x12\x80\x01\n" +
+	"\fUpdateOffice\x12\x1d.guard.v1.UpdateOfficeRequest\x1a\x16.google.protobuf.Empty\"9\x92A\x17\n" +
+	"\x06office\x12\rupdate office\x82\xd3\xe4\x93\x02\x19:\x01*2\x14/api/v1/offices/{id}\x12{\n" +
+	"\fDeleteOffice\x12\x1b.guard.v1.DeleteByIDRequest\x1a\x16.google.protobuf.Empty\"6\x92A\x17\n" +
+	"\x06office\x12\rdelete office\x82\xd3\xe4\x93\x02\x16*\x14/api/v1/offices/{id}\x12\x83\x01\n" +
+	"\rSearchOffices\x12\x16.google.protobuf.Empty\x1a\x1f.guard.v1.SearchOfficesResponse\"9\x92A\x18\n" +
+	"\x06office\x12\x0esearch offices\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/offices/searchB\x9c\x01\x92Ad\x12>\n" +
+	"\x17Guard panel API service\x12\x1cSecurity service taskbar API2\x051.0.02\x10application/json:\x10application/jsonZ3github.com/gigasigmaslav/guard-panel-api/pkg/api/v1b\x06proto3"
 
-var (
-	file_guard_panel_api_proto_rawDescOnce sync.Once
-	file_guard_panel_api_proto_rawDescData []byte
-)
-
-func file_guard_panel_api_proto_rawDescGZIP() []byte {
-	file_guard_panel_api_proto_rawDescOnce.Do(func() {
-		file_guard_panel_api_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_guard_panel_api_proto_rawDesc), len(file_guard_panel_api_proto_rawDesc)))
-	})
-	return file_guard_panel_api_proto_rawDescData
-}
-
-var file_guard_panel_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_guard_panel_api_proto_goTypes = []any{
-	(*StubRequest)(nil),  // 0: api.v1.guardpanelservice.StubRequest
-	(*StubResponse)(nil), // 1: api.v1.guardpanelservice.StubResponse
+	(*message.CreateTaskRequest)(nil),        // 0: guard.v1.CreateTaskRequest
+	(*message.GetByIDRequest)(nil),           // 1: guard.v1.GetByIDRequest
+	(*message.UpdateTaskRequest)(nil),        // 2: guard.v1.UpdateTaskRequest
+	(*message.SearchTasksRequest)(nil),       // 3: guard.v1.SearchTasksRequest
+	(*message.CreateCommentRequest)(nil),     // 4: guard.v1.CreateCommentRequest
+	(*message.DeleteByIDRequest)(nil),        // 5: guard.v1.DeleteByIDRequest
+	(*message.CreateRefundRequest)(nil),      // 6: guard.v1.CreateRefundRequest
+	(*message.CreateVudDecisionRequest)(nil), // 7: guard.v1.CreateVudDecisionRequest
+	(*message.UpdateVudDecisionRequest)(nil), // 8: guard.v1.UpdateVudDecisionRequest
+	(*message.CreateEmployeeRequest)(nil),    // 9: guard.v1.CreateEmployeeRequest
+	(*message.UpdateEmployeeRequest)(nil),    // 10: guard.v1.UpdateEmployeeRequest
+	(*emptypb.Empty)(nil),                    // 11: google.protobuf.Empty
+	(*message.CreateOfficeRequest)(nil),      // 12: guard.v1.CreateOfficeRequest
+	(*message.UpdateOfficeRequest)(nil),      // 13: guard.v1.UpdateOfficeRequest
+	(*message.CreatedResponse)(nil),          // 14: guard.v1.CreatedResponse
+	(*message.GetTaskDetailsResponse)(nil),   // 15: guard.v1.GetTaskDetailsResponse
+	(*message.SearchTasksResponse)(nil),      // 16: guard.v1.SearchTasksResponse
+	(*message.SearchEmployeesResponse)(nil),  // 17: guard.v1.SearchEmployeesResponse
+	(*message.SearchOfficesResponse)(nil),    // 18: guard.v1.SearchOfficesResponse
 }
 var file_guard_panel_api_proto_depIdxs = []int32{
-	0, // 0: api.v1.guardpanelservice.GuardPanelService.Stub:input_type -> api.v1.guardpanelservice.StubRequest
-	1, // 1: api.v1.guardpanelservice.GuardPanelService.Stub:output_type -> api.v1.guardpanelservice.StubResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: guard.v1.GuardPanelService.CreateTask:input_type -> guard.v1.CreateTaskRequest
+	1,  // 1: guard.v1.GuardPanelService.GetTaskDetails:input_type -> guard.v1.GetByIDRequest
+	2,  // 2: guard.v1.GuardPanelService.UpdateTask:input_type -> guard.v1.UpdateTaskRequest
+	3,  // 3: guard.v1.GuardPanelService.SearchTasks:input_type -> guard.v1.SearchTasksRequest
+	4,  // 4: guard.v1.GuardPanelService.CreateComment:input_type -> guard.v1.CreateCommentRequest
+	5,  // 5: guard.v1.GuardPanelService.DeleteComment:input_type -> guard.v1.DeleteByIDRequest
+	6,  // 6: guard.v1.GuardPanelService.CreateRefund:input_type -> guard.v1.CreateRefundRequest
+	7,  // 7: guard.v1.GuardPanelService.CreateVudDecision:input_type -> guard.v1.CreateVudDecisionRequest
+	8,  // 8: guard.v1.GuardPanelService.UpdateVudDecision:input_type -> guard.v1.UpdateVudDecisionRequest
+	9,  // 9: guard.v1.GuardPanelService.CreateEmployee:input_type -> guard.v1.CreateEmployeeRequest
+	10, // 10: guard.v1.GuardPanelService.UpdateEmployee:input_type -> guard.v1.UpdateEmployeeRequest
+	5,  // 11: guard.v1.GuardPanelService.DeleteEmployee:input_type -> guard.v1.DeleteByIDRequest
+	11, // 12: guard.v1.GuardPanelService.SearchEmployees:input_type -> google.protobuf.Empty
+	12, // 13: guard.v1.GuardPanelService.CreateOffice:input_type -> guard.v1.CreateOfficeRequest
+	13, // 14: guard.v1.GuardPanelService.UpdateOffice:input_type -> guard.v1.UpdateOfficeRequest
+	5,  // 15: guard.v1.GuardPanelService.DeleteOffice:input_type -> guard.v1.DeleteByIDRequest
+	11, // 16: guard.v1.GuardPanelService.SearchOffices:input_type -> google.protobuf.Empty
+	14, // 17: guard.v1.GuardPanelService.CreateTask:output_type -> guard.v1.CreatedResponse
+	15, // 18: guard.v1.GuardPanelService.GetTaskDetails:output_type -> guard.v1.GetTaskDetailsResponse
+	11, // 19: guard.v1.GuardPanelService.UpdateTask:output_type -> google.protobuf.Empty
+	16, // 20: guard.v1.GuardPanelService.SearchTasks:output_type -> guard.v1.SearchTasksResponse
+	14, // 21: guard.v1.GuardPanelService.CreateComment:output_type -> guard.v1.CreatedResponse
+	11, // 22: guard.v1.GuardPanelService.DeleteComment:output_type -> google.protobuf.Empty
+	14, // 23: guard.v1.GuardPanelService.CreateRefund:output_type -> guard.v1.CreatedResponse
+	14, // 24: guard.v1.GuardPanelService.CreateVudDecision:output_type -> guard.v1.CreatedResponse
+	11, // 25: guard.v1.GuardPanelService.UpdateVudDecision:output_type -> google.protobuf.Empty
+	14, // 26: guard.v1.GuardPanelService.CreateEmployee:output_type -> guard.v1.CreatedResponse
+	11, // 27: guard.v1.GuardPanelService.UpdateEmployee:output_type -> google.protobuf.Empty
+	11, // 28: guard.v1.GuardPanelService.DeleteEmployee:output_type -> google.protobuf.Empty
+	17, // 29: guard.v1.GuardPanelService.SearchEmployees:output_type -> guard.v1.SearchEmployeesResponse
+	14, // 30: guard.v1.GuardPanelService.CreateOffice:output_type -> guard.v1.CreatedResponse
+	11, // 31: guard.v1.GuardPanelService.UpdateOffice:output_type -> google.protobuf.Empty
+	11, // 32: guard.v1.GuardPanelService.DeleteOffice:output_type -> google.protobuf.Empty
+	18, // 33: guard.v1.GuardPanelService.SearchOffices:output_type -> guard.v1.SearchOfficesResponse
+	17, // [17:34] is the sub-list for method output_type
+	0,  // [0:17] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_guard_panel_api_proto_init() }
@@ -155,13 +142,12 @@ func file_guard_panel_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_guard_panel_api_proto_rawDesc), len(file_guard_panel_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_guard_panel_api_proto_goTypes,
 		DependencyIndexes: file_guard_panel_api_proto_depIdxs,
-		MessageInfos:      file_guard_panel_api_proto_msgTypes,
 	}.Build()
 	File_guard_panel_api_proto = out.File
 	file_guard_panel_api_proto_goTypes = nil

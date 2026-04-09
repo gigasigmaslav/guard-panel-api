@@ -5,6 +5,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/contract"
 )
 
 type DB interface {
@@ -28,6 +30,8 @@ type Transactor interface {
 	InTx(context.Context, func(tx pgx.Tx) error) error
 }
 
+var _ contract.RepoTransactor = (*Storage)(nil)
+
 type Storage struct {
 	tx Transactor
 	*queries
@@ -40,7 +44,7 @@ func NewStorage(db DB) *Storage {
 	}
 }
 
-func (s *Storage) InTx(ctx context.Context, f func(repo any) error) error {
+func (s *Storage) InTx(ctx context.Context, f func(repo contract.TxRepo) error) error {
 	return s.tx.InTx(ctx, func(tx pgx.Tx) error {
 		return f(newQueries(tx))
 	})

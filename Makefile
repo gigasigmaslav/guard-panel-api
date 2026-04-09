@@ -1,6 +1,7 @@
 GOFILES = $(shell find . -type f -name '*.go')
 LOCAL_BIN:=$(CURDIR)/bin
 APP_NAME=guard-panel-api
+PROTO_FILES := $(shell find protobuf/message -name '*.proto') protobuf/guard-panel-api.proto
 
 ifeq ($(OS),Windows_NT)
 	GOLANGCI_BIN:=$(LOCAL_BIN)/golangci-lint.exe
@@ -44,7 +45,7 @@ gen-server: # Generate server protobuf files
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt allow_delete_body=true \
-		protobuf/guard-panel-api.proto
+		$(PROTO_FILES)
 	protoc --proto_path protobuf/ \
 		--proto_path protobuf/google/ \
 		--experimental_allow_proto3_optional \
@@ -54,7 +55,9 @@ gen-server: # Generate server protobuf files
 		--openapiv2_opt allow_delete_body=true \
 		--openapiv2_opt allow_merge=true \
 		--openapiv2_opt use_go_templates=true \
-		protobuf/guard-panel-api.proto
+		$(PROTO_FILES)
+	@# Rename the generated swagger to a stable name (if present)
+	@if [ -f docs/apidocs.swagger.json ]; then mv docs/apidocs.swagger.json docs/http-gateway.openapi.json; fi
 	protoc --proto_path protobuf/ \
 		--proto_path protobuf/google/ \
 		--experimental_allow_proto3_optional \
@@ -65,7 +68,7 @@ gen-server: # Generate server protobuf files
 		--validate_out pkg/api/v1 \
 		--validate_opt "lang=go" \
 		--validate_opt paths=source_relative \
-		protobuf/guard-panel-api.proto
+		$(PROTO_FILES)
 
 test: install-gotestsum # Run all tests
 	$(info Cleaning test cache...)

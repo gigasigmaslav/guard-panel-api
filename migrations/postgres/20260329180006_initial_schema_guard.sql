@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS guard.tasks (
     end_date        TIMESTAMPTZ,
     executor_id     BIGINT                   NOT NULL,
     executor_name   TEXT                     NOT NULL,
+    office_id       BIGINT                   NOT NULL,
+    office_name     TEXT                     NOT NULL,
     created_by_id   BIGINT                   NOT NULL,
     created_by_name TEXT                     NOT NULL,
     created_at      TIMESTAMPTZ              NOT NULL DEFAULT NOW()
@@ -24,7 +26,8 @@ CREATE TABLE IF NOT EXISTS guard.vud_decisions (
     ud                   VARCHAR(25),
     created_by_id        BIGINT                   NOT NULL,
     created_by_name      TEXT                     NOT NULL,
-    created_at           TIMESTAMPTZ              NOT NULL DEFAULT NOW()
+    created_at           TIMESTAMPTZ              NOT NULL DEFAULT NOW(),
+    CONSTRAINT vud_decisions_task_id_unique UNIQUE (task_id)
 );
 
 CREATE TABLE IF NOT EXISTS guard.refunds (
@@ -40,10 +43,11 @@ CREATE TABLE IF NOT EXISTS guard.refunds (
 CREATE TABLE IF NOT EXISTS guard.comments (
     id                   BIGSERIAL PRIMARY KEY,
     task_id              BIGINT                   NOT NULL REFERENCES guard.tasks (id),
-    comment              TEXT,
+    comment              TEXT                     NOT NULL,
     created_by_id        BIGINT                   NOT NULL,
     created_by_name      TEXT                     NOT NULL,
-    created_at           TIMESTAMPTZ              NOT NULL DEFAULT NOW()
+    created_at           TIMESTAMPTZ              NOT NULL DEFAULT NOW(),
+    deleted_at           TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS guard.violators (
@@ -58,7 +62,6 @@ CREATE TABLE IF NOT EXISTS guard.history_changes (
     id              BIGSERIAL PRIMARY KEY,
     task_id         BIGINT                   NOT NULL REFERENCES guard.tasks (id),
     event           INTEGER                  NOT NULL,
-    metadata_json   JSONB,
     created_by_id   BIGINT                   NOT NULL,
     created_by_name TEXT                     NOT NULL,
     created_at      TIMESTAMPTZ              NOT NULL DEFAULT NOW()
