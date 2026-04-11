@@ -12,6 +12,7 @@ import "message/refund.proto";
 import "message/vud-decision.proto";
 import "message/employee.proto";
 import "message/office.proto";
+import "message/auth.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     consumes: ["application/json"];
@@ -102,5 +103,19 @@ service GuardPanelService {
     rpc SearchOffices(google.protobuf.Empty) returns (SearchOfficesResponse) {
         option (google.api.http) = { get: "/api/v1/offices/search" };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["office"] summary: "search offices" };
+    }
+
+    // Auth
+    rpc SignUp(SignUpRequest) returns (AuthTokensResponse) {
+        option (google.api.http) = { post: "/api/v1/auth/sign-up" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["auth"] summary: "first sign up (set password)" };
+    }
+    rpc SignIn(SignInRequest) returns (AuthTokensResponse) {
+        option (google.api.http) = { post: "/api/v1/auth/sign-in" body: "*" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["auth"] summary: "sign in" };
+    }
+    rpc WhoAmI(google.protobuf.Empty) returns (WhoAmIResponse) {
+        option (google.api.http) = { get: "/api/v1/auth/whoami" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["auth"] summary: "current user profile" };
     }
 }

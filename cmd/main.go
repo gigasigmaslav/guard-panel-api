@@ -19,7 +19,7 @@ func main() {
 
 	runner := gokit.NewRunner()
 
-	app, err := app.New(context.Background(), cfg)
+	app, err := app.New(context.Background(), runner, cfg)
 	if err != nil {
 		log.Fatal().Err(err).Msg("get new app")
 	}

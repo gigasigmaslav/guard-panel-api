@@ -12,6 +12,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 
+	auth "github.com/gigasigmaslav/guard-panel-api/internal/pkg/auth"
+	grpcpkg "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/internal/pkg/postgres"
 	"github.com/gigasigmaslav/guard-panel-api/migrations"
 
@@ -19,6 +21,7 @@ import (
 	"github.com/gigasigmaslav/guard-panel-api/internal/config"
 	"github.com/gigasigmaslav/guard-panel-api/internal/server"
 
+	authuc "github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/auth"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/comment"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/employee"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/office"
@@ -37,15 +40,35 @@ type App struct {
 	server *server.Server
 }
 
-func New(ctx context.Context, cfg config.Config) (*App, error) {
+func New(ctx context.Context, runtime gokit.Runtime, cfg config.Config) (*App, error) {
 	repoStorage, err := getPostgresStorage(ctx, cfg.PostgresDB)
 	if err != nil {
 		return nil, err
 	}
 
-	serverDependencies := getGRPCServerDependencies(repoStorage)
+	tokenCodec, err := auth.NewTokenCodec(
+		[]byte(cfg.Auth.AccessTokenSecret),
+		cfg.Auth.AccessTokenTTL,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("auth access token codec: %w", err)
+	}
+
+	passwordHasher := auth.BcryptHasher{}
+
+	serverDependencies := getGRPCServerDependencies(
+		repoStorage,
+		tokenCodec,
+		passwordHasher,
+	)
 
 	server := server.New(cfg, serverDependencies)
+
+	runtimeOpts := []gokit.Option{
+		gokit.WithUnaryInterceptor(grpcpkg.AuthInterceptor(tokenCodec)),
+	}
+
+	runtime.ApplyOptions(runtimeOpts...)
 
 	ctx, cancel := context.WithCancel(ctx)
 
@@ -108,7 +131,11 @@ func getPostgresStorage(ctx context.Context, cfg config.PostgresDB) (*repo.Stora
 	return repo.NewStorage(db), err
 }
 
-func getGRPCServerDependencies(repoStorage *repo.Storage) *server.Dependencies {
+func getGRPCServerDependencies(
+	repoStorage *repo.Storage,
+	tokenCodec auth.TokenCodec,
+	passwordHasher auth.BcryptHasher,
+) *server.Dependencies {
 	createCommentUC := comment.NewCreateCommentUseCase(repoStorage)
 	deleteCommentUC := comment.NewDeleteCommentUseCase(repoStorage)
 	createRefundUC := refund.NewCreateRefundUseCase(repoStorage)
@@ -122,21 +149,17 @@ func getGRPCServerDependencies(repoStorage *repo.Storage) *server.Dependencies {
 	updateOfficeUC := office.NewUpdateOfficeUseCase(repoStorage)
 	deleteOfficeUC := office.NewDeleteOfficeUseCase(repoStorage)
 	searchOfficeUC := office.NewSearchOfficeUseCase(repoStorage)
-	createTaskUC := task.NewCreateTaskUseCase(
-		repoStorage,
-		repoStorage,
-		repoStorage,
-	)
+	createTaskUC := task.NewCreateTaskUseCase(repoStorage, repoStorage, repoStorage)
 	updateTaskUC := task.NewUpdateTaskUseCase(repoStorage)
+	searchTasksUC := task.NewSearchTasksUseCase(repoStorage, repoStorage)
+	signUpUC := authuc.NewSignUpUseCase(repoStorage, repoStorage, tokenCodec, passwordHasher)
+	signInUC := authuc.NewSignInUseCase(repoStorage, repoStorage, tokenCodec, passwordHasher)
+	whoAmIUC := authuc.NewWhoAmIUseCase(repoStorage)
 	getTaskByIDUC := task.NewGetTaskByIDUseCase(
 		repoStorage,
 		repoStorage,
 		repoStorage,
 		repoStorage,
-		repoStorage,
-		repoStorage,
-	)
-	searchTasksUC := task.NewSearchTasksUseCase(
 		repoStorage,
 		repoStorage,
 	)
@@ -159,5 +182,8 @@ func getGRPCServerDependencies(repoStorage *repo.Storage) *server.Dependencies {
 		updateTaskUC,
 		getTaskByIDUC,
 		searchTasksUC,
+		signUpUC,
+		signInUC,
+		whoAmIUC,
 	)
 }

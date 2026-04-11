@@ -38,6 +38,9 @@ const (
 	GuardPanelService_UpdateOffice_FullMethodName      = "/guard.v1.GuardPanelService/UpdateOffice"
 	GuardPanelService_DeleteOffice_FullMethodName      = "/guard.v1.GuardPanelService/DeleteOffice"
 	GuardPanelService_SearchOffices_FullMethodName     = "/guard.v1.GuardPanelService/SearchOffices"
+	GuardPanelService_SignUp_FullMethodName            = "/guard.v1.GuardPanelService/SignUp"
+	GuardPanelService_SignIn_FullMethodName            = "/guard.v1.GuardPanelService/SignIn"
+	GuardPanelService_WhoAmI_FullMethodName            = "/guard.v1.GuardPanelService/WhoAmI"
 )
 
 // GuardPanelServiceClient is the client API for GuardPanelService service.
@@ -67,6 +70,10 @@ type GuardPanelServiceClient interface {
 	UpdateOffice(ctx context.Context, in *message.UpdateOfficeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteOffice(ctx context.Context, in *message.DeleteByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	SearchOffices(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.SearchOfficesResponse, error)
+	// Auth
+	SignUp(ctx context.Context, in *message.SignUpRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error)
+	SignIn(ctx context.Context, in *message.SignInRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error)
+	WhoAmI(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.WhoAmIResponse, error)
 }
 
 type guardPanelServiceClient struct {
@@ -247,6 +254,36 @@ func (c *guardPanelServiceClient) SearchOffices(ctx context.Context, in *emptypb
 	return out, nil
 }
 
+func (c *guardPanelServiceClient) SignUp(ctx context.Context, in *message.SignUpRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.AuthTokensResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_SignUp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) SignIn(ctx context.Context, in *message.SignInRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.AuthTokensResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_SignIn_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *guardPanelServiceClient) WhoAmI(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.WhoAmIResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.WhoAmIResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_WhoAmI_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GuardPanelServiceServer is the server API for GuardPanelService service.
 // All implementations must embed UnimplementedGuardPanelServiceServer
 // for forward compatibility.
@@ -274,6 +311,10 @@ type GuardPanelServiceServer interface {
 	UpdateOffice(context.Context, *message.UpdateOfficeRequest) (*emptypb.Empty, error)
 	DeleteOffice(context.Context, *message.DeleteByIDRequest) (*emptypb.Empty, error)
 	SearchOffices(context.Context, *emptypb.Empty) (*message.SearchOfficesResponse, error)
+	// Auth
+	SignUp(context.Context, *message.SignUpRequest) (*message.AuthTokensResponse, error)
+	SignIn(context.Context, *message.SignInRequest) (*message.AuthTokensResponse, error)
+	WhoAmI(context.Context, *emptypb.Empty) (*message.WhoAmIResponse, error)
 	mustEmbedUnimplementedGuardPanelServiceServer()
 }
 
@@ -334,6 +375,15 @@ func (UnimplementedGuardPanelServiceServer) DeleteOffice(context.Context, *messa
 }
 func (UnimplementedGuardPanelServiceServer) SearchOffices(context.Context, *emptypb.Empty) (*message.SearchOfficesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SearchOffices not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) SignUp(context.Context, *message.SignUpRequest) (*message.AuthTokensResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SignUp not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) SignIn(context.Context, *message.SignInRequest) (*message.AuthTokensResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SignIn not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) WhoAmI(context.Context, *emptypb.Empty) (*message.WhoAmIResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method WhoAmI not implemented")
 }
 func (UnimplementedGuardPanelServiceServer) mustEmbedUnimplementedGuardPanelServiceServer() {}
 func (UnimplementedGuardPanelServiceServer) testEmbeddedByValue()                           {}
@@ -662,6 +712,60 @@ func _GuardPanelService_SearchOffices_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GuardPanelService_SignUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.SignUpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).SignUp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_SignUp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).SignUp(ctx, req.(*message.SignUpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.SignInRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).SignIn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_SignIn_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).SignIn(ctx, req.(*message.SignInRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GuardPanelService_WhoAmI_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).WhoAmI(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_WhoAmI_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).WhoAmI(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GuardPanelService_ServiceDesc is the grpc.ServiceDesc for GuardPanelService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -736,6 +840,18 @@ var GuardPanelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchOffices",
 			Handler:    _GuardPanelService_SearchOffices_Handler,
+		},
+		{
+			MethodName: "SignUp",
+			Handler:    _GuardPanelService_SignUp_Handler,
+		},
+		{
+			MethodName: "SignIn",
+			Handler:    _GuardPanelService_SignIn_Handler,
+		},
+		{
+			MethodName: "WhoAmI",
+			Handler:    _GuardPanelService_WhoAmI_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
