@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -37,7 +38,7 @@ func (s *Server) CreateVudDecision(
 		Comment:            comment,
 		KUSP:               req.GetKusp(),
 		UD:                 udPtr,
-		CreatedByID:        req.GetCreatedById(),
+		CreatedByID:        grpcctx.GetEmployeeIDFromCtx(ctx),
 	}
 
 	id, err := s.dependencies.CreateVUDDecisionUseCase.Create(ctx, dec)

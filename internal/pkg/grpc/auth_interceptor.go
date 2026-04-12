@@ -17,7 +17,7 @@ var publicMethods = map[string]bool{
 	"/guard.v1.GuardPanelService/SignIn": true,
 }
 
-const employeeIDKey = "employee_id"
+type employeeIDCtxKey struct{}
 
 // AuthInterceptor создаёт unary interceptor для проверки Bearer токенов
 // Защищает все методы кроме публичных (SignUp, SignIn)
@@ -44,8 +44,7 @@ func AuthInterceptor(tokenCodec auth.TokenCodec) grpc.UnaryServerInterceptor {
 			return nil, status.Error(codes.Unauthenticated, "invalid access token")
 		}
 
-		//nolint:revive,staticcheck // context-keys-type / SA1029 key - private package constant
-		ctx = context.WithValue(ctx, employeeIDKey, employeeID)
+		ctx = context.WithValue(ctx, employeeIDCtxKey{}, employeeID)
 
 		return handler(ctx, req)
 	}
@@ -54,8 +53,8 @@ func AuthInterceptor(tokenCodec auth.TokenCodec) grpc.UnaryServerInterceptor {
 // GetEmployeeIDFronCtx извлекает employee_id из контекста
 //
 // Возвращает 0 если employee_id не найден (например, для публичных методов).
-func GetEmployeeIDFronCtx(ctx context.Context) int64 {
-	if employeeID, ok := ctx.Value(employeeIDKey).(int64); ok {
+func GetEmployeeIDFromCtx(ctx context.Context) int64 {
+	if employeeID, ok := ctx.Value(employeeIDCtxKey{}).(int64); ok {
 		return employeeID
 	}
 	return 0

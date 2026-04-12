@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 )
 
@@ -15,7 +16,7 @@ func (s *Server) CreateRefund(
 		TaskID:      req.GetTaskId(),
 		Amount:      req.GetAmount(),
 		Comment:     req.GetComment(),
-		CreatedByID: req.GetCreatedById(),
+		CreatedByID: grpcctx.GetEmployeeIDFromCtx(ctx),
 	}
 
 	id, err := s.dependencies.CreateRefundUseCase.Create(ctx, ref)

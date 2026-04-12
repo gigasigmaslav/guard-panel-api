@@ -241,17 +241,6 @@ func (m *CreateCommentRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetCreatedById() <= 0 {
-		err := CreateCommentRequestValidationError{
-			field:  "CreatedById",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if len(errors) > 0 {
 		return CreateCommentRequestMultiError(errors)
 	}

@@ -18,5 +18,4 @@ message Comment {
 message CreateCommentRequest {
   int64 task_id = 1 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
   string comment = 2 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
-  int64 created_by_id = 3 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
 }

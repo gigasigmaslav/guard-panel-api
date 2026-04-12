@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	taskusecase "github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/task"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 )
 
 func (s *Server) CreateTask(
@@ -25,7 +26,7 @@ func (s *Server) CreateTask(
 		Priority:            priority,
 		ExecutorID:          req.GetExecutorId(),
 		OfficeID:            req.GetOfficeId(),
-		CreatedByID:         req.GetCreatedById(),
+		CreatedByID:         grpcctx.GetEmployeeIDFromCtx(ctx),
 		ViolatorType:        violatorType,
 		ViolatorFullName:    req.GetViolatorFullName(),
 		ViolatorPhoneNumber: &phoneNumber,

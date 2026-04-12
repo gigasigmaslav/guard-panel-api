@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -15,7 +16,7 @@ func (s *Server) CreateComment(
 	comment := entity.Comment{
 		TaskID:      req.GetTaskId(),
 		Comment:     req.GetComment(),
-		CreatedByID: req.GetCreatedById(),
+		CreatedByID: grpcctx.GetEmployeeIDFromCtx(ctx),
 	}
 
 	id, err := s.dependencies.CreateCommentUseCase.Create(ctx, comment)

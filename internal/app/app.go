@@ -17,7 +17,7 @@ import (
 	"github.com/gigasigmaslav/guard-panel-api/internal/pkg/postgres"
 	"github.com/gigasigmaslav/guard-panel-api/migrations"
 
-	"github.com/gigasigmaslav/guard-panel-api/internal/adapters/repo"
+	"github.com/gigasigmaslav/guard-panel-api/internal/adapter/repo"
 	"github.com/gigasigmaslav/guard-panel-api/internal/config"
 	"github.com/gigasigmaslav/guard-panel-api/internal/server"
 

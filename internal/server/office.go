@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -16,7 +17,7 @@ func (s *Server) CreateOffice(
 	office := entity.Office{
 		Name:        req.GetName(),
 		Address:     req.GetAddress(),
-		CreatedByID: req.GetCreatedById(),
+		CreatedByID: grpcctx.GetEmployeeIDFromCtx(ctx),
 	}
 
 	id, err := s.dependencies.CreateOfficeUseCase.Create(ctx, office)

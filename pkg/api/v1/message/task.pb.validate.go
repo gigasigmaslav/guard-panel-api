@@ -112,17 +112,6 @@ func (m *CreateTaskRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetCreatedById() <= 0 {
-		err := CreateTaskRequestValidationError{
-			field:  "CreatedById",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if _, ok := _CreateTaskRequest_ViolatorType_NotInLookup[m.GetViolatorType()]; ok {
 		err := CreateTaskRequestValidationError{
 			field:  "ViolatorType",

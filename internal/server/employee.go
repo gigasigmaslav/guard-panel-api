@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -18,7 +19,7 @@ func (s *Server) CreateEmployee(
 	emp := entity.Employee{
 		FullName:    req.GetFullName(),
 		Position:    pos,
-		CreatedByID: req.GetCreatedById(),
+		CreatedByID: grpcctx.GetEmployeeIDFromCtx(ctx),
 	}
 
 	id, err := s.dependencies.CreateEmployeeUseCase.Create(ctx, emp)

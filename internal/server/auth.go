@@ -11,7 +11,7 @@ import (
 
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/contract"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/entity"
-	"github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
+	grpcctx "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
 	"github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/message"
 )
 
@@ -48,7 +48,7 @@ func (s *Server) SignIn(ctx context.Context, req *message.SignInRequest) (*messa
 }
 
 func (s *Server) WhoAmI(ctx context.Context, _ *emptypb.Empty) (*message.WhoAmIResponse, error) {
-	employeeID := grpc.GetEmployeeIDFronCtx(ctx)
+	employeeID := grpcctx.GetEmployeeIDFromCtx(ctx)
 	if employeeID == 0 {
 		return nil, status.Error(codes.Unauthenticated, "employee_id not found in context")
 	}

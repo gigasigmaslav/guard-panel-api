@@ -1055,16 +1055,11 @@
         },
         "comment": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "taskId",
-        "comment",
-        "createdById"
+        "comment"
       ]
     },
     "v1CreateEmployeeRequest": {
@@ -1075,16 +1070,11 @@
         },
         "position": {
           "$ref": "#/definitions/v1EmployeePosition"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "fullName",
-        "position",
-        "createdById"
+        "position"
       ]
     },
     "v1CreateOfficeRequest": {
@@ -1095,16 +1085,11 @@
         },
         "address": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "name",
-        "address",
-        "createdById"
+        "address"
       ]
     },
     "v1CreateRefundRequest": {
@@ -1120,17 +1105,12 @@
         },
         "comment": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "taskId",
         "amount",
-        "comment",
-        "createdById"
+        "comment"
       ]
     },
     "v1CreateTaskRequest": {
@@ -1151,10 +1131,6 @@
           "type": "string",
           "format": "int64"
         },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
-        },
         "violatorType": {
           "$ref": "#/definitions/v1ViolatorType"
         },
@@ -1170,7 +1146,6 @@
         "priority",
         "executorId",
         "officeId",
-        "createdById",
         "violatorType",
         "violatorFullName",
         "violatorPhoneNumber"
@@ -1186,10 +1161,6 @@
         "kusp": {
           "type": "string"
         },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
-        },
         "ud": {
           "type": "string"
         },
@@ -1202,8 +1173,7 @@
       },
       "required": [
         "taskId",
-        "kusp",
-        "createdById"
+        "kusp"
       ]
     },
     "v1CreatedResponse": {

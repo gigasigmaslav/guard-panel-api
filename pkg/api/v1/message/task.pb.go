@@ -82,10 +82,9 @@ type CreateTaskRequest struct {
 	Priority            TaskPriority           `protobuf:"varint,2,opt,name=priority,proto3,enum=guard.v1.TaskPriority" json:"priority,omitempty"`
 	ExecutorId          int64                  `protobuf:"varint,3,opt,name=executor_id,json=executorId,proto3" json:"executor_id,omitempty"`
 	OfficeId            int64                  `protobuf:"varint,4,opt,name=office_id,json=officeId,proto3" json:"office_id,omitempty"`
-	CreatedById         int64                  `protobuf:"varint,5,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
-	ViolatorType        ViolatorType           `protobuf:"varint,6,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
-	ViolatorFullName    string                 `protobuf:"bytes,7,opt,name=violator_full_name,json=violatorFullName,proto3" json:"violator_full_name,omitempty"`
-	ViolatorPhoneNumber string                 `protobuf:"bytes,8,opt,name=violator_phone_number,json=violatorPhoneNumber,proto3" json:"violator_phone_number,omitempty"`
+	ViolatorType        ViolatorType           `protobuf:"varint,5,opt,name=violator_type,json=violatorType,proto3,enum=guard.v1.ViolatorType" json:"violator_type,omitempty"`
+	ViolatorFullName    string                 `protobuf:"bytes,6,opt,name=violator_full_name,json=violatorFullName,proto3" json:"violator_full_name,omitempty"`
+	ViolatorPhoneNumber string                 `protobuf:"bytes,7,opt,name=violator_phone_number,json=violatorPhoneNumber,proto3" json:"violator_phone_number,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -144,13 +143,6 @@ func (x *CreateTaskRequest) GetExecutorId() int64 {
 func (x *CreateTaskRequest) GetOfficeId() int64 {
 	if x != nil {
 		return x.OfficeId
-	}
-	return 0
-}
-
-func (x *CreateTaskRequest) GetCreatedById() int64 {
-	if x != nil {
-		return x.CreatedById
 	}
 	return 0
 }
@@ -1133,7 +1125,7 @@ var File_message_task_proto protoreflect.FileDescriptor
 
 const file_message_task_proto_rawDesc = "" +
 	"\n" +
-	"\x12message/task.proto\x12\bguard.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14message/common.proto\"\xd3\x03\n" +
+	"\x12message/task.proto\x12\bguard.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14message/common.proto\"\xa3\x03\n" +
 	"\x11CreateTaskRequest\x12/\n" +
 	"\rdamage_amount\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\fdamageAmount\x12A\n" +
@@ -1142,13 +1134,11 @@ const file_message_task_proto_rawDesc = "" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\n" +
 	"executorId\x12'\n" +
 	"\toffice_id\x18\x04 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\bofficeId\x12.\n" +
-	"\rcreated_by_id\x18\x05 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\x12J\n" +
-	"\rviolator_type\x18\x06 \x01(\x0e2\x16.guard.v1.ViolatorTypeB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\fviolatorType\x128\n" +
-	"\x12violator_full_name\x18\a \x01(\tB\n" +
+	"\xe0A\x02\xfaB\x04\"\x02 \x00R\bofficeId\x12J\n" +
+	"\rviolator_type\x18\x05 \x01(\x0e2\x16.guard.v1.ViolatorTypeB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\fviolatorType\x128\n" +
+	"\x12violator_full_name\x18\x06 \x01(\tB\n" +
 	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\x10violatorFullName\x12>\n" +
-	"\x15violator_phone_number\x18\b \x01(\tB\n" +
+	"\x15violator_phone_number\x18\a \x01(\tB\n" +
 	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\x13violatorPhoneNumber\"\xcb\x0e\n" +
 	"\x04Task\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12#\n" +
