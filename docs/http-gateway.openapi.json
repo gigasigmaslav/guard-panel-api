@@ -17,6 +17,45 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/analytics": {
+      "get": {
+        "summary": "task dashboard KPI",
+        "operationId": "GuardPanelService_GetTaskDashboardKPI",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetTaskDashboardKPIResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "periodFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "periodTo",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "analytics"
+        ]
+      }
+    },
     "/api/v1/auth/sign-in": {
       "post": {
         "summary": "sign in",
@@ -776,6 +815,27 @@
     }
   },
   "definitions": {
+    "GetTaskDashboardKPIResponseTopExecutorByCompleted": {
+      "type": "object",
+      "properties": {
+        "executorId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "executorName": {
+          "type": "string"
+        },
+        "completedTasks": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "required": [
+        "executorId",
+        "executorName",
+        "completedTasks"
+      ]
+    },
     "GuardPanelServiceUpdateEmployeeBody": {
       "type": "object",
       "properties": {
@@ -1215,6 +1275,30 @@
         "SEC_HEAD"
       ],
       "default": "EMPLOYEE_POSITION_UNSPECIFIED"
+    },
+    "v1GetTaskDashboardKPIResponse": {
+      "type": "object",
+      "properties": {
+        "activeTasksCount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "completedInPeriod": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdInPeriod": {
+          "type": "string",
+          "format": "int64"
+        },
+        "completedToCreatedRatio": {
+          "type": "number",
+          "format": "double"
+        },
+        "topExecutor": {
+          "$ref": "#/definitions/GetTaskDashboardKPIResponseTopExecutorByCompleted"
+        }
+      }
     },
     "v1GetTaskDetailsResponse": {
       "type": "object",

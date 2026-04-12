@@ -28,7 +28,7 @@ var File_guard_panel_api_proto protoreflect.FileDescriptor
 
 const file_guard_panel_api_proto_rawDesc = "" +
 	"\n" +
-	"\x15guard-panel-api.proto\x12\bguard.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14message/common.proto\x1a\x12message/task.proto\x1a\x15message/comment.proto\x1a\x14message/refund.proto\x1a\x1amessage/vud-decision.proto\x1a\x16message/employee.proto\x1a\x14message/office.proto\x1a\x12message/auth.proto2\xf5\x14\n" +
+	"\x15guard-panel-api.proto\x12\bguard.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x14message/common.proto\x1a\x12message/task.proto\x1a\x15message/comment.proto\x1a\x14message/refund.proto\x1a\x1amessage/vud-decision.proto\x1a\x16message/employee.proto\x1a\x14message/office.proto\x1a\x12message/auth.proto\x1a\x17message/analytics.proto2\x97\x16\n" +
 	"\x11GuardPanelService\x12t\n" +
 	"\n" +
 	"CreateTask\x12\x1b.guard.v1.CreateTaskRequest\x1a\x19.guard.v1.CreatedResponse\".\x92A\x13\n" +
@@ -71,33 +71,37 @@ const file_guard_panel_api_proto_rawDesc = "" +
 	"\x06SignIn\x12\x17.guard.v1.SignInRequest\x1a\x1c.guard.v1.AuthTokensResponse\"1\x92A\x0f\n" +
 	"\x04auth\x12\asign in\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/auth/sign-in\x12v\n" +
 	"\x06WhoAmI\x12\x16.google.protobuf.Empty\x1a\x18.guard.v1.WhoAmIResponse\":\x92A\x1c\n" +
-	"\x04auth\x12\x14current user profile\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/auth/whoamiB\x9c\x01\x92Ad\x12>\n" +
+	"\x04auth\x12\x14current user profile\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/auth/whoami\x12\x9f\x01\n" +
+	"\x13GetTaskDashboardKPI\x12$.guard.v1.GetTaskDashboardKPIRequest\x1a%.guard.v1.GetTaskDashboardKPIResponse\";\x92A\x1f\n" +
+	"\tanalytics\x12\x12task dashboard KPI\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/analyticsB\x9c\x01\x92Ad\x12>\n" +
 	"\x17Guard panel API service\x12\x1cSecurity service taskbar API2\x051.0.02\x10application/json:\x10application/jsonZ3github.com/gigasigmaslav/guard-panel-api/pkg/api/v1b\x06proto3"
 
 var file_guard_panel_api_proto_goTypes = []any{
-	(*message.CreateTaskRequest)(nil),        // 0: guard.v1.CreateTaskRequest
-	(*message.GetByIDRequest)(nil),           // 1: guard.v1.GetByIDRequest
-	(*message.UpdateTaskRequest)(nil),        // 2: guard.v1.UpdateTaskRequest
-	(*message.SearchTasksRequest)(nil),       // 3: guard.v1.SearchTasksRequest
-	(*message.CreateCommentRequest)(nil),     // 4: guard.v1.CreateCommentRequest
-	(*message.DeleteByIDRequest)(nil),        // 5: guard.v1.DeleteByIDRequest
-	(*message.CreateRefundRequest)(nil),      // 6: guard.v1.CreateRefundRequest
-	(*message.CreateVudDecisionRequest)(nil), // 7: guard.v1.CreateVudDecisionRequest
-	(*message.UpdateVudDecisionRequest)(nil), // 8: guard.v1.UpdateVudDecisionRequest
-	(*message.CreateEmployeeRequest)(nil),    // 9: guard.v1.CreateEmployeeRequest
-	(*message.UpdateEmployeeRequest)(nil),    // 10: guard.v1.UpdateEmployeeRequest
-	(*emptypb.Empty)(nil),                    // 11: google.protobuf.Empty
-	(*message.CreateOfficeRequest)(nil),      // 12: guard.v1.CreateOfficeRequest
-	(*message.UpdateOfficeRequest)(nil),      // 13: guard.v1.UpdateOfficeRequest
-	(*message.SignUpRequest)(nil),            // 14: guard.v1.SignUpRequest
-	(*message.SignInRequest)(nil),            // 15: guard.v1.SignInRequest
-	(*message.CreatedResponse)(nil),          // 16: guard.v1.CreatedResponse
-	(*message.GetTaskDetailsResponse)(nil),   // 17: guard.v1.GetTaskDetailsResponse
-	(*message.SearchTasksResponse)(nil),      // 18: guard.v1.SearchTasksResponse
-	(*message.SearchEmployeesResponse)(nil),  // 19: guard.v1.SearchEmployeesResponse
-	(*message.SearchOfficesResponse)(nil),    // 20: guard.v1.SearchOfficesResponse
-	(*message.AuthTokensResponse)(nil),       // 21: guard.v1.AuthTokensResponse
-	(*message.WhoAmIResponse)(nil),           // 22: guard.v1.WhoAmIResponse
+	(*message.CreateTaskRequest)(nil),           // 0: guard.v1.CreateTaskRequest
+	(*message.GetByIDRequest)(nil),              // 1: guard.v1.GetByIDRequest
+	(*message.UpdateTaskRequest)(nil),           // 2: guard.v1.UpdateTaskRequest
+	(*message.SearchTasksRequest)(nil),          // 3: guard.v1.SearchTasksRequest
+	(*message.CreateCommentRequest)(nil),        // 4: guard.v1.CreateCommentRequest
+	(*message.DeleteByIDRequest)(nil),           // 5: guard.v1.DeleteByIDRequest
+	(*message.CreateRefundRequest)(nil),         // 6: guard.v1.CreateRefundRequest
+	(*message.CreateVudDecisionRequest)(nil),    // 7: guard.v1.CreateVudDecisionRequest
+	(*message.UpdateVudDecisionRequest)(nil),    // 8: guard.v1.UpdateVudDecisionRequest
+	(*message.CreateEmployeeRequest)(nil),       // 9: guard.v1.CreateEmployeeRequest
+	(*message.UpdateEmployeeRequest)(nil),       // 10: guard.v1.UpdateEmployeeRequest
+	(*emptypb.Empty)(nil),                       // 11: google.protobuf.Empty
+	(*message.CreateOfficeRequest)(nil),         // 12: guard.v1.CreateOfficeRequest
+	(*message.UpdateOfficeRequest)(nil),         // 13: guard.v1.UpdateOfficeRequest
+	(*message.SignUpRequest)(nil),               // 14: guard.v1.SignUpRequest
+	(*message.SignInRequest)(nil),               // 15: guard.v1.SignInRequest
+	(*message.GetTaskDashboardKPIRequest)(nil),  // 16: guard.v1.GetTaskDashboardKPIRequest
+	(*message.CreatedResponse)(nil),             // 17: guard.v1.CreatedResponse
+	(*message.GetTaskDetailsResponse)(nil),      // 18: guard.v1.GetTaskDetailsResponse
+	(*message.SearchTasksResponse)(nil),         // 19: guard.v1.SearchTasksResponse
+	(*message.SearchEmployeesResponse)(nil),     // 20: guard.v1.SearchEmployeesResponse
+	(*message.SearchOfficesResponse)(nil),       // 21: guard.v1.SearchOfficesResponse
+	(*message.AuthTokensResponse)(nil),          // 22: guard.v1.AuthTokensResponse
+	(*message.WhoAmIResponse)(nil),              // 23: guard.v1.WhoAmIResponse
+	(*message.GetTaskDashboardKPIResponse)(nil), // 24: guard.v1.GetTaskDashboardKPIResponse
 }
 var file_guard_panel_api_proto_depIdxs = []int32{
 	0,  // 0: guard.v1.GuardPanelService.CreateTask:input_type -> guard.v1.CreateTaskRequest
@@ -120,28 +124,30 @@ var file_guard_panel_api_proto_depIdxs = []int32{
 	14, // 17: guard.v1.GuardPanelService.SignUp:input_type -> guard.v1.SignUpRequest
 	15, // 18: guard.v1.GuardPanelService.SignIn:input_type -> guard.v1.SignInRequest
 	11, // 19: guard.v1.GuardPanelService.WhoAmI:input_type -> google.protobuf.Empty
-	16, // 20: guard.v1.GuardPanelService.CreateTask:output_type -> guard.v1.CreatedResponse
-	17, // 21: guard.v1.GuardPanelService.GetTaskDetails:output_type -> guard.v1.GetTaskDetailsResponse
-	11, // 22: guard.v1.GuardPanelService.UpdateTask:output_type -> google.protobuf.Empty
-	18, // 23: guard.v1.GuardPanelService.SearchTasks:output_type -> guard.v1.SearchTasksResponse
-	16, // 24: guard.v1.GuardPanelService.CreateComment:output_type -> guard.v1.CreatedResponse
-	11, // 25: guard.v1.GuardPanelService.DeleteComment:output_type -> google.protobuf.Empty
-	16, // 26: guard.v1.GuardPanelService.CreateRefund:output_type -> guard.v1.CreatedResponse
-	16, // 27: guard.v1.GuardPanelService.CreateVudDecision:output_type -> guard.v1.CreatedResponse
-	11, // 28: guard.v1.GuardPanelService.UpdateVudDecision:output_type -> google.protobuf.Empty
-	16, // 29: guard.v1.GuardPanelService.CreateEmployee:output_type -> guard.v1.CreatedResponse
-	11, // 30: guard.v1.GuardPanelService.UpdateEmployee:output_type -> google.protobuf.Empty
-	11, // 31: guard.v1.GuardPanelService.DeleteEmployee:output_type -> google.protobuf.Empty
-	19, // 32: guard.v1.GuardPanelService.SearchEmployees:output_type -> guard.v1.SearchEmployeesResponse
-	16, // 33: guard.v1.GuardPanelService.CreateOffice:output_type -> guard.v1.CreatedResponse
-	11, // 34: guard.v1.GuardPanelService.UpdateOffice:output_type -> google.protobuf.Empty
-	11, // 35: guard.v1.GuardPanelService.DeleteOffice:output_type -> google.protobuf.Empty
-	20, // 36: guard.v1.GuardPanelService.SearchOffices:output_type -> guard.v1.SearchOfficesResponse
-	21, // 37: guard.v1.GuardPanelService.SignUp:output_type -> guard.v1.AuthTokensResponse
-	21, // 38: guard.v1.GuardPanelService.SignIn:output_type -> guard.v1.AuthTokensResponse
-	22, // 39: guard.v1.GuardPanelService.WhoAmI:output_type -> guard.v1.WhoAmIResponse
-	20, // [20:40] is the sub-list for method output_type
-	0,  // [0:20] is the sub-list for method input_type
+	16, // 20: guard.v1.GuardPanelService.GetTaskDashboardKPI:input_type -> guard.v1.GetTaskDashboardKPIRequest
+	17, // 21: guard.v1.GuardPanelService.CreateTask:output_type -> guard.v1.CreatedResponse
+	18, // 22: guard.v1.GuardPanelService.GetTaskDetails:output_type -> guard.v1.GetTaskDetailsResponse
+	11, // 23: guard.v1.GuardPanelService.UpdateTask:output_type -> google.protobuf.Empty
+	19, // 24: guard.v1.GuardPanelService.SearchTasks:output_type -> guard.v1.SearchTasksResponse
+	17, // 25: guard.v1.GuardPanelService.CreateComment:output_type -> guard.v1.CreatedResponse
+	11, // 26: guard.v1.GuardPanelService.DeleteComment:output_type -> google.protobuf.Empty
+	17, // 27: guard.v1.GuardPanelService.CreateRefund:output_type -> guard.v1.CreatedResponse
+	17, // 28: guard.v1.GuardPanelService.CreateVudDecision:output_type -> guard.v1.CreatedResponse
+	11, // 29: guard.v1.GuardPanelService.UpdateVudDecision:output_type -> google.protobuf.Empty
+	17, // 30: guard.v1.GuardPanelService.CreateEmployee:output_type -> guard.v1.CreatedResponse
+	11, // 31: guard.v1.GuardPanelService.UpdateEmployee:output_type -> google.protobuf.Empty
+	11, // 32: guard.v1.GuardPanelService.DeleteEmployee:output_type -> google.protobuf.Empty
+	20, // 33: guard.v1.GuardPanelService.SearchEmployees:output_type -> guard.v1.SearchEmployeesResponse
+	17, // 34: guard.v1.GuardPanelService.CreateOffice:output_type -> guard.v1.CreatedResponse
+	11, // 35: guard.v1.GuardPanelService.UpdateOffice:output_type -> google.protobuf.Empty
+	11, // 36: guard.v1.GuardPanelService.DeleteOffice:output_type -> google.protobuf.Empty
+	21, // 37: guard.v1.GuardPanelService.SearchOffices:output_type -> guard.v1.SearchOfficesResponse
+	22, // 38: guard.v1.GuardPanelService.SignUp:output_type -> guard.v1.AuthTokensResponse
+	22, // 39: guard.v1.GuardPanelService.SignIn:output_type -> guard.v1.AuthTokensResponse
+	23, // 40: guard.v1.GuardPanelService.WhoAmI:output_type -> guard.v1.WhoAmIResponse
+	24, // 41: guard.v1.GuardPanelService.GetTaskDashboardKPI:output_type -> guard.v1.GetTaskDashboardKPIResponse
+	21, // [21:42] is the sub-list for method output_type
+	0,  // [0:21] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

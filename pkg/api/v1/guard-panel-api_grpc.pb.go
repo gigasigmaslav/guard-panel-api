@@ -21,26 +21,27 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	GuardPanelService_CreateTask_FullMethodName        = "/guard.v1.GuardPanelService/CreateTask"
-	GuardPanelService_GetTaskDetails_FullMethodName    = "/guard.v1.GuardPanelService/GetTaskDetails"
-	GuardPanelService_UpdateTask_FullMethodName        = "/guard.v1.GuardPanelService/UpdateTask"
-	GuardPanelService_SearchTasks_FullMethodName       = "/guard.v1.GuardPanelService/SearchTasks"
-	GuardPanelService_CreateComment_FullMethodName     = "/guard.v1.GuardPanelService/CreateComment"
-	GuardPanelService_DeleteComment_FullMethodName     = "/guard.v1.GuardPanelService/DeleteComment"
-	GuardPanelService_CreateRefund_FullMethodName      = "/guard.v1.GuardPanelService/CreateRefund"
-	GuardPanelService_CreateVudDecision_FullMethodName = "/guard.v1.GuardPanelService/CreateVudDecision"
-	GuardPanelService_UpdateVudDecision_FullMethodName = "/guard.v1.GuardPanelService/UpdateVudDecision"
-	GuardPanelService_CreateEmployee_FullMethodName    = "/guard.v1.GuardPanelService/CreateEmployee"
-	GuardPanelService_UpdateEmployee_FullMethodName    = "/guard.v1.GuardPanelService/UpdateEmployee"
-	GuardPanelService_DeleteEmployee_FullMethodName    = "/guard.v1.GuardPanelService/DeleteEmployee"
-	GuardPanelService_SearchEmployees_FullMethodName   = "/guard.v1.GuardPanelService/SearchEmployees"
-	GuardPanelService_CreateOffice_FullMethodName      = "/guard.v1.GuardPanelService/CreateOffice"
-	GuardPanelService_UpdateOffice_FullMethodName      = "/guard.v1.GuardPanelService/UpdateOffice"
-	GuardPanelService_DeleteOffice_FullMethodName      = "/guard.v1.GuardPanelService/DeleteOffice"
-	GuardPanelService_SearchOffices_FullMethodName     = "/guard.v1.GuardPanelService/SearchOffices"
-	GuardPanelService_SignUp_FullMethodName            = "/guard.v1.GuardPanelService/SignUp"
-	GuardPanelService_SignIn_FullMethodName            = "/guard.v1.GuardPanelService/SignIn"
-	GuardPanelService_WhoAmI_FullMethodName            = "/guard.v1.GuardPanelService/WhoAmI"
+	GuardPanelService_CreateTask_FullMethodName          = "/guard.v1.GuardPanelService/CreateTask"
+	GuardPanelService_GetTaskDetails_FullMethodName      = "/guard.v1.GuardPanelService/GetTaskDetails"
+	GuardPanelService_UpdateTask_FullMethodName          = "/guard.v1.GuardPanelService/UpdateTask"
+	GuardPanelService_SearchTasks_FullMethodName         = "/guard.v1.GuardPanelService/SearchTasks"
+	GuardPanelService_CreateComment_FullMethodName       = "/guard.v1.GuardPanelService/CreateComment"
+	GuardPanelService_DeleteComment_FullMethodName       = "/guard.v1.GuardPanelService/DeleteComment"
+	GuardPanelService_CreateRefund_FullMethodName        = "/guard.v1.GuardPanelService/CreateRefund"
+	GuardPanelService_CreateVudDecision_FullMethodName   = "/guard.v1.GuardPanelService/CreateVudDecision"
+	GuardPanelService_UpdateVudDecision_FullMethodName   = "/guard.v1.GuardPanelService/UpdateVudDecision"
+	GuardPanelService_CreateEmployee_FullMethodName      = "/guard.v1.GuardPanelService/CreateEmployee"
+	GuardPanelService_UpdateEmployee_FullMethodName      = "/guard.v1.GuardPanelService/UpdateEmployee"
+	GuardPanelService_DeleteEmployee_FullMethodName      = "/guard.v1.GuardPanelService/DeleteEmployee"
+	GuardPanelService_SearchEmployees_FullMethodName     = "/guard.v1.GuardPanelService/SearchEmployees"
+	GuardPanelService_CreateOffice_FullMethodName        = "/guard.v1.GuardPanelService/CreateOffice"
+	GuardPanelService_UpdateOffice_FullMethodName        = "/guard.v1.GuardPanelService/UpdateOffice"
+	GuardPanelService_DeleteOffice_FullMethodName        = "/guard.v1.GuardPanelService/DeleteOffice"
+	GuardPanelService_SearchOffices_FullMethodName       = "/guard.v1.GuardPanelService/SearchOffices"
+	GuardPanelService_SignUp_FullMethodName              = "/guard.v1.GuardPanelService/SignUp"
+	GuardPanelService_SignIn_FullMethodName              = "/guard.v1.GuardPanelService/SignIn"
+	GuardPanelService_WhoAmI_FullMethodName              = "/guard.v1.GuardPanelService/WhoAmI"
+	GuardPanelService_GetTaskDashboardKPI_FullMethodName = "/guard.v1.GuardPanelService/GetTaskDashboardKPI"
 )
 
 // GuardPanelServiceClient is the client API for GuardPanelService service.
@@ -74,6 +75,8 @@ type GuardPanelServiceClient interface {
 	SignUp(ctx context.Context, in *message.SignUpRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error)
 	SignIn(ctx context.Context, in *message.SignInRequest, opts ...grpc.CallOption) (*message.AuthTokensResponse, error)
 	WhoAmI(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*message.WhoAmIResponse, error)
+	// Analytics
+	GetTaskDashboardKPI(ctx context.Context, in *message.GetTaskDashboardKPIRequest, opts ...grpc.CallOption) (*message.GetTaskDashboardKPIResponse, error)
 }
 
 type guardPanelServiceClient struct {
@@ -284,6 +287,16 @@ func (c *guardPanelServiceClient) WhoAmI(ctx context.Context, in *emptypb.Empty,
 	return out, nil
 }
 
+func (c *guardPanelServiceClient) GetTaskDashboardKPI(ctx context.Context, in *message.GetTaskDashboardKPIRequest, opts ...grpc.CallOption) (*message.GetTaskDashboardKPIResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(message.GetTaskDashboardKPIResponse)
+	err := c.cc.Invoke(ctx, GuardPanelService_GetTaskDashboardKPI_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GuardPanelServiceServer is the server API for GuardPanelService service.
 // All implementations must embed UnimplementedGuardPanelServiceServer
 // for forward compatibility.
@@ -315,6 +328,8 @@ type GuardPanelServiceServer interface {
 	SignUp(context.Context, *message.SignUpRequest) (*message.AuthTokensResponse, error)
 	SignIn(context.Context, *message.SignInRequest) (*message.AuthTokensResponse, error)
 	WhoAmI(context.Context, *emptypb.Empty) (*message.WhoAmIResponse, error)
+	// Analytics
+	GetTaskDashboardKPI(context.Context, *message.GetTaskDashboardKPIRequest) (*message.GetTaskDashboardKPIResponse, error)
 	mustEmbedUnimplementedGuardPanelServiceServer()
 }
 
@@ -384,6 +399,9 @@ func (UnimplementedGuardPanelServiceServer) SignIn(context.Context, *message.Sig
 }
 func (UnimplementedGuardPanelServiceServer) WhoAmI(context.Context, *emptypb.Empty) (*message.WhoAmIResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method WhoAmI not implemented")
+}
+func (UnimplementedGuardPanelServiceServer) GetTaskDashboardKPI(context.Context, *message.GetTaskDashboardKPIRequest) (*message.GetTaskDashboardKPIResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskDashboardKPI not implemented")
 }
 func (UnimplementedGuardPanelServiceServer) mustEmbedUnimplementedGuardPanelServiceServer() {}
 func (UnimplementedGuardPanelServiceServer) testEmbeddedByValue()                           {}
@@ -766,6 +784,24 @@ func _GuardPanelService_WhoAmI_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GuardPanelService_GetTaskDashboardKPI_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(message.GetTaskDashboardKPIRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GuardPanelServiceServer).GetTaskDashboardKPI(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GuardPanelService_GetTaskDashboardKPI_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GuardPanelServiceServer).GetTaskDashboardKPI(ctx, req.(*message.GetTaskDashboardKPIRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GuardPanelService_ServiceDesc is the grpc.ServiceDesc for GuardPanelService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -852,6 +888,10 @@ var GuardPanelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WhoAmI",
 			Handler:    _GuardPanelService_WhoAmI_Handler,
+		},
+		{
+			MethodName: "GetTaskDashboardKPI",
+			Handler:    _GuardPanelService_GetTaskDashboardKPI_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
