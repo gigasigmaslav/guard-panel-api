@@ -248,17 +248,6 @@ func (m *CreateVudDecisionRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetCreatedById() <= 0 {
-		err := CreateVudDecisionRequestValidationError{
-			field:  "CreatedById",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if m.Ud != nil {
 
 		if utf8.RuneCountInString(m.GetUd()) > 25 {

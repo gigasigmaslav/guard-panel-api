@@ -241,17 +241,6 @@ func (m *CreateOfficeRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetCreatedById() <= 0 {
-		err := CreateOfficeRequestValidationError{
-			field:  "CreatedById",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if len(errors) > 0 {
 		return CreateOfficeRequestMultiError(errors)
 	}

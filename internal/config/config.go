@@ -16,6 +16,12 @@ type Config struct {
 
 	Server     Server
 	PostgresDB PostgresDB
+	Auth       Auth
+}
+
+type Auth struct {
+	AccessTokenSecret string
+	AccessTokenTTL    time.Duration
 }
 
 type PostgresDB struct {
@@ -57,11 +63,17 @@ func Get(v *viper.Viper) (Config, error) {
 		return Config{}, err
 	}
 
+	authCfg, err := getAuth(v)
+	if err != nil {
+		return Config{}, err
+	}
+
 	return Config{
 		AppVersion:  v.GetString(appVersionKey),
 		ServiceName: v.GetString(serviceNameKey),
 		Server:      server,
 		PostgresDB:  postgresDB,
+		Auth:        authCfg,
 	}, nil
 }
 
@@ -122,4 +134,27 @@ func getPostgresDB(v *viper.Viper) (PostgresDB, error) {
 	postgresDB.DBName = v.GetString(nameKey)
 
 	return postgresDB, nil
+}
+
+func getAuth(v *viper.Viper) (Auth, error) {
+	const (
+		//nolint:gosec // env var for viper is not a secret
+		authAccessTokenSecretKey = "AUTH_ACCESS_TOKEN_SECRET"
+		ttlSecKey                = "AUTH_ACCESS_TOKEN_TTL_SEC"
+	)
+
+	var auth Auth
+
+	if !v.IsSet(authAccessTokenSecretKey) {
+		return auth, fmt.Errorf("%w: %s", ErrMissingRequiredConfig, authAccessTokenSecretKey)
+	}
+
+	if !v.IsSet(ttlSecKey) {
+		return auth, fmt.Errorf("%w: %s", ErrMissingRequiredConfig, ttlSecKey)
+	}
+
+	auth.AccessTokenSecret = v.GetString(authAccessTokenSecretKey)
+	auth.AccessTokenTTL = time.Duration(v.GetInt(ttlSecKey)) * time.Second
+
+	return auth, nil
 }

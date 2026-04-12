@@ -128,10 +128,9 @@ type CreateVudDecisionRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	TaskId             int64                  `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
 	Kusp               string                 `protobuf:"bytes,2,opt,name=kusp,proto3" json:"kusp,omitempty"`
-	CreatedById        int64                  `protobuf:"varint,3,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
-	Ud                 *string                `protobuf:"bytes,4,opt,name=ud,proto3,oneof" json:"ud,omitempty"`
-	CriminalCaseOpened *bool                  `protobuf:"varint,5,opt,name=criminal_case_opened,json=criminalCaseOpened,proto3,oneof" json:"criminal_case_opened,omitempty"`
-	Comment            *string                `protobuf:"bytes,6,opt,name=comment,proto3,oneof" json:"comment,omitempty"`
+	Ud                 *string                `protobuf:"bytes,3,opt,name=ud,proto3,oneof" json:"ud,omitempty"`
+	CriminalCaseOpened *bool                  `protobuf:"varint,4,opt,name=criminal_case_opened,json=criminalCaseOpened,proto3,oneof" json:"criminal_case_opened,omitempty"`
+	Comment            *string                `protobuf:"bytes,5,opt,name=comment,proto3,oneof" json:"comment,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -178,13 +177,6 @@ func (x *CreateVudDecisionRequest) GetKusp() string {
 		return x.Kusp
 	}
 	return ""
-}
-
-func (x *CreateVudDecisionRequest) GetCreatedById() int64 {
-	if x != nil {
-		return x.CreatedById
-	}
-	return 0
 }
 
 func (x *CreateVudDecisionRequest) GetUd() string {
@@ -299,18 +291,16 @@ const file_message_vud_decision_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\a \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xaf\x02\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xff\x01\n" +
 	"\x18CreateVudDecisionRequest\x12#\n" +
 	"\atask_id\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06taskId\x12\x1e\n" +
 	"\x04kusp\x18\x02 \x01(\tB\n" +
 	"\xe0A\x02\xfaB\x04r\x02\x18\n" +
-	"R\x04kusp\x12.\n" +
-	"\rcreated_by_id\x18\x03 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\x12\x1c\n" +
-	"\x02ud\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x18\x19H\x00R\x02ud\x88\x01\x01\x125\n" +
-	"\x14criminal_case_opened\x18\x05 \x01(\bH\x01R\x12criminalCaseOpened\x88\x01\x01\x12\x1d\n" +
-	"\acomment\x18\x06 \x01(\tH\x02R\acomment\x88\x01\x01B\x05\n" +
+	"R\x04kusp\x12\x1c\n" +
+	"\x02ud\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x18\x19H\x00R\x02ud\x88\x01\x01\x125\n" +
+	"\x14criminal_case_opened\x18\x04 \x01(\bH\x01R\x12criminalCaseOpened\x88\x01\x01\x12\x1d\n" +
+	"\acomment\x18\x05 \x01(\tH\x02R\acomment\x88\x01\x01B\x05\n" +
 	"\x03_udB\x17\n" +
 	"\x15_criminal_case_openedB\n" +
 	"\n" +

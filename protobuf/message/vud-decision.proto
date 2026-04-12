@@ -22,10 +22,9 @@ message VudDecision {
 message CreateVudDecisionRequest {
   int64 task_id = 1 [(validate.rules).int64.gt = 0,(google.api.field_behavior) = REQUIRED];
   string kusp = 2 [(validate.rules).string = {max_len: 10}, (google.api.field_behavior) = REQUIRED];
-  int64 created_by_id = 3 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
-  optional string ud = 4 [(validate.rules).string = {max_len: 25}];
-  optional bool criminal_case_opened = 5;
-  optional string comment = 6;
+  optional string ud = 3 [(validate.rules).string = {max_len: 25}];
+  optional bool criminal_case_opened = 4;
+  optional string comment = 5;
 }
 
 message UpdateVudDecisionRequest {

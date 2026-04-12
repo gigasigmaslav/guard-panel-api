@@ -126,3 +126,27 @@ func (r *runner) initServer(
 
 	return nil
 }
+
+func (r *runner) ApplyOptions(opts ...Option) {
+	for _, opt := range opts {
+		opt(r)
+	}
+}
+
+type Option func(*runner)
+
+func WithStreamInterceptor(s grpc.StreamServerInterceptor) Option {
+	return func(r *runner) {
+		r.streamInterceptors = append(r.streamInterceptors, s)
+	}
+}
+
+func WithUnaryInterceptor(u grpc.UnaryServerInterceptor) Option {
+	return func(r *runner) {
+		r.unaryInterceptors = append(r.unaryInterceptors, u)
+	}
+}
+
+type Runtime interface {
+	ApplyOptions(opts ...Option)
+}

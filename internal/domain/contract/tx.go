@@ -40,6 +40,11 @@ type TxRepo interface {
 	// comment
 	CreateComment(ctx context.Context, com entity.Comment) (int64, error)
 
-	// history changes
+	// history
 	CreateTaskHistoryChange(ctx context.Context, change entity.TaskHistoryChange) (int64, error)
+
+	// user
+	GetUserByEmployeeID(ctx context.Context, employeeID int64) (entity.User, error)
+	UserExistsByEmployeeID(ctx context.Context, employeeID int64) (bool, error)
+	CreateUser(ctx context.Context, u entity.User) (int64, error)
 }

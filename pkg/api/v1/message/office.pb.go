@@ -104,7 +104,6 @@ type CreateOfficeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Address       string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
-	CreatedById   int64                  `protobuf:"varint,3,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,13 +150,6 @@ func (x *CreateOfficeRequest) GetAddress() string {
 		return x.Address
 	}
 	return ""
-}
-
-func (x *CreateOfficeRequest) GetCreatedById() int64 {
-	if x != nil {
-		return x.CreatedById
-	}
-	return 0
 }
 
 type UpdateOfficeRequest struct {
@@ -276,14 +268,12 @@ const file_message_office_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\x04 \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x8b\x01\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"[\n" +
 	"\x13CreateOfficeRequest\x12\x1e\n" +
 	"\x04name\x18\x01 \x01(\tB\n" +
 	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\x04name\x12$\n" +
 	"\aaddress\x18\x02 \x01(\tB\n" +
-	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\aaddress\x12.\n" +
-	"\rcreated_by_id\x18\x03 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\"~\n" +
+	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\aaddress\"~\n" +
 	"\x13UpdateOfficeRequest\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x02id\x12\x17\n" +

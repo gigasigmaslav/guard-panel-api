@@ -12,10 +12,9 @@ message CreateTaskRequest {
   TaskPriority priority = 2 [(validate.rules).enum = {defined_only: true, not_in: [0]}, (google.api.field_behavior) = REQUIRED];
   int64 executor_id = 3 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
   int64 office_id = 4 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
-  int64 created_by_id = 5 [(validate.rules).int64.gt = 0, (google.api.field_behavior) = REQUIRED];
-  ViolatorType violator_type = 6 [(validate.rules).enum = {defined_only: true, not_in: [0]}, (google.api.field_behavior) = REQUIRED];
-  string violator_full_name = 7 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
-  string violator_phone_number = 8 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
+  ViolatorType violator_type = 5 [(validate.rules).enum = {defined_only: true, not_in: [0]}, (google.api.field_behavior) = REQUIRED];
+  string violator_full_name = 6 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
+  string violator_phone_number = 7 [(validate.rules).string.min_len = 1, (google.api.field_behavior) = REQUIRED];
 }
 
 message Task {

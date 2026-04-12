@@ -17,6 +17,95 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/auth/sign-in": {
+      "post": {
+        "summary": "sign in",
+        "operationId": "GuardPanelService_SignIn",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthTokensResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SignInRequest"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/sign-up": {
+      "post": {
+        "summary": "first sign up (set password)",
+        "operationId": "GuardPanelService_SignUp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthTokensResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SignUpRequest"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/whoami": {
+      "get": {
+        "summary": "current user profile",
+        "operationId": "GuardPanelService_WhoAmI",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1WhoAmIResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/api/v1/comments": {
       "post": {
         "summary": "create comment",
@@ -945,6 +1034,18 @@
         }
       }
     },
+    "v1AuthTokensResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1CreateCommentRequest": {
       "type": "object",
       "properties": {
@@ -954,16 +1055,11 @@
         },
         "comment": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "taskId",
-        "comment",
-        "createdById"
+        "comment"
       ]
     },
     "v1CreateEmployeeRequest": {
@@ -974,16 +1070,11 @@
         },
         "position": {
           "$ref": "#/definitions/v1EmployeePosition"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "fullName",
-        "position",
-        "createdById"
+        "position"
       ]
     },
     "v1CreateOfficeRequest": {
@@ -994,16 +1085,11 @@
         },
         "address": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "name",
-        "address",
-        "createdById"
+        "address"
       ]
     },
     "v1CreateRefundRequest": {
@@ -1019,17 +1105,12 @@
         },
         "comment": {
           "type": "string"
-        },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
         }
       },
       "required": [
         "taskId",
         "amount",
-        "comment",
-        "createdById"
+        "comment"
       ]
     },
     "v1CreateTaskRequest": {
@@ -1050,10 +1131,6 @@
           "type": "string",
           "format": "int64"
         },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
-        },
         "violatorType": {
           "$ref": "#/definitions/v1ViolatorType"
         },
@@ -1069,7 +1146,6 @@
         "priority",
         "executorId",
         "officeId",
-        "createdById",
         "violatorType",
         "violatorFullName",
         "violatorPhoneNumber"
@@ -1085,10 +1161,6 @@
         "kusp": {
           "type": "string"
         },
-        "createdById": {
-          "type": "string",
-          "format": "int64"
-        },
         "ud": {
           "type": "string"
         },
@@ -1101,8 +1173,7 @@
       },
       "required": [
         "taskId",
-        "kusp",
-        "createdById"
+        "kusp"
       ]
     },
     "v1CreatedResponse": {
@@ -1246,6 +1317,38 @@
         }
       }
     },
+    "v1SignInRequest": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "employeeId",
+        "password"
+      ]
+    },
+    "v1SignUpRequest": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "employeeId",
+        "password"
+      ]
+    },
     "v1Sorting": {
       "type": "object",
       "properties": {
@@ -1360,6 +1463,21 @@
         "CLIENT"
       ],
       "default": "VIOLATOR_TYPE_UNSPECIFIED"
+    },
+    "v1WhoAmIResponse": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/definitions/v1EmployeePosition"
+        }
+      }
     }
   }
 }

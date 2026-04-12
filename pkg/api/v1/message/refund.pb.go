@@ -113,7 +113,6 @@ type CreateRefundRequest struct {
 	TaskId        int64                  `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
 	Amount        int64                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
 	Comment       string                 `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
-	CreatedById   int64                  `protobuf:"varint,4,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -169,13 +168,6 @@ func (x *CreateRefundRequest) GetComment() string {
 	return ""
 }
 
-func (x *CreateRefundRequest) GetCreatedById() int64 {
-	if x != nil {
-		return x.CreatedById
-	}
-	return 0
-}
-
 var File_message_refund_proto protoreflect.FileDescriptor
 
 const file_message_refund_proto_rawDesc = "" +
@@ -189,16 +181,14 @@ const file_message_refund_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\x05 \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xb4\x01\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x84\x01\n" +
 	"\x13CreateRefundRequest\x12#\n" +
 	"\atask_id\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06taskId\x12\"\n" +
 	"\x06amount\x18\x02 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x06amount\x12$\n" +
 	"\acomment\x18\x03 \x01(\tB\n" +
-	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\acomment\x12.\n" +
-	"\rcreated_by_id\x18\x04 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedByIdB=Z;github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/messageb\x06proto3"
+	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\acommentB=Z;github.com/gigasigmaslav/guard-panel-api/pkg/api/v1/messageb\x06proto3"
 
 var (
 	file_message_refund_proto_rawDescOnce sync.Once

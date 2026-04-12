@@ -104,7 +104,6 @@ type CreateEmployeeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FullName      string                 `protobuf:"bytes,1,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Position      EmployeePosition       `protobuf:"varint,2,opt,name=position,proto3,enum=guard.v1.EmployeePosition" json:"position,omitempty"`
-	CreatedById   int64                  `protobuf:"varint,3,opt,name=created_by_id,json=createdById,proto3" json:"created_by_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,13 +150,6 @@ func (x *CreateEmployeeRequest) GetPosition() EmployeePosition {
 		return x.Position
 	}
 	return EmployeePosition_EMPLOYEE_POSITION_UNSPECIFIED
-}
-
-func (x *CreateEmployeeRequest) GetCreatedById() int64 {
-	if x != nil {
-		return x.CreatedById
-	}
-	return 0
 }
 
 type UpdateEmployeeRequest struct {
@@ -276,13 +268,11 @@ const file_message_employee_proto_rawDesc = "" +
 	"\n" +
 	"created_by\x18\x04 \x01(\v2\x10.guard.v1.LookupR\tcreatedBy\x129\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xb7\x01\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x87\x01\n" +
 	"\x15CreateEmployeeRequest\x12'\n" +
 	"\tfull_name\x18\x01 \x01(\tB\n" +
 	"\xe0A\x02\xfaB\x04r\x02\x10\x01R\bfullName\x12E\n" +
-	"\bposition\x18\x02 \x01(\x0e2\x1a.guard.v1.EmployeePositionB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\bposition\x12.\n" +
-	"\rcreated_by_id\x18\x03 \x01(\x03B\n" +
-	"\xe0A\x02\xfaB\x04\"\x02 \x00R\vcreatedById\"\xb7\x01\n" +
+	"\bposition\x18\x02 \x01(\x0e2\x1a.guard.v1.EmployeePositionB\r\xe0A\x02\xfaB\a\x82\x01\x04\x10\x01 \x00R\bposition\"\xb7\x01\n" +
 	"\x15UpdateEmployeeRequest\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\x03B\n" +
 	"\xe0A\x02\xfaB\x04\"\x02 \x00R\x02id\x12 \n" +
