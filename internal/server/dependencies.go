@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/analytics"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/auth"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/comment"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/employee"
@@ -31,6 +32,7 @@ type Dependencies struct {
 	*auth.SignUpUseCase
 	*auth.SignInUseCase
 	*auth.WhoAmIUseCase
+	*analytics.GetAnalyticsUseCase
 }
 
 func NewDependencies(
@@ -54,6 +56,7 @@ func NewDependencies(
 	signUpUC *auth.SignUpUseCase,
 	signInUC *auth.SignInUseCase,
 	whoAmIUC *auth.WhoAmIUseCase,
+	getAnalyticsUC *analytics.GetAnalyticsUseCase,
 ) *Dependencies {
 	return &Dependencies{
 		CreateCommentUseCase:     createCommentUC,
@@ -76,5 +79,6 @@ func NewDependencies(
 		SignUpUseCase:            signUpUC,
 		SignInUseCase:            signInUC,
 		WhoAmIUseCase:            whoAmIUC,
+		GetAnalyticsUseCase:      getAnalyticsUC,
 	}
 }

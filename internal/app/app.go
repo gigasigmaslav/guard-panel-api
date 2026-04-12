@@ -21,6 +21,7 @@ import (
 	"github.com/gigasigmaslav/guard-panel-api/internal/config"
 	"github.com/gigasigmaslav/guard-panel-api/internal/server"
 
+	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/analytics"
 	authuc "github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/auth"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/comment"
 	"github.com/gigasigmaslav/guard-panel-api/internal/domain/usecase/employee"
@@ -155,6 +156,7 @@ func getGRPCServerDependencies(
 	signUpUC := authuc.NewSignUpUseCase(repoStorage, repoStorage, tokenCodec, passwordHasher)
 	signInUC := authuc.NewSignInUseCase(repoStorage, repoStorage, tokenCodec, passwordHasher)
 	whoAmIUC := authuc.NewWhoAmIUseCase(repoStorage)
+	getAnalyticsUC := analytics.NewGetAnalyticsUseCase(repoStorage)
 	getTaskByIDUC := task.NewGetTaskByIDUseCase(
 		repoStorage,
 		repoStorage,
@@ -185,5 +187,6 @@ func getGRPCServerDependencies(
 		signUpUC,
 		signInUC,
 		whoAmIUC,
+		getAnalyticsUC,
 	)
 }

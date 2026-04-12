@@ -13,6 +13,7 @@ import "message/vud-decision.proto";
 import "message/employee.proto";
 import "message/office.proto";
 import "message/auth.proto";
+import "message/analytics.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     consumes: ["application/json"];
@@ -117,5 +118,11 @@ service GuardPanelService {
     rpc WhoAmI(google.protobuf.Empty) returns (WhoAmIResponse) {
         option (google.api.http) = { get: "/api/v1/auth/whoami" };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["auth"] summary: "current user profile" };
+    }
+
+    // Analytics
+    rpc GetTaskDashboardKPI(GetTaskDashboardKPIRequest) returns (GetTaskDashboardKPIResponse) {
+        option (google.api.http) = { get: "/api/v1/analytics" };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = { tags: ["analytics"] summary: "task dashboard KPI" };
     }
 }
