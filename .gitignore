@@ -12,9 +12,12 @@
 # Test binary, built with `go test -c`
 *.test
 
-# Code coverage profiles and other test artifacts
+# Coverage artifacts
 *.out
-coverage.*
+coverage.out
+coverage.html
+coverage.xml
+coverage.txt
 *.coverprofile
 profile.cov
 
