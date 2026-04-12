@@ -11,19 +11,29 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
     networks:
       - guard-network
-    
+
   app:
     container_name: guard-panel-api
     build:
       context: .
       dockerfile: Dockerfile
+      target: local
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
       - "${GRPC_PORT}:${GRPC_PORT}"
     env_file:
       - .env
+    depends_on:
+      pg_db:
+        condition: service_healthy
     networks:
       - guard-network
 
