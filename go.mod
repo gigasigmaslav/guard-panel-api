@@ -4,7 +4,7 @@ go 1.26.1
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/cripplemymind9/go-utils v1.0.2
+	github.com/cripplemymind9/go-utils v1.0.3
 	github.com/envoyproxy/protoc-gen-validate v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0
 	github.com/jackc/pgx/v5 v5.9.1

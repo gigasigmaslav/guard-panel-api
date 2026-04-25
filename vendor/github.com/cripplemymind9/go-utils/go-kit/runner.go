@@ -3,6 +3,7 @@ package gokit
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -31,6 +32,7 @@ type runner struct {
 	unaryInterceptors  []grpc.UnaryServerInterceptor
 
 	serverMuxOptions []runtime.ServeMuxOption
+	httpMiddlewares  []func(http.Handler) http.Handler
 }
 
 // NewRunner создает экземпляр Runner с конфигурацией по умолчанию
@@ -120,11 +122,26 @@ func (r *runner) initServer(
 		return fmt.Errorf("failed to register HTTP handlers: %w", err)
 	}
 
+	r.setHTTPHandler(server, mux)
+
 	if err := server.StartGateway(appImpl); err != nil {
 		return fmt.Errorf("HTTP gateway start error: %w", err)
 	}
 
 	return nil
+}
+
+func (r *runner) setHTTPHandler(server *Server, mux *runtime.ServeMux) {
+	if len(r.httpMiddlewares) == 0 {
+		return
+	}
+
+	var handler http.Handler = mux
+	for i := len(r.httpMiddlewares) - 1; i >= 0; i-- {
+		handler = r.httpMiddlewares[i](handler)
+	}
+
+	server.SetHTTPHandler(handler)
 }
 
 func (r *runner) ApplyOptions(opts ...Option) {
@@ -144,6 +161,12 @@ func WithStreamInterceptor(s grpc.StreamServerInterceptor) Option {
 func WithUnaryInterceptor(u grpc.UnaryServerInterceptor) Option {
 	return func(r *runner) {
 		r.unaryInterceptors = append(r.unaryInterceptors, u)
+	}
+}
+
+func WithHTTPMiddleware(m func(http.Handler) http.Handler) Option {
+	return func(r *runner) {
+		r.httpMiddlewares = append(r.httpMiddlewares, m)
 	}
 }
 
