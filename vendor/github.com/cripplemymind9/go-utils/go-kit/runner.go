@@ -31,8 +31,8 @@ type runner struct {
 	streamInterceptors []grpc.StreamServerInterceptor
 	unaryInterceptors  []grpc.UnaryServerInterceptor
 
-	serverMuxOptions []runtime.ServeMuxOption
-	httpMiddlewares  []func(http.Handler) http.Handler
+	serverMuxOptions    []runtime.ServeMuxOption
+	httpMiddlewares     []func(http.Handler) http.Handler
 }
 
 // NewRunner создает экземпляр Runner с конфигурацией по умолчанию
