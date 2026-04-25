@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/spf13/viper"
@@ -11,8 +12,9 @@ import (
 var ErrMissingRequiredConfig = errors.New("missing required config")
 
 type Config struct {
-	AppVersion  string
-	ServiceName string
+	AppVersion        string
+	ServiceName       string
+	AllowedCORSOrigin string
 
 	Server     Server
 	PostgresDB PostgresDB
@@ -68,12 +70,15 @@ func Get(v *viper.Viper) (Config, error) {
 		return Config{}, err
 	}
 
+	corsOrigin := getAllowedCORSOrigin(v)
+
 	return Config{
-		AppVersion:  v.GetString(appVersionKey),
-		ServiceName: v.GetString(serviceNameKey),
-		Server:      server,
-		PostgresDB:  postgresDB,
-		Auth:        authCfg,
+		AppVersion:        v.GetString(appVersionKey),
+		ServiceName:       v.GetString(serviceNameKey),
+		Server:            server,
+		PostgresDB:        postgresDB,
+		Auth:              authCfg,
+		AllowedCORSOrigin: corsOrigin,
 	}, nil
 }
 
@@ -157,4 +162,12 @@ func getAuth(v *viper.Viper) (Auth, error) {
 	auth.AccessTokenTTL = time.Duration(v.GetInt(ttlSecKey)) * time.Second
 
 	return auth, nil
+}
+
+// getAllowedCORSOrigin reads one allowed origin from CORS_ALLOWED_ORIGIN
+//
+// Empty value means middleware uses default "allow all" mode.
+func getAllowedCORSOrigin(v *viper.Viper) string {
+	const corsOriginKey = "CORS_ALLOWED_ORIGIN"
+	return strings.TrimSpace(v.GetString(corsOriginKey))
 }

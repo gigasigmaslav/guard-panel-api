@@ -14,6 +14,7 @@ import (
 
 	auth "github.com/gigasigmaslav/guard-panel-api/internal/pkg/auth"
 	grpcpkg "github.com/gigasigmaslav/guard-panel-api/internal/pkg/grpc"
+	middleware "github.com/gigasigmaslav/guard-panel-api/internal/pkg/http"
 	"github.com/gigasigmaslav/guard-panel-api/internal/pkg/postgres"
 	"github.com/gigasigmaslav/guard-panel-api/migrations"
 
@@ -67,6 +68,7 @@ func New(ctx context.Context, runtime gokit.Runtime, cfg config.Config) (*App, e
 
 	runtimeOpts := []gokit.Option{
 		gokit.WithUnaryInterceptor(grpcpkg.AuthInterceptor(tokenCodec)),
+		gokit.WithHTTPMiddleware(middleware.CORS(cfg.AllowedCORSOrigin)),
 	}
 
 	runtime.ApplyOptions(runtimeOpts...)

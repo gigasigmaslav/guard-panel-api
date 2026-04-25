@@ -19,6 +19,7 @@ type Server struct {
 	grpcPort     int
 	httpPort     int
 	grpcListener net.Listener
+	httpHandler  http.Handler
 }
 
 func NewServer(
@@ -48,6 +49,10 @@ func (s *Server) GetMux() *runtime.ServeMux {
 	return s.gatewayMux
 }
 
+func (s *Server) SetHTTPHandler(h http.Handler) {
+	s.httpHandler = h
+}
+
 func (s *Server) StartGRPCServer() {
 	reflection.Register(s.grpcServer)
 
@@ -61,9 +66,14 @@ func (s *Server) StartGRPCServer() {
 }
 
 func (s *Server) StartGateway(app App) error {
+	handler := http.Handler(s.gatewayMux)
+	if s.httpHandler != nil {
+		handler = s.httpHandler
+	}
+
 	s.httpServer = &http.Server{
 		Addr:    fmt.Sprintf("0.0.0.0:%d", s.httpPort),
-		Handler: s.gatewayMux,
+		Handler: handler,
 	}
 
 	go func() {

@@ -2,8 +2,8 @@ github.com/Masterminds/squirrel v1.5.4 h1:uUcX/aBc8O7Fg9kaISIUsHXdKuqehiXAMQTYX8
 github.com/Masterminds/squirrel v1.5.4/go.mod h1:NNaOrjSoIDfDA40n7sr2tPNZRfjzjA400rg+riTZj10=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
-github.com/cripplemymind9/go-utils v1.0.2 h1:ekL+QRpeSVZ6KavOrddBn+Nehk2YaE2uuLudY/aeTPs=
-github.com/cripplemymind9/go-utils v1.0.2/go.mod h1:6una5LMdXBKzyIZvgw/vJA6l4mt77bBLzZoU0XBEjOA=
+github.com/cripplemymind9/go-utils v1.0.3 h1:LbvtIbPxGVz9FM41jC7s6pnNZlb1v7zQGjVxfT5MM1A=
+github.com/cripplemymind9/go-utils v1.0.3/go.mod h1:6una5LMdXBKzyIZvgw/vJA6l4mt77bBLzZoU0XBEjOA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
